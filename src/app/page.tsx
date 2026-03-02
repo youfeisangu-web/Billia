@@ -178,7 +178,7 @@ function ComingSoonBadge({ size = "md" }: { size?: "sm" | "md" | "lg" }) {
 
 /* ── main ────────────────────────────────────────────────── */
 
-export default function Home() {
+export default function LandingPage() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [email, setEmail] = useState("");
