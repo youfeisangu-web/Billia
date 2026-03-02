@@ -241,39 +241,184 @@ export default function LandingPage() {
       </header>
 
       {/* ── hero ── */}
-      <section className="relative overflow-hidden pt-16 pb-24 md:pt-24 md:pb-32">
-        <div className="pointer-events-none absolute inset-0 -z-10" style={{
-          background: `
-            radial-gradient(ellipse 80% 60% at 20% 10%, rgba(96,165,250,0.18) 0%, transparent 60%),
-            radial-gradient(ellipse 60% 50% at 80% 20%, rgba(99,102,241,0.14) 0%, transparent 55%),
-            radial-gradient(ellipse 70% 60% at 50% 100%, rgba(34,211,238,0.12) 0%, transparent 50%),
-            #ffffff
-          `,
-        }} />
-        <div className="mx-auto max-w-6xl px-5 md:px-8">
-          <div className="text-center max-w-3xl mx-auto mb-12 md:mb-16">
-            <div className="inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50 px-4 py-1.5 text-xs font-medium text-blue-700 mb-6">
-              <Sparkles className="w-3.5 h-3.5" />
-              AIで請求業務を自動化
-            </div>
-            <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight leading-tight mb-5">
-              AIで、請求管理を
-              <br />
-              <span className="bg-clip-text text-transparent" style={{ backgroundImage: "linear-gradient(135deg, #2563eb 0%, #06b6d4 50%, #6366f1 100%)" }}>
-                もっとラクに。
-              </span>
+      <section className="relative overflow-hidden bg-white pt-10 pb-0">
+        {/* 右上ティール装飾 */}
+        <div className="pointer-events-none absolute -top-16 -right-16 w-64 h-64 rounded-full opacity-30" style={{ background: "radial-gradient(circle, #2dd4bf 0%, transparent 70%)" }} />
+        <div className="pointer-events-none absolute top-4 right-4 w-32 h-32 rounded-full opacity-20" style={{ background: "#0d9488" }} />
+        {/* 左下ティール装飾 */}
+        <div className="pointer-events-none absolute -bottom-8 -left-8 w-40 h-40 rounded-full opacity-20" style={{ background: "radial-gradient(circle, #2dd4bf 0%, transparent 70%)" }} />
+
+        <div className="mx-auto max-w-5xl px-5 md:px-8">
+          {/* テキスト + CTA */}
+          <div className="text-center pt-6 pb-10 md:pt-10 md:pb-14">
+            <h1 className="text-3xl md:text-5xl font-extrabold tracking-tight leading-snug text-slate-900 mb-4">
+              AIで、バックオフィスを<br />もっとスマートに。<br />
+              <span className="text-[#0d9488]">「Billia」</span>
             </h1>
-            <p className="text-base md:text-lg text-slate-500 leading-relaxed mb-8 max-w-xl mx-auto">
-              請求書・見積書・経費・支払管理をひとつに。
-              AIがメモや書類を読み取り、入力の手間を限りなくゼロへ。
+            <p className="text-sm md:text-base text-slate-500 leading-relaxed mb-8 max-w-lg mx-auto">
+              請求書、見積書、経費、AIメモ入力、入金消込、<br className="hidden md:block" />
+              定期請求、財務サマリー。これ一つで解決。
             </p>
-            <ComingSoonBadge size="lg" />
+            <div className="flex items-center justify-center gap-3 flex-wrap">
+              <a href="#pricing" className="inline-flex items-center gap-2 rounded-xl px-7 py-3 text-sm font-bold text-white shadow-md transition-opacity hover:opacity-90"
+                style={{ background: "linear-gradient(135deg, #0d9488 0%, #06b6d4 100%)" }}>
+                無料で始める
+                <ArrowRight className="w-4 h-4" />
+              </a>
+              <a href="#features" className="inline-flex items-center gap-2 rounded-xl border-2 border-slate-200 bg-white px-7 py-3 text-sm font-bold text-slate-700 hover:border-slate-300 transition-colors">
+                詳細を見る
+              </a>
+            </div>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl mx-auto md:max-w-none md:grid-cols-4">
-            <DashboardMockup />
-            <InvoiceListMockup />
-            <MemoMockup />
-            <FinanceMockup />
+
+          {/* モックアップゾーン */}
+          <div className="relative flex items-end justify-center gap-4 md:gap-8 min-h-[340px] md:min-h-[420px]">
+
+            {/* フローティングアイコン */}
+            <div className="absolute top-0 left-[12%] md:left-[18%] z-20">
+              <div className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-white shadow-lg border border-slate-100 flex items-center justify-center">
+                <Upload className="w-5 h-5 md:w-6 md:h-6 text-teal-500" />
+              </div>
+            </div>
+            <div className="absolute top-6 right-[10%] md:right-[16%] z-20">
+              <div className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-white shadow-lg border border-slate-100 flex items-center justify-center">
+                <Brain className="w-5 h-5 md:w-6 md:h-6 text-purple-500" />
+              </div>
+            </div>
+            <div className="absolute top-[30%] right-[4%] md:right-[8%] z-20">
+              <div className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-white shadow-lg border border-slate-100 flex items-center justify-center">
+                <BarChart3 className="w-5 h-5 md:w-6 md:h-6 text-emerald-500" />
+              </div>
+            </div>
+            <div className="absolute top-[35%] left-[4%] md:left-[8%] z-20">
+              <div className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-white shadow-lg border border-slate-100 flex items-center justify-center">
+                <FileText className="w-5 h-5 md:w-6 md:h-6 text-blue-500" />
+              </div>
+            </div>
+
+            {/* スマホ */}
+            <div className="relative z-10 shrink-0" style={{ marginBottom: 0 }}>
+              {/* 携帯でもできる！ラベル */}
+              <div className="absolute -top-6 -left-2 md:-left-16 flex items-center gap-1 text-xs font-bold text-teal-600 whitespace-nowrap">
+                <span>↙</span>携帯でもできる！
+              </div>
+              <div className="w-[130px] md:w-[155px] rounded-[1.8rem] border-4 border-slate-200 bg-white shadow-2xl overflow-hidden">
+                <div className="bg-slate-100 h-5 flex items-center justify-center shrink-0">
+                  <div className="w-10 h-1.5 rounded-full bg-slate-300" />
+                </div>
+                <div className="p-2.5 space-y-2 bg-white">
+                  <p className="text-[8px] font-semibold text-slate-400">2026年3月</p>
+                  <p className="text-[10px] font-bold text-slate-800">ダッシュボード</p>
+                  <div className="rounded-lg bg-red-50 border border-red-100 px-2 py-1.5 flex items-center gap-1.5">
+                    <div className="w-1.5 h-1.5 rounded-full bg-red-400 shrink-0" />
+                    <div>
+                      <p className="text-[7px] font-semibold text-red-600">未入金があります</p>
+                      <p className="text-[6px] text-red-400">¥447,700 — 1件のテーブル</p>
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-2 gap-1">
+                    {[
+                      { label: "今月の請求額", value: "¥78,100", color: "text-slate-800" },
+                      { label: "未入金", value: "¥447,700", color: "text-red-600" },
+                      { label: "今月の経費", value: "¥11,500", color: "text-slate-800" },
+                      { label: "前月比", value: "+0.0%", color: "text-emerald-600" },
+                    ].map((k) => (
+                      <div key={k.label} className="rounded-md bg-slate-50 border border-slate-100 px-1.5 py-1">
+                        <p className="text-[6px] text-slate-400">{k.label}</p>
+                        <p className={`text-[8px] font-bold ${k.color}`}>{k.value}</p>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="rounded-md bg-slate-50 border border-slate-100 px-1.5 py-1.5">
+                    <p className="text-[6px] text-slate-400 mb-1">クイックアクション</p>
+                    <div className="grid grid-cols-2 gap-1">
+                      {["請求書を作成", "見積書を作成", "経費を記録", "入金消込"].map((a) => (
+                        <div key={a} className="rounded bg-white border border-slate-100 px-1 py-1 text-center">
+                          <p className="text-[6px] text-slate-600">{a}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* ノートPC */}
+            <div className="relative z-10 shrink-0 flex-1 max-w-[460px] md:max-w-[560px]">
+              {/* 画面部分 */}
+              <div className="rounded-t-xl border-4 border-slate-700 bg-slate-700 shadow-2xl overflow-hidden">
+                {/* メニューバー */}
+                <div className="bg-slate-800 h-5 flex items-center px-3 gap-1.5">
+                  <div className="w-2 h-2 rounded-full bg-red-400" />
+                  <div className="w-2 h-2 rounded-full bg-yellow-400" />
+                  <div className="w-2 h-2 rounded-full bg-green-400" />
+                  <div className="flex-1 mx-3 h-3.5 rounded bg-slate-600 flex items-center justify-center">
+                    <span className="text-[8px] text-slate-400">billia-inc.com/dashboard</span>
+                  </div>
+                </div>
+                {/* ダッシュボード画面 */}
+                <div className="bg-slate-50 flex" style={{ minHeight: "200px" }}>
+                  {/* サイドバー */}
+                  <div className="w-[70px] md:w-[80px] bg-white border-r border-slate-100 p-2 flex flex-col gap-2 shrink-0">
+                    <div className="flex items-center gap-1 mb-2">
+                      <div className="w-4 h-4 rounded bg-teal-500 shrink-0" />
+                      <span className="text-[8px] font-bold text-slate-700 hidden md:block">Billia</span>
+                    </div>
+                    {["ダッシュボード","請求書","見積書","経費","支払","財務"].map((item, i) => (
+                      <div key={item} className={`rounded px-1.5 py-1 text-[7px] font-medium ${i === 0 ? "bg-teal-50 text-teal-700" : "text-slate-400"}`}>
+                        {item}
+                      </div>
+                    ))}
+                  </div>
+                  {/* コンテンツ */}
+                  <div className="flex-1 p-3 space-y-2 overflow-hidden">
+                    <p className="text-[9px] font-bold text-slate-700">ダッシュボード</p>
+                    <div className="grid grid-cols-3 gap-1.5">
+                      {[
+                        { label: "今年売上", value: "¥13,200", sub: "入金" },
+                        { label: "今月入金", value: "¥入金", sub: "0件" },
+                        { label: "今月アクティビティ", value: "¥6,085", sub: "" },
+                      ].map((k) => (
+                        <div key={k.label} className="rounded-lg bg-white border border-slate-100 p-1.5">
+                          <p className="text-[6px] text-slate-400 leading-tight">{k.label}</p>
+                          <p className="text-[8px] font-bold text-teal-600">{k.value}</p>
+                          {k.sub && <p className="text-[6px] text-slate-400">{k.sub}</p>}
+                        </div>
+                      ))}
+                    </div>
+                    {/* バーチャート */}
+                    <div className="rounded-lg bg-white border border-slate-100 p-2">
+                      <p className="text-[7px] text-slate-400 mb-1.5">月別推移</p>
+                      <div className="flex items-end gap-1 h-12">
+                        {[30, 50, 40, 70, 55, 80, 65, 90, 75, 60, 85, 100].map((h, i) => (
+                          <div key={i} className="flex-1 rounded-sm" style={{ height: `${h}%`, background: i % 2 === 0 ? "#0d9488" : "#06b6d4", opacity: 0.7 + i * 0.02 }} />
+                        ))}
+                      </div>
+                    </div>
+                    {/* テーブル */}
+                    <div className="rounded-lg bg-white border border-slate-100 p-2 space-y-1">
+                      <p className="text-[7px] text-slate-400 mb-1">最新アクティビティ</p>
+                      {[
+                        { name: "サンプル合同会社", amount: "¥78,100", status: "未払い", sc: "bg-amber-100 text-amber-700" },
+                        { name: "ビリア株式会社", amount: "¥36,960", status: "入金済", sc: "bg-emerald-100 text-emerald-700" },
+                        { name: "Z社コンサルティング", amount: "¥11,000", status: "入金済", sc: "bg-emerald-100 text-emerald-700" },
+                      ].map((row) => (
+                        <div key={row.name} className="flex items-center justify-between">
+                          <span className="text-[7px] text-slate-600 truncate max-w-[100px]">{row.name}</span>
+                          <div className="flex items-center gap-1">
+                            <span className="text-[7px] font-bold text-slate-700">{row.amount}</span>
+                            <span className={`text-[6px] px-1 py-0.5 rounded-full ${row.sc}`}>{row.status}</span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {/* PCの土台 */}
+              <div className="h-3 bg-slate-600 rounded-b-sm mx-6" />
+              <div className="h-1.5 bg-slate-500 rounded-b-xl mx-2" />
+            </div>
           </div>
         </div>
       </section>
