@@ -27,6 +27,143 @@ import {
   Star,
 } from "lucide-react";
 
+/* ── mockups ─────────────────────────────────────────────── */
+
+function DashboardMockup() {
+  return (
+    <div className="rounded-xl border border-slate-200 bg-white shadow-lg p-4 w-full text-xs">
+      <div className="flex items-center gap-2 mb-3">
+        <div className="w-2 h-2 rounded-full bg-red-400" />
+        <div className="w-2 h-2 rounded-full bg-yellow-400" />
+        <div className="w-2 h-2 rounded-full bg-green-400" />
+        <span className="ml-2 text-slate-400 text-[10px]">Billia ダッシュボード</span>
+      </div>
+      <div className="grid grid-cols-3 gap-2 mb-3">
+        {[
+          { label: "今月売上", value: "¥1,240,000", color: "text-blue-600" },
+          { label: "未回収", value: "¥320,000", color: "text-amber-600" },
+          { label: "経費合計", value: "¥89,500", color: "text-slate-600" },
+        ].map((k) => (
+          <div key={k.label} className="rounded-lg border border-slate-100 bg-slate-50 p-2">
+            <p className="text-[9px] text-slate-400">{k.label}</p>
+            <p className={`font-bold text-[11px] ${k.color}`}>{k.value}</p>
+          </div>
+        ))}
+      </div>
+      <div className="space-y-1.5">
+        {["山田商事", "株式会社ABC", "田中工務店"].map((name, i) => (
+          <div key={name} className="flex items-center justify-between rounded-lg border border-slate-100 px-2 py-1.5">
+            <span className="text-slate-600">{name}</span>
+            <span className={`text-[10px] px-1.5 py-0.5 rounded-full font-medium ${
+              i === 0 ? "bg-green-100 text-green-700" : i === 1 ? "bg-amber-100 text-amber-700" : "bg-blue-100 text-blue-700"
+            }`}>
+              {i === 0 ? "入金済" : i === 1 ? "未回収" : "送付済"}
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function InvoiceListMockup() {
+  return (
+    <div className="rounded-xl border border-slate-200 bg-white shadow-lg p-4 w-full text-xs">
+      <div className="flex items-center justify-between mb-3">
+        <span className="font-semibold text-slate-700 text-[11px]">請求書一覧</span>
+        <div className="flex gap-1">
+          <span className="bg-blue-100 text-blue-700 text-[9px] px-2 py-0.5 rounded-full">すべて</span>
+          <span className="bg-slate-100 text-slate-500 text-[9px] px-2 py-0.5 rounded-full">未回収</span>
+        </div>
+      </div>
+      <div className="space-y-1.5">
+        {[
+          { name: "株式会社山田商事", amount: "¥240,000", status: "入金済", color: "bg-emerald-100 text-emerald-700" },
+          { name: "田中製作所", amount: "¥180,000", status: "未回収", color: "bg-amber-100 text-amber-700" },
+          { name: "鈴木コンサルティング", amount: "¥95,000", status: "送付済", color: "bg-blue-100 text-blue-700" },
+        ].map((item) => (
+          <div key={item.name} className="flex items-center justify-between rounded-lg border border-slate-100 px-2 py-1.5">
+            <div>
+              <p className="text-slate-700 text-[10px]">{item.name}</p>
+              <p className="text-slate-400 text-[9px]">2025-12-15</p>
+            </div>
+            <div className="text-right">
+              <p className="font-bold text-slate-800 text-[11px]">{item.amount}</p>
+              <span className={`text-[9px] px-1.5 py-0.5 rounded-full font-medium ${item.color}`}>{item.status}</span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function MemoMockup() {
+  return (
+    <div className="rounded-xl border border-slate-200 bg-white shadow-lg p-4 w-full text-xs">
+      <div className="flex items-center gap-2 mb-3">
+        <Sparkles className="w-3.5 h-3.5 text-purple-500" />
+        <span className="font-semibold text-slate-700 text-[11px]">AIメモ読み取り</span>
+      </div>
+      <div className="rounded-lg bg-slate-50 border border-slate-200 p-2 mb-2">
+        <p className="text-slate-500 text-[10px] italic">"山田商事に12月分 24万 請求、来月15日払い"</p>
+      </div>
+      <div className="flex items-center gap-1 text-[9px] text-slate-400 mb-2">
+        <div className="w-3 h-3 rounded-full bg-purple-100 flex items-center justify-center">
+          <div className="w-1.5 h-1.5 rounded-full bg-purple-500 animate-pulse" />
+        </div>
+        AIが解析中...
+      </div>
+      <div className="rounded-lg border border-purple-200 bg-purple-50 p-2 space-y-1">
+        <div className="flex justify-between">
+          <span className="text-slate-500 text-[9px]">取引先</span>
+          <span className="font-medium text-slate-700 text-[9px]">山田商事</span>
+        </div>
+        <div className="flex justify-between">
+          <span className="text-slate-500 text-[9px]">金額</span>
+          <span className="font-medium text-slate-700 text-[9px]">¥240,000</span>
+        </div>
+        <div className="flex justify-between">
+          <span className="text-slate-500 text-[9px]">支払期限</span>
+          <span className="font-medium text-slate-700 text-[9px]">翌月15日</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function FinanceMockup() {
+  return (
+    <div className="rounded-xl border border-slate-200 bg-white shadow-lg p-4 w-full text-xs">
+      <div className="flex items-center gap-2 mb-3">
+        <TrendingUp className="w-3.5 h-3.5 text-blue-500" />
+        <span className="font-semibold text-slate-700 text-[11px]">財務サマリー</span>
+      </div>
+      <div className="space-y-2">
+        {[
+          { month: "10月", amount: 820000, bar: "65%" },
+          { month: "11月", amount: 1040000, bar: "82%" },
+          { month: "12月", amount: 1280000, bar: "100%" },
+        ].map((item) => (
+          <div key={item.month} className="flex items-center gap-2">
+            <span className="text-slate-400 text-[9px] w-5">{item.month}</span>
+            <div className="flex-1 h-2.5 rounded-full bg-slate-100 overflow-hidden">
+              <div className="h-full rounded-full bg-gradient-to-r from-blue-500 to-cyan-400" style={{ width: item.bar }} />
+            </div>
+            <span className="text-slate-700 font-medium text-[9px] w-14 text-right">
+              ¥{(item.amount / 10000).toFixed(0)}万
+            </span>
+          </div>
+        ))}
+      </div>
+      <div className="mt-3 pt-2.5 border-t border-slate-100 flex justify-between">
+        <span className="text-slate-400 text-[9px]">未回収率</span>
+        <span className="font-bold text-amber-600 text-[11px]">12.4%</span>
+      </div>
+    </div>
+  );
+}
+
 /* ── coming soon badge ───────────────────────────────────── */
 
 function ComingSoonBadge({ size = "md" }: { size?: "sm" | "md" | "lg" }) {
@@ -104,77 +241,39 @@ export default function LandingPage() {
       </header>
 
       {/* ── hero ── */}
-      <section className="relative overflow-hidden pt-12 pb-20 md:pt-20 md:pb-28">
-        {/* 背景: ティールの波（左下）+ 右上のぼかし */}
+      <section className="relative overflow-hidden pt-16 pb-24 md:pt-24 md:pb-32">
         <div className="pointer-events-none absolute inset-0 -z-10" style={{
           background: `
-            radial-gradient(ellipse 70% 50% at 85% 5%, rgba(20,184,166,0.15) 0%, transparent 50%),
-            radial-gradient(ellipse 80% 60% at 20% 10%, rgba(96,165,250,0.12) 0%, transparent 55%),
+            radial-gradient(ellipse 80% 60% at 20% 10%, rgba(96,165,250,0.18) 0%, transparent 60%),
+            radial-gradient(ellipse 60% 50% at 80% 20%, rgba(99,102,241,0.14) 0%, transparent 55%),
+            radial-gradient(ellipse 70% 60% at 50% 100%, rgba(34,211,238,0.12) 0%, transparent 50%),
             #ffffff
           `,
         }} />
-        <div className="pointer-events-none absolute bottom-0 left-0 w-full h-48 md:h-64 -z-10 overflow-hidden">
-          <div className="absolute bottom-0 left-0 w-[120%] h-full rounded-t-[100%] bg-gradient-to-b from-teal-100/80 to-transparent" style={{ transform: "rotate(-3deg) translateX(-5%)" }} />
-        </div>
-
         <div className="mx-auto max-w-6xl px-5 md:px-8">
-          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-10 lg:gap-12">
-            {/* 左: コピー + CTA */}
-            <div className="lg:max-w-[50%] text-center lg:text-left">
-              <div className="inline-flex items-center gap-2 rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-700 mb-4">
-                <Sparkles className="w-3.5 h-3.5" />
-                小さなチームのための AI バックオフィスOS
-              </div>
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[2.75rem] font-extrabold tracking-tight leading-tight text-slate-900 mb-5">
-                AIで、バックオフィスを
-                <br />
-                <span className="bg-clip-text text-transparent" style={{ backgroundImage: "linear-gradient(135deg,#2563eb 0%,#22c1c3 45%,#6366f1 100%)" }}>
-                  もっとスマートに。
-                </span>
-                <span className="block mt-1 text-[1.05rem] md:text-[1.15rem] font-semibold text-slate-800">「Billia」</span>
-              </h1>
-              <p className="text-base md:text-lg text-slate-600 leading-relaxed mb-4">
-                請求・経費・入金消込・定期請求・財務サマリーまで、バックオフィスの面倒ごとをまるっと自動化。
-              </p>
-              <div className="flex flex-wrap gap-2 justify-center lg:justify-start mb-6">
-                {["請求書・見積書","経費・領収書","入金消込","財務サマリー"].map((chip) => (
-                  <span key={chip} className="inline-flex items-center rounded-full bg-slate-100 px-3 py-1 text-[11px] font-medium text-slate-600">
-                    {chip}
-                  </span>
-                ))}
-              </div>
-              <div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start">
-                <a
-                  href="/sign-up"
-                  className="inline-flex items-center justify-center rounded-full bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-3.5 text-base transition-colors shadow-md"
-                >
-                  無料で始める
-                </a>
-                <a
-                  href="#features"
-                  className="inline-flex items-center justify-center rounded-full border-2 border-blue-600 text-blue-600 hover:bg-blue-50 font-semibold px-8 py-3.5 text-base transition-colors"
-                >
-                  詳細を見る
-                </a>
-              </div>
-              <p className="mt-4 text-xs md:text-sm text-slate-400">
-                現在クローズドβ準備中。先行ユーザー向けにリリース情報をお届けします。
-              </p>
+          <div className="text-center max-w-3xl mx-auto mb-12 md:mb-16">
+            <div className="inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50 px-4 py-1.5 text-xs font-medium text-blue-700 mb-6">
+              <Sparkles className="w-3.5 h-3.5" />
+              AIで請求業務を自動化
             </div>
-
-            {/* 右: 素材画像（MacBook + iPhone + 携帯でもできる） */}
-            <div className="relative flex-shrink-0 flex justify-center lg:justify-end">
-              <div className="relative w-full max-w-md lg:max-w-lg">
-                <Image
-                  src="/landing/hero.png"
-                  alt="Billia - MacBookとスマホで使えるバックオフィス管理"
-                  width={800}
-                  height={600}
-                  className="w-full h-auto object-contain drop-shadow-2xl"
-                  priority
-                />
-              </div>
-            </div>
+            <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight leading-tight mb-5">
+              AIで、請求管理を
+              <br />
+              <span className="bg-clip-text text-transparent" style={{ backgroundImage: "linear-gradient(135deg, #2563eb 0%, #06b6d4 50%, #6366f1 100%)" }}>
+                もっとラクに。
+              </span>
+            </h1>
+            <p className="text-base md:text-lg text-slate-500 leading-relaxed mb-8 max-w-xl mx-auto">
+              請求書・見積書・経費・支払管理をひとつに。
+              AIがメモや書類を読み取り、入力の手間を限りなくゼロへ。
+            </p>
+            <ComingSoonBadge size="lg" />
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl mx-auto md:max-w-none md:grid-cols-4">
+            <DashboardMockup />
+            <InvoiceListMockup />
+            <MemoMockup />
+            <FinanceMockup />
           </div>
         </div>
       </section>
@@ -204,7 +303,7 @@ export default function LandingPage() {
           <div className="text-center mb-12">
             <p className="billia-label mb-2">機能一覧</p>
             <h2 className="text-2xl md:text-4xl font-extrabold tracking-tight text-slate-900">
-              バックオフィスに必要な機能が<br className="md:hidden" />これ一つで揃う
+              請求業務に必要な機能が<br className="md:hidden" />すべて揃う
             </h2>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -217,28 +316,6 @@ export default function LandingPage() {
                 <p className="text-xs text-slate-500 leading-relaxed">{f.desc}</p>
               </div>
             ))}
-          </div>
-
-          {/* 実際の画面（素材画像） */}
-          <div className="mt-16">
-            <p className="text-center text-sm font-medium text-slate-500 mb-6">実際の画面</p>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
-              {[
-                { src: "/landing/dashboard-desktop.png", label: "ダッシュボード" },
-                { src: "/landing/invoice-list.png", label: "請求書一覧" },
-                { src: "/landing/memo-create.png", label: "メモから作成" },
-                { src: "/landing/expense.png", label: "経費管理" },
-                { src: "/landing/payment.png", label: "支払管理" },
-                { src: "/landing/finance-desktop.png", label: "財務サマリー" },
-              ].map((item) => (
-                <div key={item.label} className="rounded-xl border border-slate-200 bg-white overflow-hidden shadow-md hover:shadow-lg transition-shadow">
-                  <div className="aspect-[4/3] relative bg-slate-50">
-                    <Image src={item.src} alt={item.label} fill className="object-contain p-2" sizes="(max-width:768px) 50vw, 33vw" />
-                  </div>
-                  <p className="text-center text-xs font-medium text-slate-600 py-2">{item.label}</p>
-                </div>
-              ))}
-            </div>
           </div>
         </div>
       </section>
@@ -254,48 +331,27 @@ export default function LandingPage() {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-5">
             {[
-              {
-                icon: Briefcase,
-                title: "フリーランス",
-                desc: "クライアントへの請求書発行から入金確認まで、ひとりでも迷わず管理。",
-                tags: ["請求書作成", "入金確認", "経費管理"],
-                color: "text-blue-500 bg-blue-50 border-blue-100",
-              },
-              {
-                icon: Users,
-                title: "小規模事業者",
-                desc: "複数取引先の請求・支払・経費を一元管理。経理の手間を大幅削減。",
-                tags: ["複数取引先", "支払管理", "財務サマリー"],
-                color: "text-indigo-500 bg-indigo-50 border-indigo-100",
-              },
-              {
-                icon: Building2,
-                title: "不動産オーナー",
-                desc: "入居者への家賃請求・入金消込を自動化。滞納も素早く把握。",
-                tags: ["定期請求", "入金消込", "テナント管理"],
-                color: "text-violet-500 bg-violet-50 border-violet-100",
-              },
-              {
-                icon: Home,
-                title: "副業・個人事業主",
-                desc: "確定申告に必要な経費・売上データをかんたんに整理・エクスポート。",
-                tags: ["経費記録", "CSVエクスポート", "インボイス対応"],
-                color: "text-emerald-500 bg-emerald-50 border-emerald-100",
-              },
-            ].map((t) => (
-              <div key={t.title} className={`rounded-2xl border bg-white p-6 hover:shadow-md transition-shadow ${t.color.split(" ")[2]}`}>
-                <div className={`inline-flex rounded-xl p-3 mb-4 ${t.color.split(" ")[0]} ${t.color.split(" ")[1]}`}>
-                  <t.icon className="w-5 h-5" />
+              { icon: Briefcase, title: "フリーランス", desc: "クライアントへの請求書発行から入金確認まで、ひとりでも迷わず管理。", tags: ["請求書作成", "入金確認", "経費管理"], color: "text-blue-500 bg-blue-50 border-blue-100" },
+              { icon: Users, title: "小規模事業者", desc: "複数取引先の請求・支払・経費を一元管理。経理の手間を大幅削減。", tags: ["複数取引先", "支払管理", "財務サマリー"], color: "text-indigo-500 bg-indigo-50 border-indigo-100" },
+              { icon: Building2, title: "不動産オーナー", desc: "入居者への家賃請求・入金消込を自動化。滞納も素早く把握。", tags: ["定期請求", "入金消込", "テナント管理"], color: "text-violet-500 bg-violet-50 border-violet-100" },
+              { icon: Home, title: "副業・個人事業主", desc: "確定申告に必要な経費・売上データをかんたんに整理・エクスポート。", tags: ["経費記録", "CSVエクスポート", "インボイス対応"], color: "text-emerald-500 bg-emerald-50 border-emerald-100" },
+            ].map((t) => {
+              const [iconText, iconBg, borderColor] = t.color.split(" ");
+              return (
+                <div key={t.title} className={`rounded-2xl border bg-white p-6 hover:shadow-md transition-shadow ${borderColor}`}>
+                  <div className={`inline-flex rounded-xl p-3 mb-4 ${iconText} ${iconBg}`}>
+                    <t.icon className="w-5 h-5" />
+                  </div>
+                  <h3 className="font-bold text-slate-900 mb-2">{t.title}</h3>
+                  <p className="text-sm text-slate-500 leading-relaxed mb-4">{t.desc}</p>
+                  <div className="flex flex-wrap gap-1.5">
+                    {t.tags.map((tag) => (
+                      <span key={tag} className={`text-[10px] font-medium px-2 py-0.5 rounded-full ${iconBg} ${iconText}`}>{tag}</span>
+                    ))}
+                  </div>
                 </div>
-                <h3 className="font-bold text-slate-900 mb-2">{t.title}</h3>
-                <p className="text-sm text-slate-500 leading-relaxed mb-4">{t.desc}</p>
-                <div className="flex flex-wrap gap-1.5">
-                  {t.tags.map((tag) => (
-                    <span key={tag} className={`text-[10px] font-medium px-2 py-0.5 rounded-full ${t.color.split(" ")[1]} ${t.color.split(" ")[0]}`}>{tag}</span>
-                  ))}
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>
@@ -314,35 +370,35 @@ export default function LandingPage() {
             </p>
           </div>
           <div className="grid md:grid-cols-3 gap-6">
-            {[
-              {
-                icon: Brain, title: "メモから自動生成", color: "bg-purple-100 text-purple-600 border-purple-100 from-purple-50",
-                desc: "日本語の自然なメモを入力するだけで、請求書・見積書・経費を自動生成。取引先・金額・期日をAIが読み取ります。",
-                extra: <div className="rounded-xl border border-slate-200 overflow-hidden bg-white shadow-sm"><Image src="/landing/memo-create.png" alt="メモから請求書を作成" width={400} height={280} className="w-full h-auto object-cover" /></div>,
-              },
-              {
-                icon: Upload, title: "書類をそのままインポート", color: "bg-blue-100 text-blue-600 border-blue-100 from-blue-50",
-                desc: "請求書・見積書・領収書のPDFや画像をアップロードすると、OCRで取引先・金額・日付・明細を自動抽出してデータ登録。",
-                extra: <div className="flex flex-wrap gap-1.5">{["PDF","JPEG","PNG","HEIC","WebP"].map((f)=><span key={f} className="text-[10px] font-medium bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full">{f}</span>)}</div>,
-              },
-              {
-                icon: BarChart3, title: "経費を自動分類", color: "bg-emerald-100 text-emerald-600 border-emerald-100 from-emerald-50",
-                desc: "領収書のスキャンやメモ入力時に、通信費・外注費・旅費交通費などの経費カテゴリをAIが自動で判定して分類します。",
-                extra: <div className="rounded-xl border border-slate-200 overflow-hidden bg-white shadow-sm"><Image src="/landing/expense.png" alt="経費管理画面" width={400} height={280} className="w-full h-auto object-cover" /></div>,
-              },
-            ].map((card) => {
-              const [iconBg, iconText, borderColor, fromColor] = card.color.split(" ");
-              return (
-                <div key={card.title} className={`rounded-2xl border ${borderColor} bg-gradient-to-b ${fromColor} to-white p-6`}>
-                  <div className={`inline-flex rounded-xl ${iconBg} p-2.5 mb-4`}>
-                    <card.icon className={`w-5 h-5 ${iconText}`} />
-                  </div>
-                  <h3 className="font-bold text-slate-900 mb-2">{card.title}</h3>
-                  <p className="text-sm text-slate-500 leading-relaxed mb-4">{card.desc}</p>
-                  {card.extra}
-                </div>
-              );
-            })}
+            <div className="rounded-2xl border border-purple-100 bg-gradient-to-b from-purple-50 to-white p-6">
+              <div className="inline-flex rounded-xl bg-purple-100 p-2.5 mb-4"><Brain className="w-5 h-5 text-purple-600" /></div>
+              <h3 className="font-bold text-slate-900 mb-2">メモから自動生成</h3>
+              <p className="text-sm text-slate-500 leading-relaxed mb-4">日本語の自然なメモを入力するだけで、請求書・見積書・経費を自動生成。取引先・金額・期日をAIが読み取ります。</p>
+              <div className="rounded-lg bg-white border border-purple-100 px-3 py-2">
+                <p className="text-[11px] text-slate-400 italic mb-1">入力例</p>
+                <p className="text-xs text-slate-600">"山田商事に12月分 24万 請求、来月15日払い"</p>
+              </div>
+            </div>
+            <div className="rounded-2xl border border-blue-100 bg-gradient-to-b from-blue-50 to-white p-6">
+              <div className="inline-flex rounded-xl bg-blue-100 p-2.5 mb-4"><Upload className="w-5 h-5 text-blue-600" /></div>
+              <h3 className="font-bold text-slate-900 mb-2">書類をそのままインポート</h3>
+              <p className="text-sm text-slate-500 leading-relaxed mb-4">請求書・見積書・領収書のPDFや画像をアップロードすると、OCRで取引先・金額・日付・明細を自動抽出してデータ登録。</p>
+              <div className="flex flex-wrap gap-1.5">
+                {["PDF","JPEG","PNG","HEIC","WebP"].map((f) => (
+                  <span key={f} className="text-[10px] font-medium bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full">{f}</span>
+                ))}
+              </div>
+            </div>
+            <div className="rounded-2xl border border-emerald-100 bg-gradient-to-b from-emerald-50 to-white p-6">
+              <div className="inline-flex rounded-xl bg-emerald-100 p-2.5 mb-4"><BarChart3 className="w-5 h-5 text-emerald-600" /></div>
+              <h3 className="font-bold text-slate-900 mb-2">経費を自動分類</h3>
+              <p className="text-sm text-slate-500 leading-relaxed mb-4">領収書のスキャンやメモ入力時に、通信費・外注費・旅費交通費などの経費カテゴリをAIが自動で判定して分類します。</p>
+              <div className="flex flex-wrap gap-1.5">
+                {["通信費","外注費","旅費交通費","消耗品"].map((c) => (
+                  <span key={c} className="text-[10px] font-medium bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full">{c}</span>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -352,12 +408,9 @@ export default function LandingPage() {
         <div className="mx-auto max-w-5xl px-5 md:px-8">
           <div className="text-center mb-12">
             <p className="billia-label mb-2">Before / After</p>
-            <h2 className="text-2xl md:text-4xl font-extrabold tracking-tight">
-              Billiaで、こう変わる
-            </h2>
+            <h2 className="text-2xl md:text-4xl font-extrabold tracking-tight">Billiaで、こう変わる</h2>
           </div>
           <div className="grid md:grid-cols-2 gap-6">
-            {/* Before */}
             <div className="rounded-2xl border border-red-100 bg-red-50/50 p-6">
               <div className="flex items-center gap-2 mb-6">
                 <div className="w-6 h-6 rounded-full bg-red-100 flex items-center justify-center">
@@ -375,13 +428,11 @@ export default function LandingPage() {
                   "確定申告前に経費データを慌てて集計",
                 ].map((item) => (
                   <li key={item} className="flex items-start gap-2.5 text-sm text-slate-600">
-                    <X className="w-4 h-4 text-red-400 shrink-0 mt-0.5" />
-                    {item}
+                    <X className="w-4 h-4 text-red-400 shrink-0 mt-0.5" />{item}
                   </li>
                 ))}
               </ul>
             </div>
-            {/* After */}
             <div className="rounded-2xl border border-emerald-100 bg-emerald-50/50 p-6">
               <div className="flex items-center gap-2 mb-6">
                 <div className="w-6 h-6 rounded-full bg-emerald-100 flex items-center justify-center">
@@ -399,8 +450,7 @@ export default function LandingPage() {
                   "売上・経費データをCSVでかんたんエクスポート",
                 ].map((item) => (
                   <li key={item} className="flex items-start gap-2.5 text-sm text-slate-700">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
-                    {item}
+                    <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />{item}
                   </li>
                 ))}
               </ul>
@@ -413,24 +463,18 @@ export default function LandingPage() {
       <section className="py-20 md:py-28">
         <div className="mx-auto max-w-6xl px-5 md:px-8">
           <div className="grid md:grid-cols-2 gap-10 items-center">
-            <div className="rounded-xl border border-slate-200 overflow-hidden bg-white shadow-lg md:order-1">
-              <Image src="/landing/finance-desktop.png" alt="財務サマリー画面" width={600} height={400} className="w-full h-auto object-contain" />
-            </div>
+            <div className="max-w-xs mx-auto md:max-w-none md:order-1"><FinanceMockup /></div>
             <div className="md:order-2">
               <p className="billia-label mb-3">財務サマリー</p>
               <h2 className="text-2xl md:text-4xl font-extrabold tracking-tight mb-5">
                 売上・経費・未回収を<br />
                 <span className="text-cyan-600">ひとつの画面で確認</span>
               </h2>
-              <p className="text-slate-500 leading-relaxed mb-6">
-                今月の請求額・未入金・経費をダッシュボードにまとめて表示。
-                払い忘れや未回収をすぐに把握できます。
-              </p>
+              <p className="text-slate-500 leading-relaxed mb-6">今月の請求額・未入金・経費をダッシュボードにまとめて表示。払い忘れや未回収をすぐに把握できます。</p>
               <ul className="space-y-3">
-                {["今月の請求額・未入金をひと目で確認", "経費の月次合計を自動集計", "支払期限が近い請求書をすぐ把握"].map((item) => (
+                {["今月の請求額・未入金をひと目で確認","経費の月次合計を自動集計","支払期限が近い請求書をすぐ把握"].map((item) => (
                   <li key={item} className="flex items-start gap-2.5 text-sm text-slate-700">
-                    <CheckCircle2 className="w-4 h-4 text-cyan-500 shrink-0 mt-0.5" />
-                    {item}
+                    <CheckCircle2 className="w-4 h-4 text-cyan-500 shrink-0 mt-0.5" />{item}
                   </li>
                 ))}
               </ul>
@@ -444,28 +488,81 @@ export default function LandingPage() {
         <div className="mx-auto max-w-6xl px-5 md:px-8">
           <div className="grid md:grid-cols-2 gap-10 md:gap-16 items-center">
             <div className="flex justify-center gap-4 md:gap-6">
-              <div className="w-[140px] md:w-[180px] rounded-[2rem] border-4 border-slate-200 bg-slate-100 shadow-2xl overflow-hidden shrink-0">
-                <Image src="/landing/mobile-dashboard.png" alt="スマホダッシュボード" width={180} height={360} className="w-full h-auto object-cover" />
+              <div className="w-[140px] md:w-[160px] rounded-[2rem] border-4 border-slate-200 bg-white shadow-2xl overflow-hidden shrink-0">
+                <div className="bg-slate-100 h-5 flex items-center justify-center">
+                  <div className="w-10 h-1.5 rounded-full bg-slate-300" />
+                </div>
+                <div className="p-2.5 space-y-2">
+                  <p className="text-[9px] font-semibold text-slate-400">2026年3月</p>
+                  <p className="text-[11px] font-bold text-slate-800">ダッシュボード</p>
+                  <div className="rounded-lg bg-red-50 border border-red-100 px-2 py-1.5 flex items-center gap-1.5">
+                    <div className="w-2 h-2 rounded-full bg-red-400 shrink-0" />
+                    <div>
+                      <p className="text-[8px] font-semibold text-red-600">未入金があります</p>
+                      <p className="text-[7px] text-red-400">¥447,700</p>
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-2 gap-1">
+                    {[
+                      { label: "今月の請求額", value: "¥78,100", color: "text-slate-800" },
+                      { label: "未入金", value: "¥447,700", color: "text-red-600" },
+                      { label: "今月の経費", value: "¥11,500", color: "text-slate-800" },
+                      { label: "前月比", value: "+0.0%", color: "text-emerald-600" },
+                    ].map((k) => (
+                      <div key={k.label} className="rounded-md bg-slate-50 border border-slate-100 px-1.5 py-1">
+                        <p className="text-[7px] text-slate-400">{k.label}</p>
+                        <p className={`text-[9px] font-bold ${k.color}`}>{k.value}</p>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="rounded-md bg-slate-50 border border-slate-100 px-1.5 py-1.5">
+                    <p className="text-[7px] text-slate-400 mb-1">クイックアクション</p>
+                    <div className="grid grid-cols-2 gap-1">
+                      {["請求書を作成","見積書を作成","経費を記録","入金消込"].map((a) => (
+                        <div key={a} className="rounded bg-white border border-slate-100 px-1 py-1 text-center">
+                          <p className="text-[7px] text-slate-600">{a}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
               </div>
-              <div className="w-[140px] md:w-[180px] rounded-[2rem] border-4 border-slate-200 bg-slate-100 shadow-2xl overflow-hidden shrink-0">
-                <Image src="/landing/mobile-finance.png" alt="スマホ財務サマリー" width={180} height={360} className="w-full h-auto object-cover" />
+              <div className="w-[140px] md:w-[160px] rounded-[2rem] border-4 border-slate-200 bg-white shadow-2xl overflow-hidden shrink-0">
+                <div className="bg-slate-100 h-5 flex items-center justify-center">
+                  <div className="w-10 h-1.5 rounded-full bg-slate-300" />
+                </div>
+                <div className="p-2.5 space-y-2">
+                  <p className="text-[9px] font-semibold text-slate-400">請求書</p>
+                  <p className="text-[11px] font-bold text-slate-800">請求書一覧</p>
+                  <div className="space-y-1.5">
+                    {[
+                      { name: "サンプル商事", amount: "¥78,100", status: "未払い", sc: "bg-amber-100 text-amber-700" },
+                      { name: "株式会社ビリア", amount: "¥11,000", status: "支払済", sc: "bg-emerald-100 text-emerald-700" },
+                      { name: "佐藤健二", amount: "¥11,000", status: "支払済", sc: "bg-emerald-100 text-emerald-700" },
+                    ].map((item) => (
+                      <div key={item.name} className="rounded-md border border-slate-100 px-1.5 py-1">
+                        <div className="flex items-center justify-between">
+                          <p className="text-[8px] font-medium text-blue-600 truncate max-w-[70px]">INV-2026</p>
+                          <span className={`text-[7px] px-1 py-0.5 rounded-full font-medium ${item.sc}`}>{item.status}</span>
+                        </div>
+                        <p className="text-[8px] text-slate-700 truncate">{item.name}</p>
+                        <p className="text-[9px] font-bold text-slate-800">{item.amount}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </div>
             </div>
             <div>
               <p className="billia-label mb-3">モバイル対応</p>
               <h2 className="text-2xl md:text-4xl font-extrabold tracking-tight mb-5">
-                スマホでも、<br />
-                <span className="text-blue-600">サクサク動く</span>
+                スマホでも、<br /><span className="text-blue-600">サクサク動く</span>
               </h2>
-              <p className="text-slate-500 leading-relaxed mb-6">
-                PCだけではありません。Billiaはスマートフォンにも完全対応。
-                外出先でも移動中でも、急な請求書の発行や入金確認がその場ですぐにできます。
-              </p>
+              <p className="text-slate-500 leading-relaxed mb-6">PCだけではありません。Billiaはスマートフォンにも完全対応。外出先でも移動中でも、急な請求書の発行や入金確認がその場ですぐにできます。</p>
               <ul className="space-y-3">
-                {["スマートフォンに最適化されたUI", "外出先からでも請求書を即発行", "入金確認・ステータス更新もモバイルから"].map((item) => (
+                {["スマートフォンに最適化されたUI","外出先からでも請求書を即発行","入金確認・ステータス更新もモバイルから"].map((item) => (
                   <li key={item} className="flex items-start gap-2.5 text-sm text-slate-700">
-                    <CheckCircle2 className="w-4 h-4 text-blue-500 shrink-0 mt-0.5" />
-                    {item}
+                    <CheckCircle2 className="w-4 h-4 text-blue-500 shrink-0 mt-0.5" />{item}
                   </li>
                 ))}
               </ul>
@@ -497,8 +594,7 @@ export default function LandingPage() {
                 <ul className="space-y-3 mb-8">
                   {["請求書・見積書の作成・管理（無制限）","受取請求書・支払管理","経費管理・領収書スキャン","AIメモ入力・書類OCR読み取り","財務サマリー・グラフ表示","複数ファイル一括インポート"].map((item) => (
                     <li key={item} className="flex items-start gap-2.5 text-sm text-blue-50">
-                      <CheckCircle2 className="w-4 h-4 text-cyan-300 shrink-0 mt-0.5" />
-                      {item}
+                      <CheckCircle2 className="w-4 h-4 text-cyan-300 shrink-0 mt-0.5" />{item}
                     </li>
                   ))}
                 </ul>
@@ -519,15 +615,10 @@ export default function LandingPage() {
               { step: "01", icon: ShieldCheck, title: "アカウント作成", desc: "メールアドレスだけで登録。すぐに使い始められます。", color: "text-blue-500 bg-blue-50" },
               { step: "02", icon: Upload, title: "書類をインポート", desc: "請求書・見積書・領収書をアップロード。AIが自動でデータを抽出します。", color: "text-purple-500 bg-purple-50" },
               { step: "03", icon: Zap, title: "業務を自動化", desc: "ステータス管理・入金確認・経費登録がすべてひとつの場所で完結。", color: "text-cyan-500 bg-cyan-50" },
-            ].map((s, i) => (
-              <div key={s.step} className="flex flex-col items-center text-center relative">
-                {i < 2 && (
-                  <div className="hidden md:block absolute top-8 left-[calc(50%+2rem)] w-[calc(100%-4rem)] h-px border-t-2 border-dashed border-slate-200" />
-                )}
+            ].map((s) => (
+              <div key={s.step} className="flex flex-col items-center text-center">
                 <div className="text-4xl font-black text-slate-100 mb-3">{s.step}</div>
-                <div className={`inline-flex rounded-2xl p-3 mb-4 ${s.color}`}>
-                  <s.icon className="w-6 h-6" />
-                </div>
+                <div className={`inline-flex rounded-2xl p-3 mb-4 ${s.color}`}><s.icon className="w-6 h-6" /></div>
                 <h3 className="font-bold text-base text-slate-900 mb-2">{s.title}</h3>
                 <p className="text-sm text-slate-500 leading-relaxed">{s.desc}</p>
               </div>
@@ -572,12 +663,9 @@ export default function LandingPage() {
             <div className="pointer-events-none absolute -bottom-20 -left-20 w-80 h-80 rounded-full opacity-10" style={{ background: "radial-gradient(circle, #a5f3fc 0%, transparent 70%)" }} />
             <div className="relative">
               <div className="inline-flex items-center gap-2 rounded-full bg-white/20 px-4 py-1.5 text-xs font-semibold text-white mb-6">
-                <Star className="w-3.5 h-3.5" />
-                リリース通知を受け取る
+                <Star className="w-3.5 h-3.5" />リリース通知を受け取る
               </div>
-              <h2 className="text-2xl md:text-4xl font-extrabold text-white mb-4 tracking-tight">
-                もうすぐリリース
-              </h2>
+              <h2 className="text-2xl md:text-4xl font-extrabold text-white mb-4 tracking-tight">もうすぐリリース</h2>
               <p className="text-blue-100 mb-8 text-sm md:text-base max-w-md mx-auto leading-relaxed">
                 メールアドレスを登録しておくと、リリース時に真っ先にお知らせします。
                 月額¥1,000で、AIを活用した請求業務の自動化を体験してください。
@@ -588,24 +676,14 @@ export default function LandingPage() {
                   登録しました！リリース時にお知らせします
                 </div>
               ) : (
-                <form
-                  className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto"
-                  onSubmit={(e) => { e.preventDefault(); if (email) setSubmitted(true); }}
-                >
+                <form className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto" onSubmit={(e) => { e.preventDefault(); if (email) setSubmitted(true); }}>
                   <input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="メールアドレスを入力"
-                    required
+                    type="email" value={email} onChange={(e) => setEmail(e.target.value)}
+                    placeholder="メールアドレスを入力" required
                     className="flex-1 rounded-xl px-4 py-3 text-sm text-slate-900 bg-white placeholder-slate-400 outline-none focus:ring-2 focus:ring-white/50"
                   />
-                  <button
-                    type="submit"
-                    className="inline-flex items-center justify-center gap-2 rounded-xl bg-white px-6 py-3 text-sm font-bold text-blue-600 hover:bg-blue-50 transition-colors shrink-0"
-                  >
-                    通知を受け取る
-                    <ArrowRight className="w-4 h-4" />
+                  <button type="submit" className="inline-flex items-center justify-center gap-2 rounded-xl bg-white px-6 py-3 text-sm font-bold text-blue-600 hover:bg-blue-50 transition-colors shrink-0">
+                    通知を受け取る<ArrowRight className="w-4 h-4" />
                   </button>
                 </form>
               )}
