@@ -25,6 +25,7 @@ import {
   Briefcase,
   Home,
   Star,
+  Cloud,
 } from "lucide-react";
 
 /* ── mockups ─────────────────────────────────────────────── */
@@ -164,6 +165,76 @@ function FinanceMockup() {
   );
 }
 
+/* ヒーロー用: ノートPC + スマホのデバイスモック */
+function HeroLaptopMockup() {
+  return (
+    <div className="relative rounded-lg border-[8px] md:border-[10px] border-slate-300 bg-slate-200 shadow-2xl w-[220px] sm:w-[260px] md:w-[280px]">
+      <div className="rounded-t-sm bg-slate-800 px-2 py-1.5 flex items-center gap-1.5">
+        <div className="w-2 h-2 rounded-full bg-red-500" />
+        <div className="w-2 h-2 rounded-full bg-yellow-500" />
+        <div className="w-2 h-2 rounded-full bg-green-500" />
+      </div>
+      <div className="bg-white p-3 overflow-hidden rounded-b">
+        <div className="flex items-center gap-2 mb-3">
+          <div className="w-6 h-6 rounded bg-blue-600 flex items-center justify-center text-white text-[10px] font-bold">B</div>
+          <span className="font-semibold text-slate-800 text-xs">Billia ダッシュボード</span>
+        </div>
+        <div className="grid grid-cols-3 gap-1.5 mb-2">
+          {[
+            { label: "今月請求", value: "¥13,200", color: "text-blue-600" },
+            { label: "今月入金", value: "¥6,085", color: "text-slate-600" },
+          ].map((k) => (
+            <div key={k.label} className="rounded border border-slate-100 bg-slate-50 p-1.5">
+              <p className="text-[8px] text-slate-400">{k.label}</p>
+              <p className={`font-bold text-[9px] ${k.color}`}>{k.value}</p>
+            </div>
+          ))}
+        </div>
+        <p className="text-[8px] text-slate-400 mb-1">最近のアクティビティ</p>
+        <div className="space-y-1">
+          {["サンプル請求書", "株式会社DDOヒラオ"].map((name, i) => (
+            <div key={name} className="flex justify-between text-[8px] text-slate-600 border-b border-slate-50 pb-1">
+              <span>{name}</span>
+              <span>¥78,100</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function HeroPhoneMockup() {
+  return (
+    <div className="relative rounded-[1.5rem] md:rounded-[2rem] border-[6px] md:border-[8px] border-slate-400 bg-slate-300 shadow-xl w-[110px] md:w-[140px]">
+      <div className="bg-white rounded-[1.25rem] overflow-hidden min-h-[220px]">
+        <div className="bg-slate-800 text-white text-center py-1 text-[9px]">9:41</div>
+        <div className="p-2">
+          <div className="flex items-center justify-between mb-2">
+            <Menu className="w-4 h-4 text-slate-500" />
+            <span className="text-[8px] text-slate-500">プロジェクト: T</span>
+          </div>
+          <p className="font-semibold text-slate-800 text-[10px] mb-2">ダッシュボード</p>
+          <div className="rounded bg-red-50 border border-red-100 px-2 py-1 mb-2">
+            <p className="text-[8px] text-red-700">未入金があります</p>
+            <p className="text-[9px] font-bold text-red-700">¥447,700</p>
+          </div>
+          <div className="grid grid-cols-2 gap-1 text-[8px]">
+            <div className="rounded bg-slate-50 p-1"><span className="text-slate-400">今月請求</span><br />¥78,100</div>
+            <div className="rounded bg-slate-50 p-1"><span className="text-slate-400">売上</span><br />¥447,700</div>
+          </div>
+          <p className="text-[8px] text-slate-500 mt-2">クイックアクション</p>
+          <div className="grid grid-cols-2 gap-1 mt-1">
+            {["請求書", "見積書", "経費", "入金消込"].map((t) => (
+              <div key={t} className="rounded border border-slate-100 py-1 text-[7px] text-slate-600 text-center">{t}</div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 /* ── coming soon badge ───────────────────────────────────── */
 
 function ComingSoonBadge({ size = "md" }: { size?: "sm" | "md" | "lg" }) {
@@ -241,183 +312,64 @@ export default function LandingPage() {
       </header>
 
       {/* ── hero ── */}
-      <section className="relative overflow-hidden bg-white pt-10 pb-0">
-        {/* 右上ティール装飾 */}
-        <div className="pointer-events-none absolute -top-16 -right-16 w-64 h-64 rounded-full opacity-30" style={{ background: "radial-gradient(circle, #2dd4bf 0%, transparent 70%)" }} />
-        <div className="pointer-events-none absolute top-4 right-4 w-32 h-32 rounded-full opacity-20" style={{ background: "#0d9488" }} />
-        {/* 左下ティール装飾 */}
-        <div className="pointer-events-none absolute -bottom-8 -left-8 w-40 h-40 rounded-full opacity-20" style={{ background: "radial-gradient(circle, #2dd4bf 0%, transparent 70%)" }} />
+      <section className="relative overflow-hidden pt-12 pb-20 md:pt-20 md:pb-28">
+        {/* 背景: ティールの波（左下）+ 右上のぼかし */}
+        <div className="pointer-events-none absolute inset-0 -z-10" style={{
+          background: `
+            radial-gradient(ellipse 70% 50% at 85% 5%, rgba(20,184,166,0.15) 0%, transparent 50%),
+            radial-gradient(ellipse 80% 60% at 20% 10%, rgba(96,165,250,0.12) 0%, transparent 55%),
+            #ffffff
+          `,
+        }} />
+        <div className="pointer-events-none absolute bottom-0 left-0 w-full h-48 md:h-64 -z-10 overflow-hidden">
+          <div className="absolute bottom-0 left-0 w-[120%] h-full rounded-t-[100%] bg-gradient-to-b from-teal-100/80 to-transparent" style={{ transform: "rotate(-3deg) translateX(-5%)" }} />
+        </div>
 
-        <div className="mx-auto max-w-5xl px-5 md:px-8">
-          {/* テキスト + CTA */}
-          <div className="text-center pt-6 pb-10 md:pt-10 md:pb-14">
-            <h1 className="text-3xl md:text-5xl font-extrabold tracking-tight leading-snug text-slate-900 mb-4">
-              AIで、バックオフィスを<br />もっとスマートに。<br />
-              <span className="text-[#0d9488]">「Billia」</span>
-            </h1>
-            <p className="text-sm md:text-base text-slate-500 leading-relaxed mb-8 max-w-lg mx-auto">
-              請求書、見積書、経費、AIメモ入力、入金消込、<br className="hidden md:block" />
-              定期請求、財務サマリー。これ一つで解決。
-            </p>
-            <div className="flex items-center justify-center gap-3 flex-wrap">
-              <a href="#pricing" className="inline-flex items-center gap-2 rounded-xl px-7 py-3 text-sm font-bold text-white shadow-md transition-opacity hover:opacity-90"
-                style={{ background: "linear-gradient(135deg, #0d9488 0%, #06b6d4 100%)" }}>
-                無料で始める
-                <ArrowRight className="w-4 h-4" />
-              </a>
-              <a href="#features" className="inline-flex items-center gap-2 rounded-xl border-2 border-slate-200 bg-white px-7 py-3 text-sm font-bold text-slate-700 hover:border-slate-300 transition-colors">
-                詳細を見る
-              </a>
-            </div>
-          </div>
-
-          {/* モックアップゾーン */}
-          <div className="relative flex items-end justify-center gap-4 md:gap-8 min-h-[340px] md:min-h-[420px]">
-
-            {/* フローティングアイコン */}
-            <div className="absolute top-0 left-[12%] md:left-[18%] z-20">
-              <div className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-white shadow-lg border border-slate-100 flex items-center justify-center">
-                <Upload className="w-5 h-5 md:w-6 md:h-6 text-teal-500" />
-              </div>
-            </div>
-            <div className="absolute top-6 right-[10%] md:right-[16%] z-20">
-              <div className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-white shadow-lg border border-slate-100 flex items-center justify-center">
-                <Brain className="w-5 h-5 md:w-6 md:h-6 text-purple-500" />
-              </div>
-            </div>
-            <div className="absolute top-[30%] right-[4%] md:right-[8%] z-20">
-              <div className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-white shadow-lg border border-slate-100 flex items-center justify-center">
-                <BarChart3 className="w-5 h-5 md:w-6 md:h-6 text-emerald-500" />
-              </div>
-            </div>
-            <div className="absolute top-[35%] left-[4%] md:left-[8%] z-20">
-              <div className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-white shadow-lg border border-slate-100 flex items-center justify-center">
-                <FileText className="w-5 h-5 md:w-6 md:h-6 text-blue-500" />
+        <div className="mx-auto max-w-6xl px-5 md:px-8">
+          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-10 lg:gap-12">
+            {/* 左: コピー + CTA */}
+            <div className="lg:max-w-[50%] text-center lg:text-left">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[2.75rem] font-extrabold tracking-tight leading-tight text-slate-900 mb-4">
+                AIで、バックオフィスを
+                <br />
+                もっとスマートに。「Billia」
+              </h1>
+              <p className="text-base md:text-lg text-slate-600 leading-relaxed mb-8">
+                請求書、見積書、経費、AIメモ入力、入金消込、定期請求、財務サマリー。これ一つで解決。
+              </p>
+              <div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start">
+                <a
+                  href="/sign-up"
+                  className="inline-flex items-center justify-center rounded-full bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-3.5 text-base transition-colors shadow-md"
+                >
+                  無料で始める
+                </a>
+                <a
+                  href="#features"
+                  className="inline-flex items-center justify-center rounded-full border-2 border-blue-600 text-blue-600 hover:bg-blue-50 font-semibold px-8 py-3.5 text-base transition-colors"
+                >
+                  詳細を見る
+                </a>
               </div>
             </div>
 
-            {/* スマホ */}
-            <div className="relative z-10 shrink-0" style={{ marginBottom: 0 }}>
-              {/* 携帯でもできる！ラベル */}
-              <div className="absolute -top-6 -left-2 md:-left-16 flex items-center gap-1 text-xs font-bold text-teal-600 whitespace-nowrap">
-                <span>↙</span>携帯でもできる！
-              </div>
-              <div className="w-[130px] md:w-[155px] rounded-[1.8rem] border-4 border-slate-200 bg-white shadow-2xl overflow-hidden">
-                <div className="bg-slate-100 h-5 flex items-center justify-center shrink-0">
-                  <div className="w-10 h-1.5 rounded-full bg-slate-300" />
-                </div>
-                <div className="p-2.5 space-y-2 bg-white">
-                  <p className="text-[8px] font-semibold text-slate-400">2026年3月</p>
-                  <p className="text-[10px] font-bold text-slate-800">ダッシュボード</p>
-                  <div className="rounded-lg bg-red-50 border border-red-100 px-2 py-1.5 flex items-center gap-1.5">
-                    <div className="w-1.5 h-1.5 rounded-full bg-red-400 shrink-0" />
-                    <div>
-                      <p className="text-[7px] font-semibold text-red-600">未入金があります</p>
-                      <p className="text-[6px] text-red-400">¥447,700 — 1件のテーブル</p>
-                    </div>
-                  </div>
-                  <div className="grid grid-cols-2 gap-1">
-                    {[
-                      { label: "今月の請求額", value: "¥78,100", color: "text-slate-800" },
-                      { label: "未入金", value: "¥447,700", color: "text-red-600" },
-                      { label: "今月の経費", value: "¥11,500", color: "text-slate-800" },
-                      { label: "前月比", value: "+0.0%", color: "text-emerald-600" },
-                    ].map((k) => (
-                      <div key={k.label} className="rounded-md bg-slate-50 border border-slate-100 px-1.5 py-1">
-                        <p className="text-[6px] text-slate-400">{k.label}</p>
-                        <p className={`text-[8px] font-bold ${k.color}`}>{k.value}</p>
-                      </div>
-                    ))}
-                  </div>
-                  <div className="rounded-md bg-slate-50 border border-slate-100 px-1.5 py-1.5">
-                    <p className="text-[6px] text-slate-400 mb-1">クイックアクション</p>
-                    <div className="grid grid-cols-2 gap-1">
-                      {["請求書を作成", "見積書を作成", "経費を記録", "入金消込"].map((a) => (
-                        <div key={a} className="rounded bg-white border border-slate-100 px-1 py-1 text-center">
-                          <p className="text-[6px] text-slate-600">{a}</p>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
+            {/* 右: デバイスモック + 携帯でもできる */}
+            <div className="relative flex-shrink-0 flex justify-center lg:justify-end min-h-[200px] md:min-h-[260px]">
+              {/* フロートアイコン（雲・書類・脳・グラフ） */}
+              <div className="absolute top-2 left-4 md:left-8 w-8 h-8 md:w-10 md:h-10 rounded-full bg-sky-100/90 flex items-center justify-center text-sky-600" aria-hidden><Cloud className="w-4 h-4 md:w-5 md:h-5" /></div>
+              <div className="absolute top-6 right-2 md:right-6 w-8 h-8 md:w-10 md:h-10 rounded-full bg-blue-100/90 flex items-center justify-center text-blue-600" aria-hidden><FileText className="w-4 h-4 md:w-5 md:h-5" /></div>
+              <div className="absolute bottom-12 left-2 md:left-4 w-8 h-8 md:w-10 md:h-10 rounded-full bg-violet-100/90 flex items-center justify-center text-violet-600" aria-hidden><Brain className="w-4 h-4 md:w-5 md:h-5" /></div>
+              <div className="absolute bottom-4 right-4 md:right-10 w-8 h-8 md:w-10 md:h-10 rounded-full bg-teal-100/90 flex items-center justify-center text-teal-600" aria-hidden><BarChart3 className="w-4 h-4 md:w-5 md:h-5" /></div>
+
+              <div className="relative flex items-end justify-center gap-1 md:gap-4 scale-[0.85] sm:scale-95 md:scale-100 origin-center">
+                <HeroLaptopMockup />
+                <div className="relative -ml-4 md:-ml-8 mb-0 md:mb-4">
+                  <span className="absolute -top-5 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-slate-100 px-2.5 py-1 text-[10px] md:text-xs font-medium text-slate-600 shadow-sm">
+                    携帯でもできる!
+                  </span>
+                  <HeroPhoneMockup />
                 </div>
               </div>
-            </div>
-
-            {/* ノートPC */}
-            <div className="relative z-10 shrink-0 flex-1 max-w-[460px] md:max-w-[560px]">
-              {/* 画面部分 */}
-              <div className="rounded-t-xl border-4 border-slate-700 bg-slate-700 shadow-2xl overflow-hidden">
-                {/* メニューバー */}
-                <div className="bg-slate-800 h-5 flex items-center px-3 gap-1.5">
-                  <div className="w-2 h-2 rounded-full bg-red-400" />
-                  <div className="w-2 h-2 rounded-full bg-yellow-400" />
-                  <div className="w-2 h-2 rounded-full bg-green-400" />
-                  <div className="flex-1 mx-3 h-3.5 rounded bg-slate-600 flex items-center justify-center">
-                    <span className="text-[8px] text-slate-400">billia-inc.com/dashboard</span>
-                  </div>
-                </div>
-                {/* ダッシュボード画面 */}
-                <div className="bg-slate-50 flex" style={{ minHeight: "200px" }}>
-                  {/* サイドバー */}
-                  <div className="w-[70px] md:w-[80px] bg-white border-r border-slate-100 p-2 flex flex-col gap-2 shrink-0">
-                    <div className="flex items-center gap-1 mb-2">
-                      <div className="w-4 h-4 rounded bg-teal-500 shrink-0" />
-                      <span className="text-[8px] font-bold text-slate-700 hidden md:block">Billia</span>
-                    </div>
-                    {["ダッシュボード","請求書","見積書","経費","支払","財務"].map((item, i) => (
-                      <div key={item} className={`rounded px-1.5 py-1 text-[7px] font-medium ${i === 0 ? "bg-teal-50 text-teal-700" : "text-slate-400"}`}>
-                        {item}
-                      </div>
-                    ))}
-                  </div>
-                  {/* コンテンツ */}
-                  <div className="flex-1 p-3 space-y-2 overflow-hidden">
-                    <p className="text-[9px] font-bold text-slate-700">ダッシュボード</p>
-                    <div className="grid grid-cols-3 gap-1.5">
-                      {[
-                        { label: "今年売上", value: "¥13,200", sub: "入金" },
-                        { label: "今月入金", value: "¥入金", sub: "0件" },
-                        { label: "今月アクティビティ", value: "¥6,085", sub: "" },
-                      ].map((k) => (
-                        <div key={k.label} className="rounded-lg bg-white border border-slate-100 p-1.5">
-                          <p className="text-[6px] text-slate-400 leading-tight">{k.label}</p>
-                          <p className="text-[8px] font-bold text-teal-600">{k.value}</p>
-                          {k.sub && <p className="text-[6px] text-slate-400">{k.sub}</p>}
-                        </div>
-                      ))}
-                    </div>
-                    {/* バーチャート */}
-                    <div className="rounded-lg bg-white border border-slate-100 p-2">
-                      <p className="text-[7px] text-slate-400 mb-1.5">月別推移</p>
-                      <div className="flex items-end gap-1 h-12">
-                        {[30, 50, 40, 70, 55, 80, 65, 90, 75, 60, 85, 100].map((h, i) => (
-                          <div key={i} className="flex-1 rounded-sm" style={{ height: `${h}%`, background: i % 2 === 0 ? "#0d9488" : "#06b6d4", opacity: 0.7 + i * 0.02 }} />
-                        ))}
-                      </div>
-                    </div>
-                    {/* テーブル */}
-                    <div className="rounded-lg bg-white border border-slate-100 p-2 space-y-1">
-                      <p className="text-[7px] text-slate-400 mb-1">最新アクティビティ</p>
-                      {[
-                        { name: "サンプル合同会社", amount: "¥78,100", status: "未払い", sc: "bg-amber-100 text-amber-700" },
-                        { name: "ビリア株式会社", amount: "¥36,960", status: "入金済", sc: "bg-emerald-100 text-emerald-700" },
-                        { name: "Z社コンサルティング", amount: "¥11,000", status: "入金済", sc: "bg-emerald-100 text-emerald-700" },
-                      ].map((row) => (
-                        <div key={row.name} className="flex items-center justify-between">
-                          <span className="text-[7px] text-slate-600 truncate max-w-[100px]">{row.name}</span>
-                          <div className="flex items-center gap-1">
-                            <span className="text-[7px] font-bold text-slate-700">{row.amount}</span>
-                            <span className={`text-[6px] px-1 py-0.5 rounded-full ${row.sc}`}>{row.status}</span>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </div>
-              {/* PCの土台 */}
-              <div className="h-3 bg-slate-600 rounded-b-sm mx-6" />
-              <div className="h-1.5 bg-slate-500 rounded-b-xl mx-2" />
             </div>
           </div>
         </div>
@@ -448,7 +400,7 @@ export default function LandingPage() {
           <div className="text-center mb-12">
             <p className="billia-label mb-2">機能一覧</p>
             <h2 className="text-2xl md:text-4xl font-extrabold tracking-tight text-slate-900">
-              請求業務に必要な機能が<br className="md:hidden" />すべて揃う
+              バックオフィスに必要な機能が<br className="md:hidden" />これ一つで揃う
             </h2>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
