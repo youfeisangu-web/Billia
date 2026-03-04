@@ -66,25 +66,24 @@ export async function createRecurringTemplate(
 
     const tenantId = formData.get("tenantId") as string;
     const interval = formData.get("interval") as string || "MONTHLY";
-    const creationDay = parseInt(formData.get("creationDay") as string);
-    const sendDay = formData.get("sendDay")
-      ? parseInt(formData.get("sendDay") as string)
-      : null;
+    const creationDay = Number(formData.get("creationDay"));
+    const sendDayRaw = formData.get("sendDay");
+    const sendDay = sendDayRaw ? Number(sendDayRaw) : null;
     const startDateStr = formData.get("startDate") as string;
     const endDateStr = formData.get("endDate") as string || null;
     const itemsStr = formData.get("items") as string;
     const note = formData.get("note") as string || null;
 
-    if (!tenantId || !creationDay || !startDateStr || !itemsStr) {
+    if (!tenantId || !startDateStr || !itemsStr) {
       return { success: false, message: "必須項目を入力してください" };
     }
 
     // 日付の検証
-    if (creationDay < 1 || creationDay > 31) {
+    if (isNaN(creationDay) || creationDay < 1 || creationDay > 31) {
       return { success: false, message: "作成日は1-31の範囲で指定してください" };
     }
 
-    if (sendDay && (sendDay < 1 || sendDay > 31)) {
+    if (sendDay !== null && (isNaN(sendDay) || sendDay < 1 || sendDay > 31)) {
       return { success: false, message: "送信日は1-31の範囲で指定してください" };
     }
 
@@ -114,7 +113,12 @@ export async function createRecurringTemplate(
     }
 
     // 明細をパース
-    const items: RecurringTemplateItem[] = JSON.parse(itemsStr);
+    let items: RecurringTemplateItem[];
+    try {
+      items = JSON.parse(itemsStr);
+    } catch {
+      return { success: false, message: "明細データが不正です" };
+    }
     if (!Array.isArray(items) || items.length === 0) {
       return { success: false, message: "明細を1件以上入力してください" };
     }
@@ -161,26 +165,25 @@ export async function updateRecurringTemplate(
     if (!userId) throw new Error("Unauthorized");
 
     const interval = formData.get("interval") as string || "MONTHLY";
-    const creationDay = parseInt(formData.get("creationDay") as string);
-    const sendDay = formData.get("sendDay")
-      ? parseInt(formData.get("sendDay") as string)
-      : null;
+    const creationDay = Number(formData.get("creationDay"));
+    const sendDayRaw = formData.get("sendDay");
+    const sendDay = sendDayRaw ? Number(sendDayRaw) : null;
     const startDateStr = formData.get("startDate") as string;
     const endDateStr = formData.get("endDate") as string || null;
     const itemsStr = formData.get("items") as string;
     const note = formData.get("note") as string || null;
     const isActive = formData.get("isActive") === "true";
 
-    if (!creationDay || !startDateStr || !itemsStr) {
+    if (!startDateStr || !itemsStr) {
       return { success: false, message: "必須項目を入力してください" };
     }
 
     // 日付の検証
-    if (creationDay < 1 || creationDay > 31) {
+    if (isNaN(creationDay) || creationDay < 1 || creationDay > 31) {
       return { success: false, message: "作成日は1-31の範囲で指定してください" };
     }
 
-    if (sendDay && (sendDay < 1 || sendDay > 31)) {
+    if (sendDay !== null && (isNaN(sendDay) || sendDay < 1 || sendDay > 31)) {
       return { success: false, message: "送信日は1-31の範囲で指定してください" };
     }
 
@@ -215,7 +218,12 @@ export async function updateRecurringTemplate(
     }
 
     // 明細をパース
-    const items: RecurringTemplateItem[] = JSON.parse(itemsStr);
+    let items: RecurringTemplateItem[];
+    try {
+      items = JSON.parse(itemsStr);
+    } catch {
+      return { success: false, message: "明細データが不正です" };
+    }
     if (!Array.isArray(items) || items.length === 0) {
       return { success: false, message: "明細を1件以上入力してください" };
     }
