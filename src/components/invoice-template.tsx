@@ -11,7 +11,7 @@ type DocumentItem = {
 
 type DocumentData = {
   id: string;
-  type: "請求書" | "見積書";
+  type: "請求書" | "見積書" | "領収書" | "納品書";
   number: string;
   issueDate: Date;
   dueDate?: Date;
@@ -97,10 +97,12 @@ export const InvoiceTemplate = ({ data }: { data: DocumentData }) => {
           </p>
         )}
         
-        <p className="mb-4">下記の通りご{data.type === "見積書" ? "見積" : "請求"}申し上げます。</p>
+        <p className="mb-4">下記の通りご{data.type === "見積書" ? "見積" : data.type === "領収書" ? "領収" : data.type === "納品書" ? "納品" : "請求"}申し上げます。</p>
         
         <div className="bg-slate-50 border-y border-slate-200 p-6 flex items-end justify-between mb-10">
-          <span className="text-sm font-medium text-slate-500 uppercase tracking-widest">御合計金額</span>
+          <span className="text-sm font-medium text-slate-500 uppercase tracking-widest">
+            {data.type === "請求書" ? "請求金額" : data.type === "見積書" ? "見積金額" : data.type === "納品書" ? "納品金額" : "合計金額"}
+          </span>
           <span className="text-3xl font-bold text-slate-900">
             ¥{formatCurrency(data.totalAmount)}-
             <span className="text-sm font-normal text-slate-500 ml-2 tracking-normal">(税込)</span>
@@ -158,14 +160,16 @@ export const InvoiceTemplate = ({ data }: { data: DocumentData }) => {
             </div>
           )}
           
-          <div className="space-y-1">
-            <p className="font-bold border-b border-slate-300 pb-1 mb-2">【備考】</p>
-            <div className="whitespace-pre-wrap text-slate-600 text-xs">
-              {data.remarks || (data.type === "見積書" ? "上記金額は支払い期限までにお振込ください。" : "お振込手数料は貴社にてご負担願います。")}
+          {(data.remarks || data.dueDate || data.validUntil) && (
+            <div className="space-y-1">
+              <p className="font-bold border-b border-slate-300 pb-1 mb-2">【備考】</p>
+              {data.remarks && (
+                <div className="whitespace-pre-wrap text-slate-600 text-xs">{data.remarks}</div>
+              )}
+              {data.dueDate && <p className="mt-2 font-medium text-rose-600">お支払期限：{formatDate(data.dueDate)}</p>}
+              {data.validUntil && <p className="mt-2 font-medium text-rose-600">有効期限：{formatDate(data.validUntil)}</p>}
             </div>
-            {data.dueDate && <p className="mt-4 font-medium text-rose-600">お支払期限：{formatDate(data.dueDate)}</p>}
-            {data.validUntil && <p className="mt-4 font-medium text-rose-600">お支払期限：{formatDate(data.validUntil)}</p>}
-          </div>
+          )}
         </div>
       </div>
     </div>
