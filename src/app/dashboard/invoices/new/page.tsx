@@ -2,7 +2,7 @@ import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
-import InvoiceEditor from "./invoice-editor";
+import InvoiceEditor, { type DefaultPaymentTermType } from "./invoice-editor";
 
 export default async function NewInvoicePage() {
   const { userId } = await auth();
@@ -27,7 +27,7 @@ export default async function NewInvoicePage() {
     }),
   ]);
 
-  const defaultPaymentTerm = user?.defaultPaymentTerm ?? "end_of_next_month";
+  const defaultPaymentTerm = (user?.defaultPaymentTerm ?? "end_of_next_month") as DefaultPaymentTermType;
   const defaultPaymentTermsDays = user?.defaultPaymentTerms ?? 30;
   const taxRate = user?.taxRate ?? 10;
   const taxRounding = user?.taxRounding ?? "floor";

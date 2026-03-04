@@ -1,8 +1,20 @@
 import { notFound, redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { auth } from "@clerk/nextjs/server";
-import { InvoiceTemplate } from "@/components/invoice-template";
+import { ReceiptTemplate } from "@/components/receipt-template";
 import DocumentActionBar from "@/components/document-action-bar";
+
+// 領収書番号を生成: REC-YYYYMM-NNN
+async function generateReceiptNumber(userId: string, issueDate: Date): Promise<string> {
+  const ym = `${issueDate.getFullYear()}${String(issueDate.getMonth() + 1).padStart(2, "0")}`;
+  const count = await prisma.invoice.count({
+    where: {
+      userId,
+      receiptIssuedAt: { not: null },
+    },
+  });
+  return `REC-${ym}-${String(count + 1).padStart(3, "0")}`;
+}
 
 export default async function InvoiceReceiptPage({
   params,
@@ -25,25 +37,45 @@ export default async function InvoiceReceiptPage({
 
   if (!invoice) notFound();
 
+  // 初回発行時のみ日時・番号を記録（一度発行したら変わらない = 改ざん防止）
+  let receiptIssuedAt = invoice.receiptIssuedAt;
+  let receiptNumber = invoice.receiptNumber;
+
+  if (!receiptIssuedAt || !receiptNumber) {
+    receiptNumber = await generateReceiptNumber(userId, invoice.issueDate);
+    receiptIssuedAt = new Date();
+    await prisma.invoice.update({
+      where: { id },
+      data: { receiptIssuedAt, receiptNumber },
+    });
+  }
+
+  // 但し書き: 明細から自動生成
+  const tadashi = invoice.items.length > 0
+    ? `${invoice.items[0].name}${invoice.items.length > 1 ? "他" : ""}代として`
+    : "上記正に領収いたしました";
+
   const data = {
-    id: invoice.id,
-    type: "領収書" as const,
-    number: invoice.id,
+    receiptNumber,
     issueDate: invoice.issueDate,
-    dueDate: invoice.dueDate,
+    receiptIssuedAt,
+    totalAmount: invoice.totalAmount,
     subtotal: invoice.subtotal,
     taxAmount: invoice.taxAmount,
-    totalAmount: invoice.totalAmount,
+    tadashi,
     client: {
       name: invoice.client.name,
       address: invoice.client.address,
     },
     user: {
       companyName: invoice.user.companyName,
+      representativeName: invoice.user.representativeName,
+      address: invoice.user.address,
+      phoneNumber: invoice.user.phoneNumber,
       invoiceRegNumber: invoice.user.invoiceRegNumber,
       email: invoice.user.email,
+      stampUrl: invoice.user.stampUrl,
     },
-    bankAccount: null,
     items: invoice.items.map((item) => ({
       name: item.name,
       quantity: item.quantity,
@@ -61,7 +93,7 @@ export default async function InvoiceReceiptPage({
         deliveryUrl={`/dashboard/invoices/${id}/delivery`}
       />
       <div className="print-content">
-        <InvoiceTemplate data={data} />
+        <ReceiptTemplate data={data} />
       </div>
     </div>
   );

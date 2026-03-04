@@ -258,7 +258,7 @@ export async function readReceiptImage(formData: FormData): Promise<ReceiptOCRRe
     }
 
     let jsonMatch = jsonText.match(/\{[\s\S]*\}/);
-    if (!jsonMatch) jsonMatch = jsonText.match(/\{.*\}/s);
+    if (!jsonMatch) jsonMatch = jsonText.match(/\{[\s\S]*\}/);
     if (!jsonMatch) {
       const preview = responseText.substring(0, 200).replace(/\n/g, " ");
       return {

@@ -130,7 +130,7 @@ export default function RecurringClientView({
       setSendDay(template.sendDay);
       setStartDate(template.startDate.toISOString().split("T")[0]);
       setEndDate(template.endDate ? template.endDate.toISOString().split("T")[0] : "");
-      setItems(template.items);
+      setItems(template.items.map((item) => ({ ...item, taxRate: item.taxRate ?? 10 })));
       setNote(template.note || "");
     } else {
       setEditingTemplate(null);
