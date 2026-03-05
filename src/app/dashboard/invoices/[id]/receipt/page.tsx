@@ -5,11 +5,11 @@ import { ReceiptTemplate } from "@/components/receipt-template";
 import DocumentActionBar from "@/components/document-action-bar";
 
 // 領収書番号を生成: REC-YYYYMM-NNN
-async function generateReceiptNumber(userId: string, issueDate: Date): Promise<string> {
+async function generateReceiptNumber(scope: { userId: string } | { orgId: string }, issueDate: Date): Promise<string> {
   const ym = `${issueDate.getFullYear()}${String(issueDate.getMonth() + 1).padStart(2, "0")}`;
   const count = await prisma.invoice.count({
     where: {
-      userId,
+      ...scope,
       receiptIssuedAt: { not: null },
     },
   });
@@ -21,13 +21,14 @@ export default async function InvoiceReceiptPage({
 }: {
   params: Promise<{ id: string }>;
 }) {
-  const { userId } = await auth();
+  const { userId, orgId } = await auth();
   if (!userId) redirect("/");
+  const scope = orgId ? { orgId } : { userId };
 
   const { id } = await params;
 
-  const invoice = await prisma.invoice.findUnique({
-    where: { id, userId },
+  const invoice = await prisma.invoice.findFirst({
+    where: { id, ...scope },
     include: {
       client: true,
       items: true,
@@ -42,7 +43,7 @@ export default async function InvoiceReceiptPage({
   let receiptNumber = invoice.receiptNumber;
 
   if (!receiptIssuedAt || !receiptNumber) {
-    receiptNumber = await generateReceiptNumber(userId, invoice.issueDate);
+    receiptNumber = await generateReceiptNumber(scope, invoice.issueDate);
     receiptIssuedAt = new Date();
     await prisma.invoice.update({
       where: { id },

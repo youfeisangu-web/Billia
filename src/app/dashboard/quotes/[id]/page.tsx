@@ -11,15 +11,16 @@ export default async function QuoteDetailPage({
 }: {
   params: Promise<{ id: string }>;
 }) {
-  const { userId } = await auth();
+  const { userId, orgId } = await auth();
   if (!userId) {
     redirect("/");
   }
+  const scope = orgId ? { orgId } : { userId };
 
   const { id } = await params;
 
-  const quote = await prisma.quote.findUnique({
-    where: { id, userId: userId },
+  const quote = await prisma.quote.findFirst({
+    where: { id, ...scope },
     include: {
       client: true,
       items: true,

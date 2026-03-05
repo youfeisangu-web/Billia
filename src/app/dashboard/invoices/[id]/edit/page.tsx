@@ -9,13 +9,14 @@ export default async function InvoiceEditPage({
 }: {
   params: Promise<{ id: string }>;
 }) {
-  const { userId } = await auth();
+  const { userId, orgId } = await auth();
   if (!userId) redirect("/");
+  const scope = orgId ? { orgId } : { userId };
 
   const { id } = await params;
 
-  const invoice = await prisma.invoice.findUnique({
-    where: { id, userId },
+  const invoice = await prisma.invoice.findFirst({
+    where: { id, ...scope },
     include: { client: true },
   });
 

@@ -107,10 +107,15 @@ export async function POST(request: NextRequest) {
         const invoiceNumberPrefix = user?.invoiceNumberPrefix || "INV-";
         const invoiceNumberStart = user?.invoiceNumberStart || 1;
 
+        // orgIdスコープ: clientのorgIdを引き継ぐ
+        const clientUserId = template.client!.userId;
+        const clientOrgId = template.client!.orgId;
+        const invoiceScope = clientOrgId ? { orgId: clientOrgId } : { userId: clientUserId };
+
         // 今月の請求書数を取得してシーケンス番号を決定
         const thisMonthInvoices = await prisma.invoice.count({
           where: {
-            userId: template.client!.userId,
+            ...invoiceScope,
             issueDate: {
               gte: new Date(now.getFullYear(), now.getMonth(), 1),
               lt: new Date(now.getFullYear(), now.getMonth() + 1, 1),
@@ -125,7 +130,8 @@ export async function POST(request: NextRequest) {
         const invoice = await prisma.invoice.create({
           data: {
             id: invoiceId,
-            userId: template.client!.userId,
+            userId: clientUserId,
+            orgId: clientOrgId ?? null,
             clientId: template.clientId!,
             status: "DRAFT", // 下書き状態で作成
             issueDate,
