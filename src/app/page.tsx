@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import {
   FileText,
   Receipt,
@@ -14,17 +15,14 @@ import {
   X,
   Sparkles,
   TrendingUp,
-  FileStack,
   ShieldCheck,
   Upload,
-  Clock,
   ChevronDown,
   ArrowRight,
   Users,
   Building2,
   Briefcase,
   Home,
-  Star,
 } from "lucide-react";
 
 /* ── mockups ─────────────────────────────────────────────── */
@@ -85,7 +83,7 @@ function InvoiceListMockup() {
           <div key={item.name} className="flex items-center justify-between rounded-lg border border-slate-100 px-2 py-1.5">
             <div>
               <p className="text-slate-700 text-[10px]">{item.name}</p>
-              <p className="text-slate-400 text-[9px]">2025-12-15</p>
+              <p className="text-slate-400 text-[9px]">2026-03-15</p>
             </div>
             <div className="text-right">
               <p className="font-bold text-slate-800 text-[11px]">{item.amount}</p>
@@ -141,9 +139,9 @@ function FinanceMockup() {
       </div>
       <div className="space-y-2">
         {[
-          { month: "10月", amount: 820000, bar: "65%" },
-          { month: "11月", amount: 1040000, bar: "82%" },
-          { month: "12月", amount: 1280000, bar: "100%" },
+          { month: "1月", amount: 820000, bar: "65%" },
+          { month: "2月", amount: 1040000, bar: "82%" },
+          { month: "3月", amount: 1280000, bar: "100%" },
         ].map((item) => (
           <div key={item.month} className="flex items-center gap-2">
             <span className="text-slate-400 text-[9px] w-5">{item.month}</span>
@@ -164,15 +162,35 @@ function FinanceMockup() {
   );
 }
 
-/* ── coming soon badge ───────────────────────────────────── */
-
-function ComingSoonBadge({ size = "md" }: { size?: "sm" | "md" | "lg" }) {
-  const styles = { sm: "px-3 py-1 text-xs gap-1.5", md: "px-5 py-2.5 text-sm gap-2", lg: "px-7 py-3.5 text-base gap-2.5" };
+function TeamMockup() {
   return (
-    <span className={`inline-flex items-center font-bold rounded-full border-2 border-dashed border-blue-300 bg-blue-50 text-blue-600 select-none ${styles[size]}`}>
-      <Clock className={size === "lg" ? "w-5 h-5" : "w-4 h-4"} />
-      Coming Soon
-    </span>
+    <div className="rounded-xl border border-slate-200 bg-white shadow-lg p-4 w-full text-xs">
+      <div className="flex items-center justify-between mb-3">
+        <span className="font-semibold text-slate-700 text-[11px]">チームメンバー</span>
+        <span className="bg-blue-100 text-blue-700 text-[9px] px-2 py-0.5 rounded-full">3名</span>
+      </div>
+      <div className="space-y-2 mb-3">
+        {[
+          { name: "山田 太郎", role: "管理者", avatar: "山", color: "bg-blue-100 text-blue-700" },
+          { name: "鈴木 花子", role: "メンバー", avatar: "鈴", color: "bg-emerald-100 text-emerald-700" },
+          { name: "田中 一郎", role: "メンバー", avatar: "田", color: "bg-violet-100 text-violet-700" },
+        ].map((member) => (
+          <div key={member.name} className="flex items-center justify-between rounded-lg border border-slate-100 px-2 py-1.5">
+            <div className="flex items-center gap-2">
+              <div className={`w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold ${member.color}`}>
+                {member.avatar}
+              </div>
+              <span className="text-slate-700 text-[10px]">{member.name}</span>
+            </div>
+            <span className={`text-[9px] px-1.5 py-0.5 rounded-full font-medium ${member.color}`}>{member.role}</span>
+          </div>
+        ))}
+      </div>
+      <div className="rounded-lg bg-blue-50 border border-blue-100 px-2 py-1.5 flex items-center justify-center gap-1.5 text-[10px] text-blue-600 font-medium">
+        <Users className="w-3 h-3" />
+        + メンバーを招待
+      </div>
+    </div>
   );
 }
 
@@ -181,26 +199,24 @@ function ComingSoonBadge({ size = "md" }: { size?: "sm" | "md" | "lg" }) {
 export default function LandingPage() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
-  const [email, setEmail] = useState("");
-  const [submitted, setSubmitted] = useState(false);
 
   const features = [
-    { icon: FileText, title: "請求書管理", desc: "発行・送付・入金確認まで一元管理。ステータスが一目でわかる。", color: "text-blue-500 bg-blue-50" },
+    { icon: FileText, title: "請求書管理", desc: "発行・送付・入金確認まで一元管理。定期請求の自動化にも対応。", color: "text-blue-500 bg-blue-50" },
     { icon: Receipt, title: "見積書作成", desc: "テンプレートから素早く作成。請求書への変換もワンクリック。", color: "text-indigo-500 bg-indigo-50" },
     { icon: CreditCard, title: "支払管理", desc: "受取請求書を登録し、支払期限を管理。払い忘れを防止。", color: "text-violet-500 bg-violet-50" },
     { icon: BarChart3, title: "経費管理", desc: "領収書スキャンで経費を自動登録。月次レポートも自動生成。", color: "text-cyan-500 bg-cyan-50" },
     { icon: Brain, title: "AIメモ入力", desc: "自然言語のメモから請求書・経費を自動生成。入力の手間を大幅削減。", color: "text-purple-500 bg-purple-50" },
     { icon: Upload, title: "書類OCR読み取り", desc: "PDFや画像をアップロードするだけで、データを自動抽出。", color: "text-emerald-500 bg-emerald-50" },
     { icon: TrendingUp, title: "財務サマリー", desc: "売上・未回収・経費をグラフでリアルタイム把握。", color: "text-amber-500 bg-amber-50" },
-    { icon: FileStack, title: "一括操作", desc: "複数ファイルをまとめてインポート。大量処理も効率的に。", color: "text-rose-500 bg-rose-50" },
+    { icon: Users, title: "チーム管理", desc: "メンバーを招待して請求書・取引先データをチームで共有。", color: "text-rose-500 bg-rose-50" },
   ];
 
   const faqs = [
-    { q: "無料トライアルはありますか？", a: "リリース時に無料トライアル期間を設ける予定です。詳細は公開時にメールでお知らせします。" },
+    { q: "料金はいくらですか？", a: "月額¥1,000（税込）のオールインクルーシブプランのみです。すべての機能がご利用いただけます。" },
     { q: "インボイス制度（適格請求書）に対応していますか？", a: "はい、登録番号（T番号）を設定することで、インボイス制度に対応した適格請求書を発行できます。" },
     { q: "データはどこに保存されますか？", a: "データは国内のセキュアなクラウドサーバーに暗号化して保存されます。第三者へのデータ提供は一切行いません。" },
     { q: "既存の会計ソフトと連携できますか？", a: "CSVエクスポートに対応しており、freee・弥生会計・マネーフォワードなど主要会計ソフトへのデータ移行が可能です。" },
-    { q: "何人まで使えますか？", a: "現在は1アカウントにつき1ユーザーのプランを予定しています。チームプランは今後提供予定です。" },
+    { q: "チームで使えますか？", a: "はい、組織機能に対応しています。メンバーをメールで招待するだけで、請求書・取引先・経費データをチームで共有できます。管理者・メンバーのロール管理も可能です。" },
     { q: "途中で解約できますか？", a: "いつでも解約可能です。解約後もサブスクリプション期間終了までサービスをご利用いただけます。" },
   ];
 
@@ -221,8 +237,16 @@ export default function LandingPage() {
               <a href="#pricing" className="hover:text-slate-900 transition-colors">料金</a>
               <a href="#faq" className="hover:text-slate-900 transition-colors">FAQ</a>
             </nav>
-            <div className="hidden md:block">
-              <ComingSoonBadge size="sm" />
+            <div className="hidden md:flex items-center gap-3">
+              <Link href="/sign-in" className="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">
+                ログイン
+              </Link>
+              <Link
+                href="/sign-up"
+                className="inline-flex items-center gap-1.5 rounded-full bg-slate-900 px-4 py-1.5 text-sm font-semibold text-white hover:bg-slate-700 transition-colors"
+              >
+                今すぐ始める <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
             </div>
             <button className="md:hidden p-2 rounded-lg hover:bg-slate-100 transition-colors" onClick={() => setMenuOpen(!menuOpen)}>
               {menuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -235,7 +259,12 @@ export default function LandingPage() {
             <a href="#ai" className="block text-sm text-slate-600" onClick={() => setMenuOpen(false)}>AI機能</a>
             <a href="#pricing" className="block text-sm text-slate-600" onClick={() => setMenuOpen(false)}>料金</a>
             <a href="#faq" className="block text-sm text-slate-600" onClick={() => setMenuOpen(false)}>FAQ</a>
-            <div className="pt-2"><ComingSoonBadge size="sm" /></div>
+            <div className="pt-2 flex flex-col gap-2">
+              <Link href="/sign-in" className="block text-center text-sm font-medium text-slate-600 py-2">ログイン</Link>
+              <Link href="/sign-up" className="block text-center rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white">
+                今すぐ始める
+              </Link>
+            </div>
           </div>
         )}
       </header>
@@ -267,7 +296,21 @@ export default function LandingPage() {
               請求書・見積書・経費・支払管理をひとつに。
               AIがメモや書類を読み取り、入力の手間を限りなくゼロへ。
             </p>
-            <ComingSoonBadge size="lg" />
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+              <Link
+                href="/sign-up"
+                className="inline-flex items-center justify-center gap-2 rounded-2xl px-8 py-3.5 text-sm font-bold text-white shadow-lg hover:shadow-xl transition-all hover:-translate-y-0.5"
+                style={{ background: "linear-gradient(135deg, #2563eb 0%, #06b6d4 100%)" }}
+              >
+                今すぐ始める <ArrowRight className="w-4 h-4" />
+              </Link>
+              <Link
+                href="/sign-in"
+                className="inline-flex items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-white px-8 py-3.5 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-colors shadow-sm"
+              >
+                ログイン
+              </Link>
+            </div>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl mx-auto md:max-w-none md:grid-cols-4">
             <DashboardMockup />
@@ -333,7 +376,6 @@ export default function LandingPage() {
             </p>
           </div>
 
-          {/* flow steps */}
           <div className="relative">
             <div className="hidden md:block absolute top-7 left-[14%] right-[14%] h-px bg-gradient-to-r from-indigo-200 via-blue-300 to-emerald-200" />
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
@@ -355,9 +397,7 @@ export default function LandingPage() {
             </div>
           </div>
 
-          {/* feature highlight cards */}
           <div className="mt-16 grid md:grid-cols-2 gap-6">
-            {/* OCR */}
             <div className="rounded-3xl border border-slate-200 bg-white p-7 md:p-8">
               <div className="inline-flex rounded-2xl bg-blue-50 p-3 mb-5">
                 <Upload className="w-6 h-6 text-blue-600" />
@@ -385,7 +425,6 @@ export default function LandingPage() {
               </div>
             </div>
 
-            {/* AI memo */}
             <div className="rounded-3xl border border-purple-100 bg-gradient-to-br from-purple-50 via-white to-white p-7 md:p-8">
               <div className="inline-flex rounded-2xl bg-purple-100 p-3 mb-5">
                 <Brain className="w-6 h-6 text-purple-600" />
@@ -424,8 +463,8 @@ export default function LandingPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-5">
             {[
               { icon: Briefcase, title: "フリーランス", desc: "クライアントへの請求書発行から入金確認まで、ひとりでも迷わず管理。", tags: ["請求書作成", "入金確認", "経費管理"], color: "text-blue-500 bg-blue-50 border-blue-100" },
-              { icon: Users, title: "小規模事業者", desc: "複数取引先の請求・支払・経費を一元管理。経理の手間を大幅削減。", tags: ["複数取引先", "支払管理", "財務サマリー"], color: "text-indigo-500 bg-indigo-50 border-indigo-100" },
-              { icon: Building2, title: "不動産オーナー", desc: "入居者への家賃請求・入金消込を自動化。滞納も素早く把握。", tags: ["定期請求", "入金消込", "入金管理"], color: "text-violet-500 bg-violet-50 border-violet-100" },
+              { icon: Users, title: "小規模事業者", desc: "複数取引先の請求・支払・経費を一元管理。チームでのデータ共有も可能。", tags: ["複数取引先", "チーム共有", "財務サマリー"], color: "text-indigo-500 bg-indigo-50 border-indigo-100" },
+              { icon: Building2, title: "不動産オーナー", desc: "入居者への家賃請求・入金消込を自動化。定期請求で毎月の作業をゼロに。", tags: ["定期請求", "入金消込", "入金管理"], color: "text-violet-500 bg-violet-50 border-violet-100" },
               { icon: Home, title: "副業・個人事業主", desc: "確定申告に必要な経費・売上データをかんたんに整理・エクスポート。", tags: ["経費記録", "CSVエクスポート", "インボイス対応"], color: "text-emerald-500 bg-emerald-50 border-emerald-100" },
             ].map((t) => {
               const [iconText, iconBg, borderColor] = t.color.split(" ");
@@ -539,7 +578,7 @@ export default function LandingPage() {
                   "領収書を撮影するだけで経費が自動登録・分類",
                   "見積書をワンクリックで請求書に変換",
                   "期限が近い請求書はダッシュボードで一目確認",
-                  "売上・経費データをCSVでかんたんエクスポート",
+                  "チームメンバーと請求書・取引先データを共有",
                 ].map((item) => (
                   <li key={item} className="flex items-start gap-2.5 text-sm text-slate-700">
                     <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />{item}
@@ -570,6 +609,39 @@ export default function LandingPage() {
                   </li>
                 ))}
               </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── team section ── */}
+      <section className="py-20 md:py-28 bg-gradient-to-b from-blue-50/50 to-white">
+        <div className="mx-auto max-w-6xl px-5 md:px-8">
+          <div className="grid md:grid-cols-2 gap-10 md:gap-16 items-center">
+            <div>
+              <p className="billia-label mb-3">チーム管理</p>
+              <h2 className="text-2xl md:text-4xl font-extrabold tracking-tight mb-5">
+                チームで使える、<br />
+                <span className="text-blue-600">請求書管理</span>
+              </h2>
+              <p className="text-slate-500 leading-relaxed mb-6">
+                メンバーをメールで招待するだけ。招待されたユーザーは即座にチームの請求書・取引先・経費データにアクセスできます。個人アカウントとの切り替えもスムーズ。
+              </p>
+              <ul className="space-y-3">
+                {[
+                  "メールアドレスで簡単招待",
+                  "管理者・メンバーのロール管理",
+                  "請求書・取引先・経費をチームで共有",
+                  "個人アカウントとの切り替えも可能",
+                ].map((item) => (
+                  <li key={item} className="flex items-start gap-2.5 text-sm text-slate-700">
+                    <CheckCircle2 className="w-4 h-4 text-blue-500 shrink-0 mt-0.5" />{item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="max-w-xs mx-auto md:max-w-sm">
+              <TeamMockup />
             </div>
           </div>
         </div>
@@ -684,13 +756,26 @@ export default function LandingPage() {
                   <p className="text-blue-100 text-sm">税込み・いつでもキャンセル可能</p>
                 </div>
                 <ul className="space-y-3 mb-8">
-                  {["請求書・見積書の作成・管理（無制限）","受取請求書・支払管理","経費管理・領収書スキャン","AIメモ入力・書類OCR読み取り","財務サマリー・グラフ表示","複数ファイル一括インポート"].map((item) => (
+                  {[
+                    "請求書・見積書の作成・管理（無制限）",
+                    "受取請求書・支払管理",
+                    "経費管理・領収書スキャン",
+                    "AIメモ入力・書類OCR読み取り",
+                    "財務サマリー・グラフ表示",
+                    "定期請求の自動化",
+                    "チーム管理・メンバー招待",
+                  ].map((item) => (
                     <li key={item} className="flex items-start gap-2.5 text-sm text-blue-50">
                       <CheckCircle2 className="w-4 h-4 text-cyan-300 shrink-0 mt-0.5" />{item}
                     </li>
                   ))}
                 </ul>
-                <div className="flex justify-center"><ComingSoonBadge size="md" /></div>
+                <Link
+                  href="/sign-up"
+                  className="flex items-center justify-center gap-2 w-full rounded-2xl bg-white py-3.5 text-sm font-bold text-blue-600 hover:bg-blue-50 transition-colors"
+                >
+                  今すぐ始める <ArrowRight className="w-4 h-4" />
+                </Link>
               </div>
             </div>
           </div>
@@ -747,7 +832,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ── waitlist CTA ── */}
+      {/* ── CTA ── */}
       <section className="py-20 md:py-28">
         <div className="mx-auto max-w-6xl px-5 md:px-8">
           <div className="rounded-3xl p-10 md:p-16 text-center relative overflow-hidden" style={{ background: "linear-gradient(135deg, #1d4ed8 0%, #2563eb 40%, #06b6d4 100%)" }}>
@@ -755,30 +840,29 @@ export default function LandingPage() {
             <div className="pointer-events-none absolute -bottom-20 -left-20 w-80 h-80 rounded-full opacity-10" style={{ background: "radial-gradient(circle, #a5f3fc 0%, transparent 70%)" }} />
             <div className="relative">
               <div className="inline-flex items-center gap-2 rounded-full bg-white/20 px-4 py-1.5 text-xs font-semibold text-white mb-6">
-                <Star className="w-3.5 h-3.5" />リリース通知を受け取る
+                <Sparkles className="w-3.5 h-3.5" />今すぐ使える
               </div>
-              <h2 className="text-2xl md:text-4xl font-extrabold text-white mb-4 tracking-tight">もうすぐリリース</h2>
+              <h2 className="text-2xl md:text-4xl font-extrabold text-white mb-4 tracking-tight">
+                請求業務を、今日から変えよう
+              </h2>
               <p className="text-blue-100 mb-8 text-sm md:text-base max-w-md mx-auto leading-relaxed">
-                メールアドレスを登録しておくと、リリース時に真っ先にお知らせします。
-                月額¥1,000で、AIを活用した請求業務の自動化を体験してください。
+                月額¥1,000で、AIを活用した請求業務の自動化を今すぐ体験。<br />
+                インボイス制度対応・チーム機能付き。
               </p>
-              {submitted ? (
-                <div className="inline-flex items-center gap-2 rounded-full bg-white/20 border border-white/30 px-6 py-3 text-white font-semibold">
-                  <CheckCircle2 className="w-5 h-5 text-cyan-300" />
-                  登録しました！リリース時にお知らせします
-                </div>
-              ) : (
-                <form className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto" onSubmit={(e) => { e.preventDefault(); if (email) setSubmitted(true); }}>
-                  <input
-                    type="email" value={email} onChange={(e) => setEmail(e.target.value)}
-                    placeholder="メールアドレスを入力" required
-                    className="flex-1 rounded-xl px-4 py-3 text-sm text-slate-900 bg-white placeholder-slate-400 outline-none focus:ring-2 focus:ring-white/50"
-                  />
-                  <button type="submit" className="inline-flex items-center justify-center gap-2 rounded-xl bg-white px-6 py-3 text-sm font-bold text-blue-600 hover:bg-blue-50 transition-colors shrink-0">
-                    通知を受け取る<ArrowRight className="w-4 h-4" />
-                  </button>
-                </form>
-              )}
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+                <Link
+                  href="/sign-up"
+                  className="inline-flex items-center gap-2 rounded-2xl bg-white px-8 py-3.5 text-sm font-bold text-blue-600 hover:bg-blue-50 transition-colors shadow-lg"
+                >
+                  今すぐ始める <ArrowRight className="w-4 h-4" />
+                </Link>
+                <Link
+                  href="/sign-in"
+                  className="inline-flex items-center gap-2 rounded-2xl border border-white/30 bg-white/10 px-8 py-3.5 text-sm font-semibold text-white hover:bg-white/20 transition-colors"
+                >
+                  ログイン
+                </Link>
+              </div>
             </div>
           </div>
         </div>
@@ -798,7 +882,7 @@ export default function LandingPage() {
               <a href="#pricing" className="hover:text-slate-600 transition-colors">料金</a>
               <a href="#faq" className="hover:text-slate-600 transition-colors">FAQ</a>
             </div>
-            <p className="text-xs text-slate-400">© 2025 Billia</p>
+            <p className="text-xs text-slate-400">© 2026 Billia</p>
           </div>
         </div>
       </footer>
