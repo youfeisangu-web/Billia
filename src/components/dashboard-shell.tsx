@@ -22,7 +22,7 @@ export default function DashboardShell({
       <div className="flex flex-1 flex-col min-w-0 min-h-0">
         <DashboardHeader onMenuClick={() => setSidebarOpen(true)} />
         {/* モバイルはbottom nav分の余白(pb-20)を確保 */}
-        <main className="flex-1 overflow-y-auto overflow-x-hidden px-4 md:pr-8 pb-20 md:pb-6">
+        <main className="flex-1 overflow-y-auto px-4 md:pr-8 pb-20 md:pb-6">
           {children}
         </main>
       </div>

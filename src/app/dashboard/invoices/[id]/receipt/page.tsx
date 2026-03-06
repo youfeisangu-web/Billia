@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { auth } from "@clerk/nextjs/server";
 import { ReceiptTemplate } from "@/components/receipt-template";
 import DocumentActionBar from "@/components/document-action-bar";
+import DocumentScaleWrapper from "@/components/document-scale-wrapper";
 
 // 領収書番号を生成: REC-YYYYMM-NNN
 async function generateReceiptNumber(scope: { userId: string } | { orgId: string }, issueDate: Date): Promise<string> {
@@ -93,9 +94,9 @@ export default async function InvoiceReceiptPage({
         receiptUrl={null}
         deliveryUrl={`/dashboard/invoices/${id}/delivery`}
       />
-      <div className="print-content">
+      <DocumentScaleWrapper>
         <ReceiptTemplate data={data} />
-      </div>
+      </DocumentScaleWrapper>
     </div>
   );
 }

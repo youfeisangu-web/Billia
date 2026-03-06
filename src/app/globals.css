@@ -143,6 +143,9 @@
 }
 
 @media print {
+  .document-scale-inner {
+    zoom: 1 !important;
+  }
   body {
     background-color: white !important;
     padding: 0 !important;

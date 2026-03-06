@@ -50,7 +50,7 @@ export default function DashboardHeader({ onMenuClick }: DashboardHeaderProps) {
           >
             <Menu className="w-6 h-6" />
           </button>
-          <div className="relative flex items-center gap-2 rounded-lg border border-billia-border-subtle bg-billia-bg px-3 md:px-4 py-2 md:py-2.5 text-sm text-billia-text min-w-0 md:min-w-[200px] max-w-[180px] md:max-w-none">
+          <div className="relative hidden md:flex items-center gap-2 rounded-lg border border-billia-border-subtle bg-billia-bg px-3 md:px-4 py-2 md:py-2.5 text-sm text-billia-text min-w-0 md:min-w-[200px] max-w-[180px] md:max-w-none">
             <span className="truncate text-stone-700">プロジェクト: {selectedName}</span>
             <ChevronDown className="w-4 h-4 shrink-0 text-stone-400" />
             <select

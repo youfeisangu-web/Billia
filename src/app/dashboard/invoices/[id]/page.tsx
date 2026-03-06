@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { auth } from "@clerk/nextjs/server";
 import { InvoiceTemplate } from "@/components/invoice-template";
 import DocumentActionBar from "@/components/document-action-bar";
+import DocumentScaleWrapper from "@/components/document-scale-wrapper";
 
 export default async function InvoiceDetailPage({
   params,
@@ -121,9 +122,9 @@ export default async function InvoiceDetailPage({
         sendReminderSubject={reminderSubject}
         sendReminderBody={reminderBody}
       />
-      <div className="print-content">
+      <DocumentScaleWrapper>
         <InvoiceTemplate data={data} />
-      </div>
+      </DocumentScaleWrapper>
     </div>
   );
 }

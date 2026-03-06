@@ -104,17 +104,17 @@ export default function BillsClientView({
     <>
       <div className="flex flex-col gap-5 py-5 md:gap-8 md:py-8 pb-12">
         {/* ヘッダー */}
-        <header className="flex items-start justify-between gap-4">
+        <header className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
           <div className="flex flex-col gap-1">
             <p className="billia-label">支払管理</p>
-            <h1 className="text-xl font-semibold tracking-tight text-billia-text md:text-2xl">
+            <h1 className="text-xl font-semibold tracking-tight text-billia-text md:text-2xl whitespace-nowrap">
               受領請求書
             </h1>
             <p className="text-xs text-billia-text-muted hidden md:block">
               他社から届いた請求書を管理し、支払い漏れを防ぎます。
             </p>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 shrink-0">
             <ImportBillButton />
             <button
               onClick={() => setNewOpen(true)}

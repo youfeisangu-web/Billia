@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { auth } from "@clerk/nextjs/server";
 import { InvoiceTemplate } from "@/components/invoice-template";
 import DocumentActionBar from "@/components/document-action-bar";
+import DocumentScaleWrapper from "@/components/document-scale-wrapper";
 import ConvertToInvoiceButton from "./convert-button";
 import AcceptLinkButton from "./accept-link-button";
 
@@ -108,9 +109,9 @@ export default async function QuoteDetailPage({
           </>
         )}
       </DocumentActionBar>
-      <div className="print-content">
+      <DocumentScaleWrapper>
         <InvoiceTemplate data={data} />
-      </div>
+      </DocumentScaleWrapper>
     </div>
   );
 }
