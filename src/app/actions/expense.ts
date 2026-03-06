@@ -109,3 +109,19 @@ export async function deleteExpense(id: string): Promise<SubmitResult> {
     return { success: false, message };
   }
 }
+
+export async function updateExpenseFolder(ids: string[], folder: string | null): Promise<SubmitResult> {
+  try {
+    const { userId, orgId } = await auth();
+    if (!userId) throw new Error("Unauthorized");
+    const scope = orgId ? { orgId } : { userId };
+    await prisma.expense.updateMany({
+      where: { id: { in: ids }, ...scope },
+      data: { folder: folder || null },
+    });
+    revalidatePath("/dashboard/expenses");
+    return { success: true, message: `${ids.length}件のフォルダを更新しました。` };
+  } catch (error) {
+    return { success: false, message: error instanceof Error ? error.message : "更新に失敗しました。" };
+  }
+}

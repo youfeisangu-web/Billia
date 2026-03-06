@@ -555,3 +555,19 @@ export async function getAgingReport(): Promise<AgingRow[]> {
     };
   });
 }
+
+export async function updateInvoiceFolder(ids: string[], folder: string | null): Promise<SubmitResult> {
+  try {
+    const { userId, orgId } = await auth();
+    if (!userId) throw new Error("Unauthorized");
+    const scope = orgId ? { orgId } : { userId };
+    await prisma.invoice.updateMany({
+      where: { id: { in: ids }, ...scope },
+      data: { folder: folder || null },
+    });
+    revalidatePath("/dashboard/invoices");
+    return { success: true, message: `${ids.length}件のフォルダを更新しました。` };
+  } catch (error) {
+    return { success: false, message: error instanceof Error ? error.message : "更新に失敗しました。" };
+  }
+}

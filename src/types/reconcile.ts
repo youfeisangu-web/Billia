@@ -4,6 +4,15 @@
 
 export type ReconcileStatus = '完了' | 'エラー' | '確認' | '未完了';
 
+/** 複数候補がある場合に返す候補請求書 */
+export type ReconcileCandidate = {
+  invoiceId: string;
+  invoiceNumber: string;
+  clientName: string;
+  issueDate: string;
+  amount: number;
+};
+
 export type ReconcileResult = {
   date: string;
   amount: number;
@@ -18,6 +27,8 @@ export type ReconcileResult = {
   clientName?: string | null;
   /** @deprecated 取引先ベースは廃止 */
   tenantId: string | null;
+  /** 同一金額の請求書が複数あり選択が必要な場合に設定 */
+  candidates?: ReconcileCandidate[];
 };
 
 export type ReconcileResponse = {

@@ -25,6 +25,7 @@ export default async function InvoicesPage() {
     issueDate: inv.issueDate.toISOString(),
     totalAmount: inv.totalAmount,
     status: inv.status,
+    folder: inv.folder ?? null,
     client: inv.client,
   }));
 

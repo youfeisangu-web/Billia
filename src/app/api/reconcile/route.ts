@@ -6,7 +6,7 @@ import Papa from 'papaparse';
 import stringSimilarity from 'string-similarity';
 import { prisma } from '@/lib/prisma';
 import { generateText, generateContentWithImage } from '@/lib/gemini';
-import type { ReconcileResult, ReconcileStatus } from '@/types/reconcile';
+import type { ReconcileResult, ReconcileStatus, ReconcileCandidate } from '@/types/reconcile';
 
 type ColumnMap = { dateCol: number; amountCol: number; nameCol: number };
 
@@ -241,6 +241,7 @@ export async function POST(req: NextRequest) {
             let matchedInvoiceId: string | null = null;
             let matchedInvoiceNumber: string | null = null;
             let matchedClientName: string | null = null;
+            let matchedCandidates: ReconcileCandidate[] | undefined = undefined;
 
             // A. 口座振替チェック（特例）
             const agencyMatch = agencies.find(a => rawName.includes(a.checkString));
@@ -253,7 +254,7 @@ export async function POST(req: NextRequest) {
                     message = `金額不一致 (予定:${agencyMatch.expectedAmount})`;
                 }
             }
-            // B. 請求書マッチング（金額は完全一致のみ・名前はあってそうな候補を表示・同じ会社同額はFIFO）
+            // B. 請求書マッチング（金額は完全一致のみ・名前はあってそうな候補を表示）
             else {
                 const cleanName = normalizeNameForMatch(rawName);
                 const candidates = invoices
@@ -268,20 +269,37 @@ export async function POST(req: NextRequest) {
                     const rating = match.bestMatch.rating;
                     const idx = match.bestMatchIndex;
                     const inv = candidates[idx];
-                    // 金額は完全一致の請求書のうち、名前が一番あってそうなものを常に表示
-                    matchedInvoiceId = inv.id;
-                    matchedInvoiceNumber = inv.id;
-                    matchedClientName = inv.client.name;
-                    allocatedInvoiceIds.add(inv.id);
-                    if (rating >= 0.5) {
-                        status = '完了';
-                        message = `消込成功: ${inv.client.name}（請求書）`;
-                    } else if (rating >= 0.35) {
+
+                    if (candidates.length > 1 && rating < 0.5) {
+                        // 同じ金額の請求書が複数あり名前から絞り込めない → ユーザーに選択させる
                         status = '確認';
-                        message = `候補: ${inv.client.name}（請求書・名前の表記が異なります）`;
+                        message = `同じ金額の請求書が${candidates.length}件あります。入金名義から選択してください`;
+                        matchedCandidates = candidates.map((c) => ({
+                            invoiceId: c.id,
+                            invoiceNumber: c.id,
+                            clientName: c.client.name,
+                            issueDate: c.issueDate instanceof Date
+                                ? c.issueDate.toISOString().split('T')[0]
+                                : String(c.issueDate).split('T')[0],
+                            amount: c.totalAmount,
+                        }));
+                        // allocatedInvoiceIds には追加しない（ユーザーが選択してから確定）
                     } else {
-                        status = '確認';
-                        message = `候補: ${inv.client.name}（金額一致・名前が異なります）`;
+                        // 単一候補 or 名前で明確に絞り込める場合
+                        matchedInvoiceId = inv.id;
+                        matchedInvoiceNumber = inv.id;
+                        matchedClientName = inv.client.name;
+                        allocatedInvoiceIds.add(inv.id);
+                        if (rating >= 0.5) {
+                            status = '完了';
+                            message = `消込成功: ${inv.client.name}（請求書）`;
+                        } else if (rating >= 0.35) {
+                            status = '確認';
+                            message = `候補: ${inv.client.name}（請求書・名前の表記が異なります）`;
+                        } else {
+                            status = '確認';
+                            message = `候補: ${inv.client.name}（金額一致・名前が異なります）`;
+                        }
                     }
                 } else {
                     // 金額が完全に同じ請求書がない → 候補は出さない（金額は完全一致のみ）
@@ -303,6 +321,7 @@ export async function POST(req: NextRequest) {
                 invoiceNumber: matchedInvoiceNumber,
                 clientName: matchedClientName,
                 tenantId: null,
+                candidates: matchedCandidates,
             });
         }
 

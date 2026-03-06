@@ -4,7 +4,7 @@ import { useState, useCallback } from "react";
 import Link from "next/link";
 import { getReconcileSummary } from "@/app/actions/payment";
 import { markInvoicePaid } from "@/app/actions/invoice";
-import type { ReconcileResult } from "@/types/reconcile";
+import type { ReconcileResult, ReconcileCandidate } from "@/types/reconcile";
 import { Upload, CheckCircle2, ExternalLink } from "lucide-react";
 
 type Summary = { totalBilledAmount: number; invoiceCount: number };
@@ -176,6 +176,23 @@ export default function ReconcileClient({
     }
   };
 
+  const selectCandidate = useCallback((rowIndex: number, candidate: ReconcileCandidate) => {
+    setResults((prev) =>
+      prev.map((r, i) => {
+        if (i !== rowIndex) return r;
+        return {
+          ...r,
+          invoiceId: candidate.invoiceId,
+          invoiceNumber: candidate.invoiceNumber,
+          clientName: candidate.clientName,
+          status: '確認' as const,
+          message: `選択: ${candidate.clientName}（ユーザーが選択）`,
+          candidates: undefined,
+        };
+      }),
+    );
+  }, []);
+
   const handleClear = () => {
     setFiles([]);
     setResults([]);
@@ -186,6 +203,10 @@ export default function ReconcileClient({
   };
 
   const paidRows = results.filter((r) => r.invoiceId && executedInvoiceIds.has(r.invoiceId));
+  const pendingCandidateRows = results.filter((r) => r.candidates && r.candidates.length > 0);
+  const unmatchedRows = results.filter(
+    (r) => r.status === "未完了" || r.status === "エラー" || (r.candidates && r.candidates.length > 0),
+  );
 
 
   return (
@@ -383,7 +404,22 @@ export default function ReconcileClient({
                         </span>
                       </td>
                       <td className="px-4 py-3">
-                        {row.invoiceId ? (
+                        {row.candidates && row.candidates.length > 0 ? (
+                          <div className="flex flex-col gap-1.5">
+                            <span className="text-xs font-medium text-amber-700">どの請求書か選択してください：</span>
+                            {row.candidates.map((c) => (
+                              <button
+                                key={c.invoiceId}
+                                type="button"
+                                onClick={() => selectCandidate(i, c)}
+                                className="text-left rounded-lg border border-amber-200 bg-amber-50 px-3 py-1.5 text-xs text-slate-800 hover:border-amber-400 hover:bg-amber-100 transition-colors"
+                              >
+                                <span className="font-medium">{c.clientName}</span>
+                                <span className="ml-2 text-slate-500">発行: {c.issueDate}</span>
+                              </button>
+                            ))}
+                          </div>
+                        ) : row.invoiceId ? (
                           <Link
                             href={`/dashboard/invoices/${row.invoiceId}`}
                             className="text-blue-600 hover:underline inline-flex items-center gap-1 font-medium"
@@ -394,7 +430,7 @@ export default function ReconcileClient({
                         ) : (
                           <span className="text-slate-400">—</span>
                         )}
-                        {row.clientName && (
+                        {!row.candidates && row.clientName && (
                           <span className="block text-xs text-slate-500 mt-0.5">{row.clientName}</span>
                         )}
                       </td>
@@ -407,11 +443,20 @@ export default function ReconcileClient({
           </div>
           <div className="flex flex-wrap items-center justify-between gap-4 border-t border-slate-200 bg-slate-50 px-6 py-4">
             <div>
-              <p className="text-sm text-slate-600">
-                {executed
-                  ? `${paidRows.length}件を支払済にしました`
-                  : `${completableRows.length}件を支払済にできます`}
-              </p>
+              {!executed && (
+                <div className="flex flex-wrap gap-3 text-sm">
+                  <span className="text-emerald-700 font-medium">消込可能: {completableRows.length}件</span>
+                  {pendingCandidateRows.length > 0 && (
+                    <span className="text-amber-600 font-medium">候補選択待ち: {pendingCandidateRows.length}件</span>
+                  )}
+                  {unmatchedRows.filter(r => !r.candidates?.length).length > 0 && (
+                    <span className="text-slate-500">未照合: {unmatchedRows.filter(r => !r.candidates?.length).length}件</span>
+                  )}
+                </div>
+              )}
+              {executed && (
+                <p className="text-sm text-slate-600">{paidRows.length}件を支払済にしました</p>
+              )}
               {results.length > 0 && completableRows.length === 0 && !executed && (
                 <p className="mt-1 text-xs text-amber-700">
                   「完了」「確認」の行が0件です。未払い請求書の取引先名・金額と入金明細が一致するか確認してください。
@@ -437,6 +482,86 @@ export default function ReconcileClient({
               </button>
             </div>
           </div>
+
+          {/* 消し込み結果サマリー */}
+          {(executed || (results.length > 0 && unmatchedRows.length > 0)) && (
+            <div className="border-t border-slate-200">
+              {executed && (
+                <div className="grid grid-cols-1 divide-y divide-slate-200 md:grid-cols-2 md:divide-x md:divide-y-0">
+                  {/* 消込できた */}
+                  <div className="px-6 py-5">
+                    <h3 className="flex items-center gap-2 text-sm font-semibold text-emerald-700 mb-3">
+                      <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-emerald-100 text-emerald-700 text-xs">✓</span>
+                      消し込み完了 {paidRows.length}件
+                      {paidRows.length > 0 && (
+                        <span className="text-xs font-normal text-emerald-600">
+                          ¥{paidRows.reduce((s, r) => s + r.amount, 0).toLocaleString()}
+                        </span>
+                      )}
+                    </h3>
+                    {paidRows.length === 0 ? (
+                      <p className="text-xs text-slate-400">なし</p>
+                    ) : (
+                      <ul className="space-y-1.5">
+                        {paidRows.map((r, i) => (
+                          <li key={i} className="flex items-center justify-between text-xs text-slate-700">
+                            <span className="truncate max-w-[60%]">{r.clientName ?? r.rawName}</span>
+                            <span className="font-medium text-emerald-700">¥{r.amount.toLocaleString()}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+                  {/* 消込できなかった */}
+                  <div className="px-6 py-5">
+                    <h3 className="flex items-center gap-2 text-sm font-semibold text-slate-600 mb-3">
+                      <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-slate-100 text-slate-500 text-xs">—</span>
+                      照合できなかった {unmatchedRows.length + pendingCandidateRows.length}件
+                      {(unmatchedRows.length + pendingCandidateRows.length) > 0 && (
+                        <span className="text-xs font-normal text-slate-500">
+                          ¥{[...unmatchedRows, ...pendingCandidateRows].reduce((s, r) => s + r.amount, 0).toLocaleString()}
+                        </span>
+                      )}
+                    </h3>
+                    {(unmatchedRows.length === 0 && pendingCandidateRows.length === 0) ? (
+                      <p className="text-xs text-slate-400">なし（すべて消し込み完了）</p>
+                    ) : (
+                      <ul className="space-y-1.5">
+                        {unmatchedRows.map((r, i) => (
+                          <li key={i} className="text-xs">
+                            <span className="text-slate-700 font-medium truncate block">{r.rawName}</span>
+                            <span className="text-slate-400">¥{r.amount.toLocaleString()} — {r.message}</span>
+                          </li>
+                        ))}
+                        {pendingCandidateRows.map((r, i) => (
+                          <li key={`cand-${i}`} className="text-xs">
+                            <span className="text-amber-700 font-medium truncate block">{r.rawName}</span>
+                            <span className="text-slate-400">¥{r.amount.toLocaleString()} — 候補が選択されませんでした</span>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+                </div>
+              )}
+              {!executed && unmatchedRows.length > 0 && (
+                <div className="px-6 py-4 bg-slate-50">
+                  <p className="text-xs font-medium text-slate-500 mb-2">照合できていない入金明細 ({unmatchedRows.length}件)</p>
+                  <ul className="space-y-1">
+                    {unmatchedRows.slice(0, 5).map((r, i) => (
+                      <li key={i} className="flex items-center justify-between text-xs text-slate-600">
+                        <span className="truncate max-w-[55%]">{r.rawName}</span>
+                        <span className="text-slate-500">¥{r.amount.toLocaleString()} — {r.message.slice(0, 30)}{r.message.length > 30 ? '…' : ''}</span>
+                      </li>
+                    ))}
+                    {unmatchedRows.length > 5 && (
+                      <li className="text-xs text-slate-400">…他{unmatchedRows.length - 5}件</li>
+                    )}
+                  </ul>
+                </div>
+              )}
+            </div>
+          )}
         </section>
       )}
     </div>

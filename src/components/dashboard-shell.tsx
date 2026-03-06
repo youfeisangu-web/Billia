@@ -4,6 +4,7 @@ import { useState } from "react";
 import DashboardSidebar from "./dashboard-sidebar";
 import DashboardHeader from "./dashboard-header";
 import NavigationLoader from "./navigation-loader";
+import BottomNav from "./bottom-nav";
 
 export default function DashboardShell({
   children,
@@ -20,10 +21,12 @@ export default function DashboardShell({
       />
       <div className="flex flex-1 flex-col min-w-0 min-h-0">
         <DashboardHeader onMenuClick={() => setSidebarOpen(true)} />
-        <main className="flex-1 overflow-y-auto overflow-x-hidden px-4 md:pr-8 pb-6">
+        {/* モバイルはbottom nav分の余白(pb-20)を確保 */}
+        <main className="flex-1 overflow-y-auto overflow-x-hidden px-4 md:pr-8 pb-20 md:pb-6">
           {children}
         </main>
       </div>
+      <BottomNav onMoreClick={() => setSidebarOpen(true)} />
       <NavigationLoader />
     </div>
   );

@@ -129,17 +129,17 @@ export default function DashboardSidebar({
                 <Link
                   href={href}
                   className={`
-                    flex items-center gap-3 px-3 py-2.5 rounded-xl text-[15px] transition-colors duration-150
+                    flex items-center gap-3 px-3 py-3 rounded-xl text-[15px] transition-colors duration-150
                     ${
                       isActive
-                        ? "bg-billia-blue/10 text-billia-blue font-medium"
-                        : "text-billia-text-muted hover:bg-black/[0.04] hover:text-billia-text"
+                        ? "bg-billia-blue/10 text-billia-blue font-semibold"
+                        : "text-slate-700 hover:bg-black/[0.04] hover:text-billia-text font-medium"
                     }
                   `}
                 >
                   <Icon
                     className={`w-5 h-5 shrink-0 ${
-                      isActive ? "text-billia-blue" : "text-billia-text-muted"
+                      isActive ? "text-billia-blue" : "text-slate-500"
                     }`}
                   />
                   <span>{label}</span>
@@ -154,19 +154,17 @@ export default function DashboardSidebar({
           <Link
             href="/dashboard/settings"
             className={`
-              flex items-center gap-3 px-3 py-2.5 rounded-xl text-[15px] transition-colors duration-150
+              flex items-center gap-3 px-3 py-3 rounded-xl text-[15px] transition-colors duration-150
               ${
                 pathname === "/dashboard/settings"
-                  ? "bg-billia-blue/10 text-billia-blue font-medium"
-                  : "text-billia-text-muted hover:bg-black/[0.04] hover:text-billia-text"
+                  ? "bg-billia-blue/10 text-billia-blue font-semibold"
+                  : "text-slate-700 hover:bg-black/[0.04] hover:text-billia-text font-medium"
               }
             `}
           >
             <Settings
               className={`w-5 h-5 shrink-0 ${
-                pathname === "/dashboard/settings"
-                  ? "text-billia-blue"
-                  : "text-billia-text-muted"
+                pathname === "/dashboard/settings" ? "text-billia-blue" : "text-slate-500"
               }`}
             />
             <span>設定</span>
@@ -174,19 +172,17 @@ export default function DashboardSidebar({
           <Link
             href="/dashboard/settings/members"
             className={`
-              flex items-center gap-3 px-3 py-2.5 rounded-xl text-[15px] transition-colors duration-150
+              flex items-center gap-3 px-3 py-3 rounded-xl text-[15px] transition-colors duration-150
               ${
                 pathname?.startsWith("/dashboard/settings/members")
-                  ? "bg-billia-blue/10 text-billia-blue font-medium"
-                  : "text-billia-text-muted hover:bg-black/[0.04] hover:text-billia-text"
+                  ? "bg-billia-blue/10 text-billia-blue font-semibold"
+                  : "text-slate-700 hover:bg-black/[0.04] hover:text-billia-text font-medium"
               }
             `}
           >
             <Users
               className={`w-5 h-5 shrink-0 ${
-                pathname?.startsWith("/dashboard/settings/members")
-                  ? "text-billia-blue"
-                  : "text-billia-text-muted"
+                pathname?.startsWith("/dashboard/settings/members") ? "text-billia-blue" : "text-slate-500"
               }`}
             />
             <span>メンバー管理</span>

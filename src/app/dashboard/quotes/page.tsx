@@ -20,6 +20,17 @@ export default async function QuotesPage() {
     },
   });
 
+  const quotesForClient = quotes.map((q) => ({
+    id: q.id,
+    quoteNumber: q.quoteNumber,
+    issueDate: q.issueDate.toISOString(),
+    validUntil: q.validUntil.toISOString(),
+    totalAmount: q.totalAmount,
+    status: q.status,
+    folder: q.folder ?? null,
+    client: q.client,
+  }));
+
   return (
     <div className="flex flex-col gap-5 py-5 md:gap-8 md:py-8">
       <header className="flex items-start justify-between gap-4">
@@ -41,7 +52,7 @@ export default async function QuotesPage() {
       </header>
 
       <div className="billia-card overflow-hidden p-4 md:p-6">
-        <QuotesTableWithBulkConvert quotes={quotes} />
+        <QuotesTableWithBulkConvert quotes={quotesForClient} />
       </div>
     </div>
   );

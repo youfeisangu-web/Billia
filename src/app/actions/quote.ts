@@ -240,3 +240,19 @@ export async function acceptQuoteByToken(token: string): Promise<
     };
   }
 }
+
+export async function updateQuoteFolder(ids: string[], folder: string | null): Promise<SubmitResult> {
+  try {
+    const { userId, orgId } = await auth();
+    if (!userId) throw new Error("Unauthorized");
+    const scope = orgId ? { orgId } : { userId };
+    await prisma.quote.updateMany({
+      where: { id: { in: ids }, ...scope },
+      data: { folder: folder || null },
+    });
+    revalidatePath("/dashboard/quotes");
+    return { success: true, message: `${ids.length}件のフォルダを更新しました。` };
+  } catch (error) {
+    return { success: false, message: error instanceof Error ? error.message : "更新に失敗しました。" };
+  }
+}

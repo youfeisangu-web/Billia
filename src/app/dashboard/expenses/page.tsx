@@ -8,7 +8,8 @@ export default async function ExpensesPage() {
   const { userId } = await auth();
   if (!userId) redirect("/");
 
-  const expenses = await getExpenses();
+  const expensesRaw = await getExpenses();
+  const expenses = expensesRaw.map((e) => ({ ...e, folder: e.folder ?? null }));
 
   return (
     <div className="py-5 md:py-8 space-y-5 pb-12">
@@ -33,6 +34,7 @@ export default async function ExpensesPage() {
         <p className="billia-label mb-2">経費一覧</p>
         <ExpensesList initialExpenses={expenses} />
       </section>
+
     </div>
   );
 }
