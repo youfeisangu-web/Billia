@@ -81,26 +81,15 @@ export default function InvoicesTableWithBulkStatus({
     return invoices.filter((i) => i.folder === folderFilter);
   }, [invoices, folderFilter]);
 
-  // ソート
   const sorted = useMemo(() => {
     return [...filtered].sort((a, b) => {
       let cmp = 0;
       switch (sortKey) {
-        case "id":
-          cmp = a.id.localeCompare(b.id);
-          break;
-        case "client":
-          cmp = (a.client?.name ?? "").localeCompare(b.client?.name ?? "");
-          break;
-        case "issueDate":
-          cmp = new Date(a.issueDate).getTime() - new Date(b.issueDate).getTime();
-          break;
-        case "totalAmount":
-          cmp = a.totalAmount - b.totalAmount;
-          break;
-        case "status":
-          cmp = a.status.localeCompare(b.status);
-          break;
+        case "id": cmp = a.id.localeCompare(b.id); break;
+        case "client": cmp = (a.client?.name ?? "").localeCompare(b.client?.name ?? ""); break;
+        case "issueDate": cmp = new Date(a.issueDate).getTime() - new Date(b.issueDate).getTime(); break;
+        case "totalAmount": cmp = a.totalAmount - b.totalAmount; break;
+        case "status": cmp = a.status.localeCompare(b.status); break;
       }
       return sortDir === "asc" ? cmp : -cmp;
     });

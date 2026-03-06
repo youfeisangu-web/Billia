@@ -208,7 +208,6 @@ export default function ReconcileClient({
     (r) => r.status === "未完了" || r.status === "エラー" || (r.candidates && r.candidates.length > 0),
   );
 
-
   return (
     <div className="flex flex-col gap-6 p-6">
       {/* 請求金額（未払い請求書） */}
