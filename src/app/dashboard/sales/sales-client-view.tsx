@@ -351,7 +351,7 @@ export default function SalesClientView({
               value={newCategoryName}
               onChange={(e) => setNewCategoryName(e.target.value)}
               placeholder="例: 食品、日用品"
-              className="rounded-lg border border-billia-border px-3 py-1.5 text-xs flex-1 max-w-xs md:py-2 md:text-sm"
+              className="rounded-lg border border-billia-border px-3 py-1.5 text-xs w-full sm:max-w-xs md:py-2 md:text-sm"
             />
             <button
               type="button"

@@ -250,7 +250,7 @@ export default function QuotesTableWithBulkConvert({
                 placeholder="フォルダ名（空にすると解除）"
                 list="folder-suggestions-quote"
                 autoFocus
-                className="rounded-lg border border-billia-border bg-white px-3 py-2 text-sm text-billia-text w-52"
+                className="rounded-lg border border-billia-border bg-white px-3 py-2 text-sm text-billia-text w-full sm:w-52"
               />
               <datalist id="folder-suggestions-quote">
                 {folders.map((f) => <option key={f} value={f} />)}

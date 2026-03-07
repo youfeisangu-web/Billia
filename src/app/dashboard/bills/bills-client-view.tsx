@@ -292,7 +292,7 @@ export default function BillsClientView({
                       <th className="px-4 py-3">残日数</th>
                       <th className="px-4 py-3 text-right">金額</th>
                       <th className="px-4 py-3">状態</th>
-                      <th className="px-4 py-3 w-40"></th>
+                      <th className="px-4 py-3 sm:w-40"></th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-black/[0.04]">

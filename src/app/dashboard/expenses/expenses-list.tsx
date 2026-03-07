@@ -281,7 +281,7 @@ export default function ExpensesList({
               placeholder="フォルダ名（空にすると解除）"
               list="folder-suggestions-expense"
               autoFocus
-              className="rounded-lg border border-billia-border bg-white px-3 py-1.5 text-sm text-billia-text w-48"
+              className="rounded-lg border border-billia-border bg-white px-3 py-1.5 text-sm text-billia-text w-full sm:w-48"
             />
             <datalist id="folder-suggestions-expense">
               {folders.map((f) => <option key={f} value={f} />)}

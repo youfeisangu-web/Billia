@@ -651,11 +651,11 @@ export default function InvoiceEditor({
           </div>
 
           <div className="mt-6 flex flex-col items-end gap-2 text-sm text-slate-600">
-            <div className="flex w-full max-w-xs items-center justify-between">
+            <div className="flex w-full sm:max-w-xs items-center justify-between">
               <span>小計</span>
               <span>¥{formatCurrency(totals.subtotal)}</span>
             </div>
-            <div className="flex w-full max-w-xs items-center justify-between">
+            <div className="flex w-full sm:max-w-xs items-center justify-between">
               <span>消費税 (10%)</span>
               <span>¥{formatCurrency(totals.taxAmount)}</span>
             </div>
