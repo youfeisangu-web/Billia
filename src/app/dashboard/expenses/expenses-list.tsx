@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { deleteExpense, updateExpenseFolder } from "@/app/actions/expense";
 import NewExpenseDialog from "./new-expense-dialog";
 import type { ExpenseInitialValues } from "./new-expense-dialog";
+import Pagination from "@/components/pagination";
 import { Pencil, Trash2, FolderOpen, ChevronUp, ChevronDown, ChevronsUpDown, X } from "lucide-react";
 
 type Expense = {
@@ -63,8 +64,14 @@ function getMonthLabel(key: string): string {
 
 export default function ExpensesList({
   initialExpenses,
+  total,
+  page,
+  pageSize,
 }: {
   initialExpenses: Expense[];
+  total: number;
+  page: number;
+  pageSize: number;
 }) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
@@ -483,6 +490,8 @@ export default function ExpensesList({
           </div>
         )}
       </div>
+
+      <Pagination total={total} page={page} pageSize={pageSize} />
 
       <NewExpenseDialog open={editOpen} onOpenChange={setEditOpen} initialValues={editValues} expenseId={editId} />
     </>

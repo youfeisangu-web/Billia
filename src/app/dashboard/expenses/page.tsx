@@ -1,14 +1,34 @@
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
-import { getExpenses } from "@/app/actions/expense";
+import { prisma } from "@/lib/prisma";
 import ExpensesEntry from "./expenses-entry";
 import ExpensesList from "./expenses-list";
 
-export default async function ExpensesPage() {
-  const { userId } = await auth();
-  if (!userId) redirect("/");
+const PAGE_SIZE = 20;
 
-  const expensesRaw = await getExpenses();
+export default async function ExpensesPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ page?: string }>;
+}) {
+  const { userId, orgId } = await auth();
+  if (!userId) redirect("/");
+  const scope = orgId ? { orgId } : { userId };
+
+  const { page: pageParam } = await searchParams;
+  const page = Math.max(1, Number(pageParam) || 1);
+  const skip = (page - 1) * PAGE_SIZE;
+
+  const [expensesRaw, total] = await Promise.all([
+    prisma.expense.findMany({
+      where: { ...scope },
+      orderBy: { date: "desc" },
+      skip,
+      take: PAGE_SIZE,
+    }),
+    prisma.expense.count({ where: { ...scope } }),
+  ]);
+
   const expenses = expensesRaw.map((e) => ({ ...e, folder: e.folder ?? null }));
 
   return (
@@ -32,9 +52,13 @@ export default async function ExpensesPage() {
       {/* 一覧セクション */}
       <section>
         <p className="billia-label mb-2">経費一覧</p>
-        <ExpensesList initialExpenses={expenses} />
+        <ExpensesList
+          initialExpenses={expenses}
+          total={total}
+          page={page}
+          pageSize={PAGE_SIZE}
+        />
       </section>
-
     </div>
   );
 }

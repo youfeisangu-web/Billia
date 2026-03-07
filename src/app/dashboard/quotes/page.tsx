@@ -3,22 +3,37 @@ import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import QuotesTableWithBulkConvert from "./quotes-table-with-bulk-convert";
 
-export default async function QuotesPage() {
+const PAGE_SIZE = 20;
+
+export default async function QuotesPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ page?: string }>;
+}) {
   const { userId, orgId } = await auth();
   if (!userId) {
     redirect("/");
   }
   const scope = orgId ? { orgId } : { userId };
 
-  const quotes = await prisma.quote.findMany({
-    where: { ...scope },
-    orderBy: { issueDate: "desc" },
-    include: {
-      client: {
-        select: { name: true },
+  const { page: pageParam } = await searchParams;
+  const page = Math.max(1, Number(pageParam) || 1);
+  const skip = (page - 1) * PAGE_SIZE;
+
+  const [quotes, total] = await Promise.all([
+    prisma.quote.findMany({
+      where: { ...scope },
+      orderBy: { issueDate: "desc" },
+      skip,
+      take: PAGE_SIZE,
+      include: {
+        client: {
+          select: { name: true },
+        },
       },
-    },
-  });
+    }),
+    prisma.quote.count({ where: { ...scope } }),
+  ]);
 
   const quotesForClient = quotes.map((q) => ({
     id: q.id,
@@ -52,7 +67,12 @@ export default async function QuotesPage() {
       </header>
 
       <div className="billia-card overflow-hidden p-4 md:p-6">
-        <QuotesTableWithBulkConvert quotes={quotesForClient} />
+        <QuotesTableWithBulkConvert
+          quotes={quotesForClient}
+          total={total}
+          page={page}
+          pageSize={PAGE_SIZE}
+        />
       </div>
     </div>
   );

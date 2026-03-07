@@ -3,22 +3,37 @@ import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import InvoicesTableWithBulkStatus from "./invoices-table-with-bulk-status";
 
-export default async function InvoicesPage() {
+const PAGE_SIZE = 20;
+
+export default async function InvoicesPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ page?: string }>;
+}) {
   const { userId, orgId } = await auth();
   if (!userId) {
     redirect("/");
   }
   const scope = orgId ? { orgId } : { userId };
 
-  const invoices = await prisma.invoice.findMany({
-    where: { ...scope },
-    orderBy: { issueDate: "desc" },
-    include: {
-      client: {
-        select: { name: true },
+  const { page: pageParam } = await searchParams;
+  const page = Math.max(1, Number(pageParam) || 1);
+  const skip = (page - 1) * PAGE_SIZE;
+
+  const [invoices, total] = await Promise.all([
+    prisma.invoice.findMany({
+      where: { ...scope },
+      orderBy: { issueDate: "desc" },
+      skip,
+      take: PAGE_SIZE,
+      include: {
+        client: {
+          select: { name: true },
+        },
       },
-    },
-  });
+    }),
+    prisma.invoice.count({ where: { ...scope } }),
+  ]);
 
   const invoicesForClient = invoices.map((inv) => ({
     id: inv.id,
@@ -50,7 +65,12 @@ export default async function InvoicesPage() {
       </header>
 
       <div className="billia-card overflow-hidden p-4 md:p-6">
-        <InvoicesTableWithBulkStatus invoices={invoicesForClient} />
+        <InvoicesTableWithBulkStatus
+          invoices={invoicesForClient}
+          total={total}
+          page={page}
+          pageSize={PAGE_SIZE}
+        />
       </div>
     </div>
   );

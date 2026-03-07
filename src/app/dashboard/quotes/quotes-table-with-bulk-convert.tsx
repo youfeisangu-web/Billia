@@ -6,6 +6,7 @@ import { useTransition, useState, useMemo } from "react";
 import { convertQuotesToInvoices } from "@/app/actions/invoice";
 import { updateQuoteFolder } from "@/app/actions/quote";
 import ImportDocumentButton from "./import-document-button";
+import Pagination from "@/components/pagination";
 import { ChevronUp, ChevronDown, ChevronsUpDown, FolderOpen, X } from "lucide-react";
 
 const formatDate = (date: Date | string) =>
@@ -53,8 +54,14 @@ const FOLDER_COLORS = [
 
 export default function QuotesTableWithBulkConvert({
   quotes,
+  total,
+  page,
+  pageSize,
 }: {
   quotes: QuoteRow[];
+  total: number;
+  page: number;
+  pageSize: number;
 }) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
@@ -384,6 +391,11 @@ export default function QuotesTableWithBulkConvert({
         )}
       </div>
 
+      {/* ページネーション（モバイル） */}
+      <div className="md:hidden">
+        <Pagination total={total} page={page} pageSize={pageSize} />
+      </div>
+
       {/* デスクトップ：テーブル表示 */}
       <div className="mt-6 hidden overflow-hidden rounded-xl border border-billia-border-subtle md:block">
         <table className="w-full text-left text-sm">
@@ -457,6 +469,11 @@ export default function QuotesTableWithBulkConvert({
             )}
           </tbody>
         </table>
+      </div>
+
+      {/* ページネーション（デスクトップ） */}
+      <div className="hidden md:block">
+        <Pagination total={total} page={page} pageSize={pageSize} />
       </div>
     </div>
   );

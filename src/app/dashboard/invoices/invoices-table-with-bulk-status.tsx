@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useTransition, useState, useMemo } from "react";
 import { updateInvoiceStatusBulk, updateInvoiceFolder } from "@/app/actions/invoice";
 import ImportDocumentButton from "./import-document-button";
+import Pagination from "@/components/pagination";
 import { ChevronUp, ChevronDown, ChevronsUpDown, FolderOpen, X } from "lucide-react";
 
 const formatDate = (date: Date | string) =>
@@ -54,8 +55,14 @@ const FOLDER_COLORS = [
 
 export default function InvoicesTableWithBulkStatus({
   invoices,
+  total,
+  page,
+  pageSize,
 }: {
   invoices: InvoiceRow[];
+  total: number;
+  page: number;
+  pageSize: number;
 }) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
@@ -420,6 +427,11 @@ export default function InvoicesTableWithBulkStatus({
         )}
       </div>
 
+      {/* ページネーション（モバイル） */}
+      <div className="md:hidden">
+        <Pagination total={total} page={page} pageSize={pageSize} />
+      </div>
+
       {/* デスクトップ：テーブル表示 */}
       <div className="mt-6 hidden overflow-hidden rounded-xl border border-billia-border-subtle md:block">
         <table className="w-full text-left text-sm">
@@ -493,6 +505,11 @@ export default function InvoicesTableWithBulkStatus({
             )}
           </tbody>
         </table>
+      </div>
+
+      {/* ページネーション（デスクトップ） */}
+      <div className="hidden md:block">
+        <Pagination total={total} page={page} pageSize={pageSize} />
       </div>
     </div>
   );
