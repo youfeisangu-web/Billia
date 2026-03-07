@@ -1,13 +1,7 @@
 "use client";
 
 import Link from "next/link";
-
-function buildMailto(to: string, subject: string, body: string): string {
-  const u = new URL("mailto:" + encodeURIComponent(to));
-  u.searchParams.set("subject", subject);
-  u.searchParams.set("body", body);
-  return u.toString();
-}
+import SendEmailDialog from "@/components/send-email-dialog";
 
 export default function DocumentActionBar({
   backUrl,
@@ -38,13 +32,6 @@ export default function DocumentActionBar({
   sendReminderBody?: string;
   children?: React.ReactNode;
 }) {
-  const mailtoHref = sendMailTo
-    ? buildMailto(sendMailTo, sendMailSubject, sendMailBody)
-    : null;
-  const reminderHref = sendReminderTo
-    ? buildMailto(sendReminderTo, sendReminderSubject, sendReminderBody)
-    : null;
-
   return (
     <div className="no-print mb-6 space-y-3">
       {/* 上段：戻る ＋ 編集 */}
@@ -72,7 +59,7 @@ export default function DocumentActionBar({
       </button>
 
       {/* サブアクション */}
-      {(receiptUrl || deliveryUrl || mailtoHref || reminderHref || children) && (
+      {(receiptUrl || deliveryUrl || sendMailTo || sendReminderTo || children) && (
         <div className="flex flex-wrap items-center gap-2">
           {receiptUrl && (
             <div className="flex items-center gap-1.5">
@@ -95,21 +82,23 @@ export default function DocumentActionBar({
               納品書
             </Link>
           )}
-          {mailtoHref && (
-            <a
-              href={mailtoHref}
-              className="inline-flex items-center rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-700 shadow-sm transition hover:bg-slate-50"
-            >
-              📧 {sendMailLabel}
-            </a>
+          {sendMailTo && (
+            <SendEmailDialog
+              to={sendMailTo}
+              subject={sendMailSubject}
+              body={sendMailBody}
+              label={sendMailLabel}
+              variant="default"
+            />
           )}
-          {reminderHref && (
-            <a
-              href={reminderHref}
-              className="inline-flex items-center rounded-full border border-amber-200 bg-amber-50 px-3 py-1.5 text-xs font-medium text-amber-800 shadow-sm transition hover:bg-amber-100"
-            >
-              ⏰ リマインド
-            </a>
+          {sendReminderTo && (
+            <SendEmailDialog
+              to={sendReminderTo}
+              subject={sendReminderSubject}
+              body={sendReminderBody}
+              label="リマインド"
+              variant="reminder"
+            />
           )}
           {children}
         </div>
