@@ -9,6 +9,8 @@ import { calcTaxAmount, type TaxRounding } from "@/lib/utils";
 type SubmitResult = {
   success: boolean;
   message: string;
+  duplicate?: boolean;
+  duplicateInvoiceId?: string;
 };
 
 const getValue = (formData: FormData, key: string) => {
@@ -107,6 +109,30 @@ export async function createInvoice(formData: FormData): Promise<SubmitResult> {
     const taxRounding = (user?.taxRounding ?? "floor") as TaxRounding;
     const taxAmount = calcTaxAmount(subtotal, taxRatePercent, taxRounding);
     const totalAmount = subtotal + taxAmount;
+
+    // 重複チェック（forceCreate=true の場合はスキップ）
+    const forceCreate = getValue(formData, "forceCreate") === "true";
+    if (!forceCreate && finalClientId) {
+      const monthStart = new Date(issueDate.getFullYear(), issueDate.getMonth(), 1);
+      const monthEnd = new Date(issueDate.getFullYear(), issueDate.getMonth() + 1, 0, 23, 59, 59);
+      const duplicate = await prisma.invoice.findFirst({
+        where: {
+          ...scope,
+          clientId: finalClientId,
+          totalAmount,
+          issueDate: { gte: monthStart, lte: monthEnd },
+        },
+        select: { id: true },
+      });
+      if (duplicate) {
+        return {
+          success: false,
+          duplicate: true,
+          duplicateInvoiceId: duplicate.id,
+          message: `同じ取引先・同額の請求書が今月すでにあります（${duplicate.id}）。重複の可能性があります。`,
+        };
+      }
+    }
 
     const yyyymm = `${issueDate.getFullYear()}${String(issueDate.getMonth() + 1).padStart(2, "0")}`;
     const latest = await prisma.invoice.findFirst({

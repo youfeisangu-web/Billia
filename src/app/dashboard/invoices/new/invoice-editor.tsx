@@ -362,7 +362,16 @@ export default function InvoiceEditor({
 
     startTransition(async () => {
       const result = await createInvoice(formData);
-      if (!result.success) {
+      if (result.duplicate) {
+        const confirmed = window.confirm(
+          `⚠️ ${result.message}\n\nそれでも作成しますか？`
+        );
+        if (confirmed) {
+          formData.set("forceCreate", "true");
+          const retryResult = await createInvoice(formData);
+          if (!retryResult.success) window.alert(retryResult.message);
+        }
+      } else if (!result.success) {
         window.alert(result.message);
       } else {
         router.refresh();
