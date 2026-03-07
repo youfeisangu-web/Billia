@@ -101,7 +101,7 @@ export default function DashboardHeader({ onMenuClick }: DashboardHeaderProps) {
             <Bell className="w-5 h-5" />
             <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-amber-500 pointer-events-none" />
           </button>
-          <UserButton afterSignOutUrl="/" />
+          <UserButton />
         </div>
       </div>
     </header>
