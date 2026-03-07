@@ -40,6 +40,8 @@ export default async function InvoiceDetailPage({
     },
   });
 
+  const invoiceDesign = invoice?.user.invoiceDesign ?? "classic";
+
   if (!invoice) {
     notFound();
   }
@@ -63,6 +65,8 @@ export default async function InvoiceDetailPage({
       companyName: invoice.user.companyName,
       invoiceRegNumber: invoice.user.invoiceRegNumber,
       email: invoice.user.email,
+      address: invoice.user.address,
+      phoneNumber: invoice.user.phoneNumber,
     },
     bankAccount: bankAccount
       ? {
@@ -141,7 +145,7 @@ export default async function InvoiceDetailPage({
         sendReminderBody={reminderBody}
       />
       <DocumentScaleWrapper>
-        <InvoiceTemplate data={data} />
+        <InvoiceTemplate data={data} design={invoiceDesign} />
       </DocumentScaleWrapper>
     </div>
   );

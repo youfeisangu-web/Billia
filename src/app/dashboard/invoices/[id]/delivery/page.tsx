@@ -27,6 +27,8 @@ export default async function InvoiceDeliveryPage({
 
   if (!invoice) notFound();
 
+  const invoiceDesign = invoice.user.invoiceDesign ?? "classic";
+
   const data = {
     id: invoice.id,
     type: "納品書" as const,
@@ -44,6 +46,8 @@ export default async function InvoiceDeliveryPage({
       companyName: invoice.user.companyName,
       invoiceRegNumber: invoice.user.invoiceRegNumber,
       email: invoice.user.email,
+      address: invoice.user.address,
+      phoneNumber: invoice.user.phoneNumber,
     },
     bankAccount: null,
     items: invoice.items.map((item) => ({
@@ -63,7 +67,7 @@ export default async function InvoiceDeliveryPage({
         deliveryUrl={null}
       />
       <DocumentScaleWrapper>
-        <InvoiceTemplate data={data} />
+        <InvoiceTemplate data={data} design={invoiceDesign} />
       </DocumentScaleWrapper>
     </div>
   );

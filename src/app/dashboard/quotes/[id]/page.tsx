@@ -47,6 +47,7 @@ export default async function QuoteDetailPage({
   }
 
   const bankAccount = quote.user.bankAccounts[0] || null;
+  const invoiceDesign = quote.user.invoiceDesign ?? "classic";
 
   const data = {
     id: quote.id,
@@ -65,6 +66,8 @@ export default async function QuoteDetailPage({
       companyName: quote.user.companyName,
       invoiceRegNumber: quote.user.invoiceRegNumber,
       email: quote.user.email,
+      address: quote.user.address,
+      phoneNumber: quote.user.phoneNumber,
     },
     bankAccount: bankAccount
       ? {
@@ -128,7 +131,7 @@ export default async function QuoteDetailPage({
         )}
       </DocumentActionBar>
       <DocumentScaleWrapper>
-        <InvoiceTemplate data={data} />
+        <InvoiceTemplate data={data} design={invoiceDesign} />
       </DocumentScaleWrapper>
     </div>
   );
