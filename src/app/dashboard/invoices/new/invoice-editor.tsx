@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState, useTransition, useEffect } from "react";
+import { useMemo, useState, useTransition, useEffect, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import type { InvoiceOCRData } from "@/app/actions/ocr-document";
 
@@ -210,6 +210,9 @@ export default function InvoiceEditor({
   const [memoText, setMemoText] = useState("");
   const [isParsingMemo, setIsParsingMemo] = useState(false);
   const [memoError, setMemoError] = useState<string | null>(null);
+  const [isListening, setIsListening] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const recognitionRef = useRef<any>(null);
   const [activeTab, setActiveTab] = useState(searchParams.get("tab") === "memo" ? "memo" : "form");
   const fromOcr = searchParams.get("fromOcr") === "1";
 
@@ -299,6 +302,52 @@ export default function InvoiceEditor({
       }),
     );
     setCustomMarkupPercent("");
+  };
+
+  const handleToggleSpeech = () => {
+    const SpeechRecognitionAPI =
+      (typeof window !== "undefined" &&
+        ((window as any).SpeechRecognition || (window as any).webkitSpeechRecognition)) ||
+      null;
+
+    if (!SpeechRecognitionAPI) {
+      setMemoError("このブラウザは音声入力に対応していません（Chrome推奨）");
+      return;
+    }
+
+    if (isListening) {
+      recognitionRef.current?.stop();
+      return;
+    }
+
+    const recognition = new SpeechRecognitionAPI();
+    recognition.lang = "ja-JP";
+    recognition.interimResults = true;
+    recognition.continuous = false;
+    recognitionRef.current = recognition;
+
+    recognition.onstart = () => {
+      setIsListening(true);
+      setMemoError(null);
+    };
+
+    recognition.onresult = (event: any) => {
+      const transcript = Array.from(event.results)
+        .map((r: any) => r[0].transcript)
+        .join("");
+      setMemoText(transcript);
+    };
+
+    recognition.onerror = (event: any) => {
+      setMemoError(`音声認識エラー: ${event.error}`);
+      setIsListening(false);
+    };
+
+    recognition.onend = () => {
+      setIsListening(false);
+    };
+
+    recognition.start();
   };
 
   const handleParseMemo = async () => {
