@@ -233,23 +233,24 @@ export default function QuoteEditor({ clients, taxRate = 10, taxRounding = "floo
                 例: 「株式会社XYZに、ウェブサイト制作見積もり、50万円で提案して」<br />
                 例: 「田中さん、アプリ開発の見積もり、開発費100万、保守費月5万、3ヶ月分」
               </p>
-              <div className="flex justify-end mb-2">
+              <div className="flex gap-3 items-stretch mb-3">
                 <VoiceInputButton
                   onTranscript={(text) => {
                     setMemoText((prev) => prev ? prev + " " + text : text);
                     setMemoError(null);
                   }}
+                  className="flex flex-col items-center justify-center gap-2 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 px-5 py-5 text-white shadow-md transition hover:from-indigo-600 hover:to-purple-700 active:scale-95 shrink-0 w-28"
+                />
+                <textarea
+                  value={memoText}
+                  onChange={(e) => {
+                    setMemoText(e.target.value);
+                    setMemoError(null);
+                  }}
+                  placeholder="またはここに直接入力..."
+                  className="flex-1 min-h-[120px] rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200 resize-none"
                 />
               </div>
-              <textarea
-                value={memoText}
-                onChange={(e) => {
-                  setMemoText(e.target.value);
-                  setMemoError(null);
-                }}
-                placeholder="メモを入力してください..."
-                className="w-full min-h-[200px] rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200"
-              />
               {memoError && (
                 <p className="mt-2 text-sm text-red-600">{memoError}</p>
               )}

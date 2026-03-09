@@ -292,26 +292,25 @@ export default function ExpensesEntry() {
           <Sparkles className="w-4 h-4 text-amber-500" />
           <span className="text-sm font-semibold text-gray-800">メモから作成</span>
           <span className="text-xs text-gray-400 ml-1">話し言葉でOK</span>
-          <div className="ml-auto">
-            <VoiceInputButton
-              onTranscript={(text) => setMemo((prev) => prev ? prev + " " + text : text)}
-            />
-          </div>
         </div>
         <div className="p-4 space-y-3">
-          <textarea
-            value={memo}
-            onChange={(e) => setMemo(e.target.value)}
-            placeholder={
-              "例: 昨日コンビニで500円のお菓子\n例: 電車代1,200円\n例: AWS 3月分 15,000円"
-            }
-            rows={3}
-            className="w-full rounded-xl border border-gray-200 px-3 py-2.5 text-sm text-gray-800 resize-none focus:outline-none focus:ring-2 focus:ring-amber-300 placeholder:text-gray-400"
-            onKeyDown={(e) => {
-              if (e.key === "Enter" && (e.metaKey || e.ctrlKey))
-                handleMemoSubmit();
-            }}
-          />
+          <div className="flex gap-3 items-stretch">
+            <VoiceInputButton
+              onTranscript={(text) => setMemo((prev) => prev ? prev + " " + text : text)}
+              className="flex flex-col items-center justify-center gap-2 rounded-xl bg-gradient-to-br from-amber-400 to-orange-500 px-4 py-4 text-white shadow-md transition hover:from-amber-500 hover:to-orange-600 active:scale-95 shrink-0 w-24"
+            />
+            <textarea
+              value={memo}
+              onChange={(e) => setMemo(e.target.value)}
+              placeholder={"例: コンビニで500円のお菓子\n例: 電車代1,200円\n例: AWS 3月分 15,000円"}
+              rows={3}
+              className="flex-1 rounded-xl border border-gray-200 px-3 py-2.5 text-sm text-gray-800 resize-none focus:outline-none focus:ring-2 focus:ring-amber-300 placeholder:text-gray-400"
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && (e.metaKey || e.ctrlKey))
+                  handleMemoSubmit();
+              }}
+            />
+          </div>
           <button
             onClick={handleMemoSubmit}
             disabled={isMemoLoading || !memo.trim()}

@@ -210,6 +210,8 @@ export default function VoiceInputButton({
     recognitionRef.current?.stop();
   };
 
+  const isLarge = !!className;
+
   return (
     <>
       <button
@@ -222,12 +224,12 @@ export default function VoiceInputButton({
         title="音声入力"
       >
         <svg
-          width="13"
-          height="13"
+          width={isLarge ? 28 : 13}
+          height={isLarge ? 28 : 13}
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
-          strokeWidth="2"
+          strokeWidth="1.8"
           strokeLinecap="round"
           strokeLinejoin="round"
         >
@@ -236,7 +238,11 @@ export default function VoiceInputButton({
           <line x1="12" y1="19" x2="12" y2="23" />
           <line x1="8" y1="23" x2="16" y2="23" />
         </svg>
-        音声入力
+        {isLarge ? (
+          <span className="text-xs font-semibold mt-1">タップして<br />話す</span>
+        ) : (
+          "音声入力"
+        )}
       </button>
       {isListening && (
         <VoiceOverlay transcript={transcript} onStop={handleStop} />
