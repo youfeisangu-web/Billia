@@ -8,6 +8,7 @@ import type { DocumentImportData } from "@/app/actions/ocr-document";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { parseMemoToQuote } from "@/app/actions/memo-parser";
 import { Loader2 } from "lucide-react";
+import VoiceInputButton from "@/components/voice-input-button";
 
 const QUOTE_OCR_STORAGE_KEY = "quoteOcrPrefill";
 
@@ -232,6 +233,14 @@ export default function QuoteEditor({ clients, taxRate = 10, taxRounding = "floo
                 例: 「株式会社XYZに、ウェブサイト制作見積もり、50万円で提案して」<br />
                 例: 「田中さん、アプリ開発の見積もり、開発費100万、保守費月5万、3ヶ月分」
               </p>
+              <div className="flex justify-end mb-2">
+                <VoiceInputButton
+                  onTranscript={(text) => {
+                    setMemoText((prev) => prev ? prev + " " + text : text);
+                    setMemoError(null);
+                  }}
+                />
+              </div>
               <textarea
                 value={memoText}
                 onChange={(e) => {

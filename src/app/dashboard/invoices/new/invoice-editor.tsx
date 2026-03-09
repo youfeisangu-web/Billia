@@ -19,6 +19,7 @@ import {
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { parseMemoToInvoice } from "@/app/actions/memo-parser";
 import { Loader2 } from "lucide-react";
+import VoiceInputButton from "@/components/voice-input-button";
 
 type ClientOption = {
   id: string;
@@ -403,6 +404,14 @@ export default function InvoiceEditor({
                 例: 「株式会社ABC、システム開発費10万円、2025年2月15日発行、支払期限3月末」<br />
                 例: 「山田さんに、ホームページ制作50,000円と、SEO対策30,000円、合計8万円で請求して」
               </p>
+              <div className="flex justify-end mb-2">
+                <VoiceInputButton
+                  onTranscript={(text) => {
+                    setMemoText((prev) => prev ? prev + " " + text : text);
+                    setMemoError(null);
+                  }}
+                />
+              </div>
               <textarea
                 value={memoText}
                 onChange={(e) => {

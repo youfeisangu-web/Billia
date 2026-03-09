@@ -3,6 +3,7 @@
 import { useState, useRef } from "react";
 import { readReceiptImage } from "@/app/actions/ocr-receipt";
 import { parseMemoToExpense } from "@/app/actions/memo-parser";
+import VoiceInputButton from "@/components/voice-input-button";
 import {
   Loader2,
   UploadCloud,
@@ -291,6 +292,11 @@ export default function ExpensesEntry() {
           <Sparkles className="w-4 h-4 text-amber-500" />
           <span className="text-sm font-semibold text-gray-800">メモから作成</span>
           <span className="text-xs text-gray-400 ml-1">話し言葉でOK</span>
+          <div className="ml-auto">
+            <VoiceInputButton
+              onTranscript={(text) => setMemo((prev) => prev ? prev + " " + text : text)}
+            />
+          </div>
         </div>
         <div className="p-4 space-y-3">
           <textarea
