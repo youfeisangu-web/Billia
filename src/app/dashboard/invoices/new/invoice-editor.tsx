@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState, useTransition, useEffect } from "react";
+import { useSpeechRecognition } from "@/hooks/useSpeechRecognition";
 import { useRouter, useSearchParams } from "next/navigation";
 import type { InvoiceOCRData } from "@/app/actions/ocr-document";
 
@@ -20,6 +21,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { parseMemoToInvoice } from "@/app/actions/memo-parser";
 import { Loader2 } from "lucide-react";
 import VoiceInputButton from "@/components/voice-input-button";
+
 
 type ClientOption = {
   id: string;
@@ -210,6 +212,21 @@ export default function InvoiceEditor({
   const [memoText, setMemoText] = useState("");
   const [isParsingMemo, setIsParsingMemo] = useState(false);
   const [memoError, setMemoError] = useState<string | null>(null);
+  const {
+    isListening,
+    transcript,
+    start: startListening,
+    stop: stopListening,
+    resetTranscript,
+  } = useSpeechRecognition();
+
+  // 音声認識の結果をmemoTextに反映
+  useEffect(() => {
+    if (transcript) {
+      setMemoText(transcript);
+      setMemoError(null);
+    }
+  }, [transcript]);
   const [activeTab, setActiveTab] = useState(searchParams.get("tab") === "memo" ? "memo" : "form");
   const fromOcr = searchParams.get("fromOcr") === "1";
 
@@ -301,6 +318,15 @@ export default function InvoiceEditor({
     setCustomMarkupPercent("");
   };
 
+  const handleToggleSpeech = () => {
+    if (isListening) {
+      stopListening();
+    } else {
+      resetTranscript();
+      startListening();
+    }
+  };
+
   const handleParseMemo = async () => {
     if (!memoText.trim()) {
       setMemoError("メモテキストを入力してください");
@@ -344,6 +370,7 @@ export default function InvoiceEditor({
           );
         }
         setMemoText("");
+        resetTranscript();
         setMemoError(null);
         setActiveTab("form");
       } else {
