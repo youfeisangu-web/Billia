@@ -369,12 +369,18 @@ export default function LandingPage() {
               <div className="flex items-center justify-center gap-3 mb-2">
                 <span className="text-xs text-slate-400">掲載予定プラットフォーム</span>
               </div>
-              <div className="inline-flex items-center gap-2 rounded-xl border border-orange-200 bg-orange-50 px-5 py-2.5">
+              <a
+                href="https://camp-fire.jp/projects/933297/preview?token=100zygut&utm_campaign=cp_po_share_c_msg_projects_show"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 rounded-xl border border-orange-200 bg-orange-50 px-5 py-2.5 hover:bg-orange-100 transition-colors"
+              >
                 <div className="w-5 h-5 rounded-full bg-orange-500 flex items-center justify-center shrink-0">
                   <span className="text-white font-black text-[10px]">C</span>
                 </div>
                 <span className="font-bold text-orange-700 text-sm tracking-wide">CAMPFIRE</span>
-              </div>
+              </a>
+              <p className="mt-4 text-xs text-slate-400">公開前リンクです。開始までしばらくお待ちください。</p>
             </div>
           </div>
         </div>
