@@ -30,10 +30,11 @@ import {
 
 /* ── coming soon badge ───────────────────────────────────── */
 
-function ComingSoonBadge({ size = "md" }: { size?: "sm" | "md" | "lg" }) {
+function ComingSoonBadge({ size = "md", color = "blue" }: { size?: "sm" | "md" | "lg"; color?: "blue" | "orange" }) {
   const styles = { sm: "px-3 py-1 text-xs gap-1.5", md: "px-5 py-2.5 text-sm gap-2", lg: "px-7 py-3.5 text-base gap-2.5" };
+  const colors = { blue: "border-blue-300 bg-blue-50 text-blue-600", orange: "border-orange-300 bg-orange-50 text-orange-600" };
   return (
-    <span className={`inline-flex items-center font-bold rounded-full border-2 border-dashed border-blue-300 bg-blue-50 text-blue-600 select-none ${styles[size]}`}>
+    <span className={`inline-flex items-center font-bold rounded-full border-2 border-dashed select-none ${styles[size]} ${colors[color]}`}>
       <Clock className={size === "lg" ? "w-5 h-5" : "w-4 h-4"} />
       Coming Soon
     </span>
@@ -341,6 +342,40 @@ export default function LandingPage() {
                 <p className="text-sm text-slate-500">{s.label}</p>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── crowdfunding ── */}
+      <section id="crowdfunding" className="py-16 md:py-20">
+        <div className="mx-auto max-w-4xl px-5 md:px-8">
+          <div className="rounded-3xl border-2 border-dashed border-orange-200 bg-white p-10 md:p-14 text-center relative overflow-hidden">
+            <div className="pointer-events-none absolute -top-16 -right-16 w-64 h-64 rounded-full opacity-10" style={{ background: "radial-gradient(circle, #f97316 0%, transparent 70%)" }} />
+            <div className="pointer-events-none absolute -bottom-16 -left-16 w-64 h-64 rounded-full opacity-10" style={{ background: "radial-gradient(circle, #fb923c 0%, transparent 70%)" }} />
+            <div className="relative">
+              <div className="inline-flex items-center gap-2 rounded-full bg-orange-50 border border-orange-200 px-4 py-1.5 text-xs font-semibold text-orange-600 mb-4">
+                <Megaphone className="w-3.5 h-3.5" />クラウドファンディング
+              </div>
+              <div className="mb-4">
+                <ComingSoonBadge size="md" color="orange" />
+              </div>
+              <h2 className="text-2xl md:text-4xl font-extrabold tracking-tight mb-4">
+                Billiaの成長を、<br className="md:hidden" />一緒に支えてください
+              </h2>
+              <p className="text-slate-500 text-sm md:text-base leading-relaxed max-w-xl mx-auto mb-8">
+                クラウドファンディングを近日公開予定です。<br />
+                支援者の方にはリリース時に特別プランをご提供します。
+              </p>
+              <div className="flex items-center justify-center gap-3 mb-2">
+                <span className="text-xs text-slate-400">掲載予定プラットフォーム</span>
+              </div>
+              <div className="inline-flex items-center gap-2 rounded-xl border border-orange-200 bg-orange-50 px-5 py-2.5">
+                <div className="w-5 h-5 rounded-full bg-orange-500 flex items-center justify-center shrink-0">
+                  <span className="text-white font-black text-[10px]">C</span>
+                </div>
+                <span className="font-bold text-orange-700 text-sm tracking-wide">CAMPFIRE</span>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -804,33 +839,6 @@ export default function LandingPage() {
                   ))}
                 </ul>
                 <div className="flex justify-center"><ComingSoonBadge size="md" /></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── crowdfunding ── */}
-      <section id="crowdfunding" className="py-20 md:py-28 bg-slate-50">
-        <div className="mx-auto max-w-4xl px-5 md:px-8">
-          <div className="rounded-3xl border-2 border-dashed border-orange-200 bg-white p-10 md:p-14 text-center relative overflow-hidden">
-            <div className="pointer-events-none absolute -top-16 -right-16 w-64 h-64 rounded-full opacity-10" style={{ background: "radial-gradient(circle, #f97316 0%, transparent 70%)" }} />
-            <div className="pointer-events-none absolute -bottom-16 -left-16 w-64 h-64 rounded-full opacity-10" style={{ background: "radial-gradient(circle, #fb923c 0%, transparent 70%)" }} />
-            <div className="relative">
-              <div className="inline-flex items-center gap-2 rounded-full bg-orange-50 border border-orange-200 px-4 py-1.5 text-xs font-semibold text-orange-600 mb-6">
-                <Megaphone className="w-3.5 h-3.5" />クラウドファンディング
-              </div>
-              <ComingSoonBadge size="md" />
-              <h2 className="text-2xl md:text-4xl font-extrabold tracking-tight mt-6 mb-4">
-                Billiaの成長を、<br className="md:hidden" />一緒に支えてください
-              </h2>
-              <p className="text-slate-500 text-sm md:text-base leading-relaxed max-w-xl mx-auto mb-8">
-                クラウドファンディングを近日公開予定です。<br />
-                支援者の方にはリリース時に特別プランをご提供します。
-              </p>
-              <div className="inline-flex items-center gap-2 rounded-full border-2 border-dashed border-orange-200 bg-orange-50 px-6 py-3 text-orange-600 font-semibold text-sm">
-                <Clock className="w-4 h-4" />
-                公開までしばらくお待ちください
               </div>
             </div>
           </div>
