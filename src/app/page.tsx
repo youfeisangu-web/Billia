@@ -387,6 +387,10 @@ export default function LandingPage() {
                 開始前プレビューはこちら
                 <ArrowRight className="w-4 h-4" />
               </a>
+              <div className="mt-6 inline-flex items-center gap-2 rounded-2xl border border-pink-200 bg-pink-50 px-5 py-3">
+                <span className="text-lg">❤️</span>
+                <span className="text-sm font-bold text-pink-600">ページのお気に入り登録もお願いします！</span>
+              </div>
             </div>
           </div>
         </div>
