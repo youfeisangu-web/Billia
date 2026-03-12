@@ -5,7 +5,7 @@ import Link from "next/link";
 import { getReconcileSummary } from "@/app/actions/payment";
 import { markInvoicePaid } from "@/app/actions/invoice";
 import type { ReconcileResult, ReconcileCandidate } from "@/types/reconcile";
-import { Upload, CheckCircle2, ExternalLink } from "lucide-react";
+import { Upload, CheckCircle2, ExternalLink, Camera } from "lucide-react";
 
 type Summary = { totalBilledAmount: number; invoiceCount: number };
 
@@ -278,6 +278,27 @@ export default function ReconcileClient({
             CSV、画像（JPEG、PNG、GIF、WebP）、PDF対応（AIで自動読み取り）
           </span>
         </div>
+
+        {/* スマホ用: カメラで撮影ボタン */}
+        <div className="mt-4">
+          <input
+            id="reconcile-camera"
+            type="file"
+            accept="image/*"
+            capture="environment"
+            onChange={handleFileInput}
+            className="sr-only"
+          />
+          <button
+            type="button"
+            onClick={() => document.getElementById("reconcile-camera")?.click()}
+            className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-billia-blue to-billia-green px-4 py-3 text-sm font-semibold text-white shadow-sm hover:from-billia-blue-dark hover:to-billia-green-dark transition-all md:w-auto md:px-6"
+          >
+            <Camera className="h-5 w-5" />
+            カメラで通帳を撮影してAI読み取り
+          </button>
+        </div>
+
         {files.length > 0 && (
           <div className="mt-4 flex flex-wrap items-center gap-3">
             <span className="text-sm text-slate-600">
