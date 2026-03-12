@@ -408,7 +408,7 @@ export default function InvoiceEditor({
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form onSubmit={handleSubmit} className="space-y-6 pb-24 md:pb-0">
       {fromOcr && (
         <section className="rounded-xl border border-blue-200 bg-blue-50/80 px-4 py-3 text-sm text-blue-800">
           <strong>他社の請求書を取り込みました。</strong>
@@ -797,6 +797,17 @@ export default function InvoiceEditor({
           </TabsContent>
         </Tabs>
       </section>
+
+      {/* モバイル: 下部固定の保存ボタン（スクロールしても常に表示） */}
+      <div className="fixed bottom-20 left-0 right-0 z-40 md:hidden px-4 py-3 bg-white/95 border-t border-slate-200 shadow-[0_-4px_12px_rgba(0,0,0,0.06)]">
+        <button
+          type="submit"
+          disabled={isPending}
+          className="w-full rounded-xl bg-blue-600 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          {isPending ? "保存中..." : "保存する"}
+        </button>
+      </div>
     </form>
   );
 }

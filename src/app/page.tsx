@@ -393,7 +393,8 @@ export default function LandingPage() {
                   Billiaの成長を、<br className="md:hidden" />一緒に支えてください
                 </h2>
                 <p className="text-slate-500 text-sm md:text-base leading-relaxed max-w-xl mx-auto mb-6">
-                  クラウドファンディングを近日公開予定です。<br />
+                  クラウドファンディングを近日公開予定<span className="whitespace-nowrap">です。</span>
+                  <br />
                   支援者の方にはリリース時に特別プランをご提供します。
                 </p>
                 <div className="flex flex-wrap items-center justify-center gap-3 mb-6">
@@ -422,7 +423,8 @@ export default function LandingPage() {
                   </a>
                 </div>
                 <p className="mt-2 text-slate-500 text-sm leading-relaxed max-w-xl mx-auto">
-                  クラウドファンディングは近日公開予定です。<br />
+                  クラウドファンディングは近日公開予定<span className="whitespace-nowrap">です。</span>
+                  <br />
                   支援者の皆さまには、リリース時にご利用いただける特別プランをご用意しています。
                 </p>
                 <p className="mt-3 text-slate-500 text-sm md:text-base leading-relaxed">
@@ -435,7 +437,7 @@ export default function LandingPage() {
                   >
                     お気に入り登録
                   </a>
-                  もお願いします！
+                  もお願い<span className="whitespace-nowrap">します！</span>
                 </p>
               </div>
             </div>

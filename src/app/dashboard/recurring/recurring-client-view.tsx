@@ -10,14 +10,7 @@ import {
 } from "@/app/actions/recurring";
 import { Plus, Pencil, Trash2, Power, Calendar, AlertCircle, X } from "lucide-react";
 import { getTenantsByGroup } from "@/app/actions/tenant";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { ResponsiveModal } from "@/components/responsive-modal";
 
 type RecurringTemplate = {
   id: string;
@@ -480,18 +473,17 @@ export default function RecurringClientView({
       </div>
 
       {/* 作成/編集ダイアログ */}
-      <Dialog open={showDialog} onOpenChange={handleCloseDialog}>
-        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle>
-              {editingTemplate ? "定期請求を編集" : "定期請求を作成"}
-            </DialogTitle>
-            <DialogDescription>
-              {editingTemplate
-                ? "定期請求テンプレートの設定を変更します"
-                : "毎月自動で請求書を作成するテンプレートを設定します"}
-            </DialogDescription>
-          </DialogHeader>
+      <ResponsiveModal
+        open={showDialog}
+        onOpenChange={handleCloseDialog}
+        title={editingTemplate ? "定期請求を編集" : "定期請求を作成"}
+        description={
+          editingTemplate
+            ? "定期請求テンプレートの設定を変更します"
+            : "毎月自動で請求書を作成するテンプレートを設定します"
+        }
+        className="max-w-2xl max-h-[90vh] overflow-y-auto"
+      >
           <form onSubmit={handleSubmit} className="space-y-6">
               {/* 取引先選択 */}
               <div>
@@ -503,7 +495,7 @@ export default function RecurringClientView({
                   onChange={(e) => handleTenantChange(e.target.value)}
                   required
                   disabled={!!editingTemplate}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-billia-blue"
+                  className="w-full min-h-[44px] px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-billia-blue"
                 >
                   <option value="">選択してください</option>
                   {tenants.map((tenant) => (
@@ -523,7 +515,7 @@ export default function RecurringClientView({
                   value={interval}
                   onChange={(e) => setInterval(e.target.value)}
                   required
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-billia-blue"
+                  className="w-full min-h-[44px] px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-billia-blue"
                 >
                   <option value="MONTHLY">毎月</option>
                   <option value="WEEKLY">毎週</option>
@@ -538,12 +530,14 @@ export default function RecurringClientView({
                 </label>
                 <input
                   type="number"
+                  inputMode="numeric"
+                  pattern="[0-9]*"
                   min="1"
                   max="31"
                   value={creationDay}
                   onChange={(e) => setCreationDay(parseInt(e.target.value) || 1)}
                   required
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-billia-blue"
+                  className="w-full min-h-[44px] px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-billia-blue"
                 />
                 <p className="text-xs text-billia-text-muted mt-1">
                   1-31の範囲で指定してください
@@ -557,13 +551,15 @@ export default function RecurringClientView({
                 </label>
                 <input
                   type="number"
+                  inputMode="numeric"
+                  pattern="[0-9]*"
                   min="1"
                   max="31"
                   value={sendDay || ""}
                   onChange={(e) =>
                     setSendDay(e.target.value ? parseInt(e.target.value) : null)
                   }
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-billia-blue"
+                  className="w-full min-h-[44px] px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-billia-blue"
                 />
                 <p className="text-xs text-billia-text-muted mt-1">
                   将来のメール送信用（現在は未使用）
@@ -580,7 +576,7 @@ export default function RecurringClientView({
                   value={startDate}
                   onChange={(e) => setStartDate(e.target.value)}
                   required
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-billia-blue"
+                  className="w-full min-h-[44px] px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-billia-blue"
                 />
               </div>
 
@@ -593,7 +589,7 @@ export default function RecurringClientView({
                   type="date"
                   value={endDate}
                   onChange={(e) => setEndDate(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-billia-blue"
+                  className="w-full min-h-[44px] px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-billia-blue"
                 />
                 <p className="text-xs text-billia-text-muted mt-1">
                   未指定の場合は無期限で実行されます
@@ -617,12 +613,12 @@ export default function RecurringClientView({
                             value={item.name}
                             onChange={(e) => updateItem(index, "name", e.target.value)}
                             required
-                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-billia-blue text-sm"
+                            className="w-full min-h-[44px] px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-billia-blue text-sm"
                           />
                         </div>
                         {items.length > 1 && (
-                          <button type="button" onClick={() => removeItem(index)} className="md:hidden p-1.5 text-red-500">
-                            <X className="w-4 h-4" />
+                          <button type="button" onClick={() => removeItem(index)} className="md:hidden min-h-[44px] px-2 text-red-500">
+                            <X className="w-4 h-4 mx-auto" />
                           </button>
                         )}
                       </div>
@@ -632,36 +628,39 @@ export default function RecurringClientView({
                           <label className="text-[10px] text-gray-400 mb-0.5 block md:hidden">数量</label>
                           <input
                             type="number"
+                            inputMode="numeric"
                             placeholder="数量"
                             min="1"
                             value={item.quantity}
                             onChange={(e) => updateItem(index, "quantity", parseInt(e.target.value) || 1)}
                             required
-                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-billia-blue text-sm"
+                            className="w-full min-h-[44px] px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-billia-blue text-sm"
                           />
                         </div>
                         <div className="md:w-32">
                           <label className="text-[10px] text-gray-400 mb-0.5 block md:hidden">単価</label>
                           <input
                             type="number"
+                            inputMode="numeric"
                             placeholder="単価"
                             min="0"
                             value={item.unitPrice}
                             onChange={(e) => updateItem(index, "unitPrice", parseInt(e.target.value) || 0)}
                             required
-                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-billia-blue text-sm"
+                            className="w-full min-h-[44px] px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-billia-blue text-sm"
                           />
                         </div>
                         <div className="md:w-24">
                           <label className="text-[10px] text-gray-400 mb-0.5 block md:hidden">税率%</label>
                           <input
                             type="number"
+                            inputMode="numeric"
                             placeholder="税率"
                             min="0"
                             max="100"
                             value={item.taxRate || 10}
                             onChange={(e) => updateItem(index, "taxRate", parseInt(e.target.value) || 10)}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-billia-blue text-sm"
+                            className="w-full min-h-[44px] px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-billia-blue text-sm"
                           />
                         </div>
                       </div>
@@ -691,30 +690,29 @@ export default function RecurringClientView({
                   value={note}
                   onChange={(e) => setNote(e.target.value)}
                   rows={3}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-billia-blue"
+                  className="w-full min-h-[44px] px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-billia-blue"
                 />
               </div>
 
             {/* ボタン */}
-            <DialogFooter>
+            <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end sm:gap-2 pt-2">
               <button
                 type="button"
                 onClick={() => handleCloseDialog(false)}
-                className="px-4 py-2 text-billia-text-muted hover:text-billia-text transition-colors"
+                className="px-4 py-2 min-h-[44px] sm:min-h-0 text-billia-text-muted hover:text-billia-text transition-colors border border-transparent"
               >
                 キャンセル
               </button>
               <button
                 type="submit"
                 disabled={loading}
-                className="px-6 py-2 bg-gradient-to-r from-billia-blue to-billia-green text-white rounded-lg font-semibold hover:from-billia-blue-dark hover:to-billia-green-dark transition-all shadow-sm disabled:opacity-50"
+                className="px-6 py-2 min-h-[44px] sm:min-h-0 bg-gradient-to-r from-billia-blue to-billia-green text-white rounded-lg font-semibold hover:from-billia-blue-dark hover:to-billia-green-dark transition-all shadow-sm disabled:opacity-50"
               >
                 {loading ? "保存中..." : editingTemplate ? "更新" : "作成"}
               </button>
-            </DialogFooter>
+            </div>
           </form>
-        </DialogContent>
-      </Dialog>
+      </ResponsiveModal>
     </div>
   );
 }

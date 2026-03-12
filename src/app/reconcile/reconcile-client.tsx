@@ -357,7 +357,90 @@ export default function ReconcileClient({
               金額が一致した請求書のうち、名前が近い候補を表示しています。問題なければ「消し込みを実行」で支払済にします。
             </p>
           </div>
-          <div className="overflow-x-auto">
+          {/* モバイル: カードレイアウト */}
+          <div className="divide-y divide-slate-200 md:hidden">
+            {results.map((row, i) => {
+              const isPaid = row.invoiceId && executedInvoiceIds.has(row.invoiceId);
+              return (
+                <div
+                  key={i}
+                  className={`p-4 ${
+                    isPaid ? "bg-emerald-50/50 border-l-4 border-l-emerald-500" : "bg-white"
+                  }`}
+                >
+                  <div className="flex items-start justify-between gap-2 mb-2">
+                    <div className="min-w-0">
+                      <p className="text-sm font-semibold text-slate-900 break-all">{row.rawName}</p>
+                      <p className="text-xs text-slate-500 mt-0.5">{row.date}</p>
+                    </div>
+                    <div className="text-right shrink-0">
+                      <p className="text-sm font-bold text-slate-900">¥{row.amount.toLocaleString()}</p>
+                      <div className="mt-1">
+                        <span
+                          className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-medium ${
+                            isPaid
+                              ? "bg-emerald-200 text-emerald-900"
+                              : row.status === "完了"
+                                ? "bg-emerald-100 text-emerald-800"
+                                : row.status === "エラー"
+                                  ? "bg-red-100 text-red-800"
+                                  : "bg-amber-100 text-amber-800"
+                          }`}
+                        >
+                          {isPaid && <CheckCircle2 className="h-3 w-3" />}
+                          {isPaid ? "支払済" : row.status}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="mt-2 pt-2 border-t border-slate-100">
+                    <p className="text-xs text-slate-500 mb-1.5 font-medium">対象請求書:</p>
+                    {row.candidates && row.candidates.length > 0 ? (
+                      <div className="flex flex-col gap-1.5">
+                        <span className="text-[11px] font-medium text-amber-700">どの請求書か選択してください：</span>
+                        {row.candidates.map((c) => (
+                          <button
+                            key={c.invoiceId}
+                            type="button"
+                            onClick={() => selectCandidate(i, c)}
+                            className="text-left flex items-center justify-between rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-slate-800 hover:border-amber-400 hover:bg-amber-100 transition-colors"
+                          >
+                            <span className="font-medium truncate">{c.clientName}</span>
+                            <span className="ml-2 text-[10px] text-slate-500 shrink-0">発行: {c.issueDate}</span>
+                          </button>
+                        ))}
+                      </div>
+                    ) : row.invoiceId ? (
+                      <div>
+                        <Link
+                          href={`/dashboard/invoices/${row.invoiceId}`}
+                          className="text-blue-600 hover:underline inline-flex items-center gap-1 font-medium text-sm"
+                        >
+                          {row.invoiceNumber ?? row.invoiceId}
+                          <ExternalLink className="h-3.5 w-3.5" />
+                        </Link>
+                        {!row.candidates && row.clientName && (
+                          <span className="block text-xs text-slate-600 mt-0.5">{row.clientName}</span>
+                        )}
+                      </div>
+                    ) : (
+                      <span className="text-slate-400 text-sm">—</span>
+                    )}
+                  </div>
+
+                  {row.message && (
+                    <div className="mt-2 bg-slate-50 rounded p-2 border border-slate-100">
+                      <p className="text-[11px] text-slate-600 leading-snug">{row.message}</p>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+
+          {/* デスクトップ用テーブル */}
+          <div className="hidden md:block overflow-x-auto">
             <table className="w-full text-left text-sm">
               <thead className="bg-slate-100 text-slate-600">
                 <tr>

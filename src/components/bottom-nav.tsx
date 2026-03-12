@@ -31,7 +31,7 @@ export default function BottomNav({ onMoreClick }: { onMoreClick: () => void }) 
             <Link
               key={href}
               href={href}
-              className={`flex-1 flex flex-col items-center justify-center py-2.5 gap-1 transition-colors ${
+              className={`relative flex-1 flex flex-col items-center justify-center py-2.5 gap-1 transition-colors active:bg-slate-50 ${
                 isActive ? "text-billia-blue" : "text-slate-400"
               }`}
             >
@@ -48,7 +48,7 @@ export default function BottomNav({ onMoreClick }: { onMoreClick: () => void }) 
         <button
           type="button"
           onClick={onMoreClick}
-          className="flex-1 flex flex-col items-center justify-center py-2.5 gap-1 text-slate-400"
+          className="flex-1 flex flex-col items-center justify-center py-2.5 gap-1 text-slate-400 transition-colors active:bg-slate-50"
         >
           <Menu className="w-5 h-5" />
           <span className="text-[10px] font-semibold">もっと</span>

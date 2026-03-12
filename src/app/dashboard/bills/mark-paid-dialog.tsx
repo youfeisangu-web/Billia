@@ -3,14 +3,7 @@
 import { useState, useEffect, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { markBillAsPaid } from "@/app/actions/bill";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { ResponsiveModal } from "@/components/responsive-modal";
 import { CheckCircle2 } from "lucide-react";
 
 const categories = [
@@ -70,19 +63,18 @@ export default function MarkPaidDialog({
   };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
-            <CheckCircle2 className="w-5 h-5 text-emerald-500" />
-            支払済にする
-          </DialogTitle>
-          <DialogDescription>
-            支払いを記録し、経費に自動登録します。
-          </DialogDescription>
-        </DialogHeader>
-
-        <div className="rounded-xl bg-slate-50 px-4 py-3 text-sm">
+    <ResponsiveModal
+      open={open}
+      onOpenChange={onOpenChange}
+      title={
+        <p className="flex items-center gap-2">
+          <CheckCircle2 className="w-5 h-5 text-emerald-500" />
+          支払済にする
+        </p>
+      }
+      description="支払いを記録し、経費に自動登録します。"
+    >
+        <div className="rounded-xl bg-slate-50 px-4 py-3 text-sm mb-4">
           <p className="text-billia-text-muted text-xs mb-1">{vendorName}</p>
           <p className="font-medium text-billia-text">{title}</p>
           <p className="text-lg font-semibold text-billia-text mt-1">
@@ -101,7 +93,7 @@ export default function MarkPaidDialog({
                 required
                 value={paidDate}
                 onChange={(e) => setPaidDate(e.target.value)}
-                className="w-full rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200"
+                className="w-full min-h-[44px] rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200"
               />
             </div>
             <div className="space-y-2">
@@ -112,7 +104,7 @@ export default function MarkPaidDialog({
                 required
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
-                className="w-full rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200"
+                className="w-full min-h-[44px] rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200"
               >
                 {categories.map((c) => (
                   <option key={c} value={c}>
@@ -122,21 +114,27 @@ export default function MarkPaidDialog({
               </select>
             </div>
           </div>
-          <p className="text-xs text-billia-text-muted">
+          <p className="text-xs text-billia-text-muted mb-4">
             ※ 経費ページにも自動で登録されます。
           </p>
-          <DialogFooter>
+          <div className="mt-6 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end sm:gap-2">
+            <button
+              type="button"
+              onClick={() => onOpenChange(false)}
+              className="inline-flex min-h-[44px] items-center justify-center rounded-full border border-slate-200 bg-white px-5 py-2 text-sm font-semibold text-slate-700 shadow-sm transition hover:bg-slate-50 sm:min-h-0"
+            >
+              キャンセル
+            </button>
             <button
               type="submit"
               disabled={isPending}
-              className="inline-flex items-center gap-2 rounded-full bg-emerald-600 px-5 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-700 disabled:opacity-50"
+              className="inline-flex min-h-[44px] items-center justify-center gap-2 rounded-full bg-emerald-600 px-5 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-700 disabled:opacity-50 sm:min-h-0"
             >
               <CheckCircle2 className="w-4 h-4" />
               {isPending ? "処理中..." : "支払済にする"}
             </button>
-          </DialogFooter>
+          </div>
         </form>
-      </DialogContent>
-    </Dialog>
+    </ResponsiveModal>
   );
 }

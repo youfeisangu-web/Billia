@@ -38,7 +38,7 @@ export default function DashboardHeader({ onMenuClick }: DashboardHeaderProps) {
 
   return (
     <header
-      className="shrink-0 h-[56px] md:h-[60px] flex items-center px-3 md:px-6 bg-white border-b border-gray-100"
+      className="shrink-0 h-[56px] md:h-[60px] flex items-center px-3 md:px-6 bg-white/80 backdrop-blur-md border-b border-gray-100"
     >
       <div className="flex items-center justify-between gap-2 md:gap-4 w-full">
         <div className="flex items-center gap-2 md:gap-4 min-w-0">

@@ -71,7 +71,7 @@ export default function SettingsForm({ userId, initialData }: SettingsFormProps)
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form onSubmit={handleSubmit} className="space-y-6 pb-24 md:pb-0">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-semibold text-slate-900">
@@ -420,6 +420,17 @@ export default function SettingsForm({ userId, initialData }: SettingsFormProps)
           </div>
         </TabsContent>
       </Tabs>
+
+      {/* モバイル: 下部固定の保存ボタン */}
+      <div className="fixed bottom-20 left-0 right-0 z-40 md:hidden px-4 py-3 bg-white/95 border-t border-slate-200 shadow-[0_-4px_12px_rgba(0,0,0,0.06)]">
+        <button
+          type="submit"
+          disabled={isPending}
+          className="w-full rounded-xl bg-billia-blue py-3 text-sm font-semibold text-white shadow-sm transition hover:opacity-95 disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          {isPending ? "保存中..." : "変更を保存"}
+        </button>
+      </div>
     </form>
   );
 }
