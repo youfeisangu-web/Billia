@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import {
   FileText,
@@ -223,6 +223,23 @@ export default function LandingPage() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [waitlistLoading, setWaitlistLoading] = useState(false);
+  const [waitlistError, setWaitlistError] = useState<string | null>(null);
+  const [crowdfundingInView, setCrowdfundingInView] = useState(false);
+  const crowdfundingRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = crowdfundingRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) setCrowdfundingInView(true);
+      },
+      { threshold: 0.4, rootMargin: "0px 0px -80px 0px" }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
   const features = [
     { icon: FileText, title: "請求書管理", desc: "発行・送付・入金確認まで一元管理。定期請求の自動化にも対応。", color: "text-blue-500 bg-blue-50" },
@@ -246,7 +263,6 @@ export default function LandingPage() {
 
   return (
     <div className="min-h-screen bg-white text-slate-900">
-
       {/* ── navbar ── */}
       <header className="sticky top-0 z-50 border-b border-slate-100 bg-white/80 backdrop-blur-md">
         <div className="mx-auto max-w-6xl px-5 md:px-8">
@@ -347,10 +363,12 @@ export default function LandingPage() {
       </section>
 
       {/* ── crowdfunding ── */}
-      <section id="crowdfunding" className="py-16 md:py-24 relative">
+      <section id="crowdfunding" className="py-16 md:py-24 relative" ref={crowdfundingRef}>
         <div className="pointer-events-none absolute inset-x-0 -z-10 h-64 -translate-y-10 bg-gradient-to-b from-orange-50/80 via-white to-transparent" />
         <div className="mx-auto max-w-4xl px-5 md:px-8">
-          <div className="relative group rounded-[2rem] border border-orange-200/70 bg-gradient-to-br from-orange-50/80 via-white to-amber-50/80 p-[1px] shadow-[0_18px_45px_rgba(248,113,22,0.25)] hover:shadow-[0_22px_70px_rgba(248,113,22,0.35)] transition-shadow duration-700">
+          <div
+            className={`relative group rounded-[2rem] border border-orange-200/70 bg-gradient-to-br from-orange-50/80 via-white to-amber-50/80 p-[1px] shadow-[0_18px_45px_rgba(248,113,22,0.25)] hover:shadow-[0_22px_70px_rgba(248,113,22,0.35)] transition-shadow duration-700 billia-fade-in-section overflow-visible ${crowdfundingInView ? "billia-fade-in-visible" : ""}`}
+          >
             {/* glow orbs */}
             <div className="pointer-events-none absolute -top-10 -right-10 w-40 h-40 rounded-full bg-orange-400/40 blur-3xl opacity-40 group-hover:opacity-70 animate-pulse" />
             <div className="pointer-events-none absolute -bottom-16 -left-6 w-52 h-52 rounded-full bg-amber-300/40 blur-3xl opacity-40 group-hover:opacity-70 animate-pulse" />
@@ -961,16 +979,57 @@ export default function LandingPage() {
                   登録しました！リリース時にお知らせします
                 </div>
               ) : (
-                <form className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto" onSubmit={(e) => { e.preventDefault(); if (email) setSubmitted(true); }}>
+                <form
+                  className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto"
+                  onSubmit={async (e) => {
+                    e.preventDefault();
+                    const value = email.trim();
+                    if (!value) return;
+                    setWaitlistError(null);
+                    setWaitlistLoading(true);
+                    try {
+                      const url = process.env.NEXT_PUBLIC_WAITLIST_WEBHOOK_URL;
+                      if (url) {
+                        const res = await fetch(url, {
+                          method: "POST",
+                          headers: { "Content-Type": "application/json" },
+                          body: JSON.stringify({ email: value }),
+                        });
+                        const data = await res.json().catch(() => ({}));
+                        if (!res.ok || !(data && (data as { ok?: boolean }).ok)) {
+                          setWaitlistError("送信に失敗しました。しばらくして再度お試しください。");
+                          return;
+                        }
+                      }
+                      setSubmitted(true);
+                    } catch {
+                      setWaitlistError("送信に失敗しました。しばらくして再度お試しください。");
+                    } finally {
+                      setWaitlistLoading(false);
+                    }
+                  }}
+                >
                   <input
-                    type="email" value={email} onChange={(e) => setEmail(e.target.value)}
-                    placeholder="メールアドレスを入力" required
-                    className="flex-1 rounded-xl px-4 py-3 text-sm text-slate-900 bg-white placeholder-slate-400 outline-none focus:ring-2 focus:ring-white/50"
+                    type="email"
+                    value={email}
+                    onChange={(e) => { setEmail(e.target.value); setWaitlistError(null); }}
+                    placeholder="メールアドレスを入力"
+                    required
+                    disabled={waitlistLoading}
+                    className="flex-1 rounded-xl px-4 py-3 text-sm text-slate-900 bg-white placeholder-slate-400 outline-none focus:ring-2 focus:ring-white/50 disabled:opacity-70"
                   />
-                  <button type="submit" className="inline-flex items-center justify-center gap-2 rounded-xl bg-white px-6 py-3 text-sm font-bold text-blue-600 hover:bg-blue-50 transition-colors shrink-0">
-                    通知を受け取る<ArrowRight className="w-4 h-4" />
+                  <button
+                    type="submit"
+                    disabled={waitlistLoading}
+                    className="inline-flex items-center justify-center gap-2 rounded-xl bg-white px-6 py-3 text-sm font-bold text-blue-600 hover:bg-blue-50 transition-colors shrink-0 disabled:opacity-70"
+                  >
+                    {waitlistLoading ? "送信中…" : "通知を受け取る"}
+                    {!waitlistLoading && <ArrowRight className="w-4 h-4" />}
                   </button>
                 </form>
+              )}
+              {waitlistLoading === false && waitlistError && (
+                <p className="mt-3 text-sm text-red-200">{waitlistError}</p>
               )}
             </div>
           </div>

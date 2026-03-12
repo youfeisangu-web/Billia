@@ -16,6 +16,27 @@ function getGeminiClient(): GoogleGenAI {
   return geminiClient;
 }
 
+/** APIエラーをユーザー向けメッセージに変換（生JSONを出さない） */
+function normalizeGeminiErrorMessage(raw: string): string {
+  const s = raw || "";
+  if (s.includes("API key expired") || (s.includes("APIキー") && s.includes("期限"))) {
+    return "Gemini APIキーの有効期限が切れています。.env の GEMINI_API_KEY を Google AI Studio（https://aistudio.google.com/apikey）で再発行したキーに更新してください。";
+  }
+  if (s.includes("INVALID_ARGUMENT") || s.includes("API key not valid")) {
+    return "Gemini APIキーが無効です。Google AI Studio で正しいキーを発行し、.env の GEMINI_API_KEY を更新してください。";
+  }
+  if (s.includes("429") || s.includes("RESOURCE_EXHAUSTED")) {
+    return "AIの利用制限に達しました。しばらく時間をおいて再度お試しください。";
+  }
+  if (s.includes("403") || s.includes("PERMISSION_DENIED")) {
+    return "Gemini API の利用権限がありません。APIキーと課金設定を確認してください。";
+  }
+  if (s.length > 200 || s.includes("type.googleapis.com") || s.startsWith("{")) {
+    return "AIの解析でエラーが発生しました。しばらくして再度お試しください。問題が続く場合は管理者にご連絡ください。";
+  }
+  return s;
+}
+
 /** リトライ付きAPI呼び出し */
 async function retryApiCall<T>(
   fn: () => Promise<T>,
@@ -51,6 +72,8 @@ async function retryApiCall<T>(
         // エラー情報の取得に失敗した場合
         console.error("Failed to extract error info:", e);
       }
+
+      errorMessage = normalizeGeminiErrorMessage(errorMessage);
       
       // 新しいエラーオブジェクトを作成（シリアライズ可能な形式）
       const processedError = new Error(errorMessage);
@@ -124,7 +147,6 @@ export async function generateContentWithImage(
 
       return response.text;
     } catch (error: any) {
-      // エラーメッセージを安全に取得
       let errorMessage = "Gemini APIの呼び出しに失敗しました";
       if (error?.message) {
         errorMessage = String(error.message);
@@ -136,6 +158,7 @@ export async function generateContentWithImage(
           errorMessage = errorString;
         }
       }
+      errorMessage = normalizeGeminiErrorMessage(errorMessage);
 
       const newError = new Error(errorMessage);
       if (error?.status) {

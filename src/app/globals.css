@@ -1,5 +1,5 @@
-@import "tailwindcss";
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;600;700&display=swap');
+@import "tailwindcss";
 
 @theme inline {
   --font-inter: "Plus Jakarta Sans", ui-sans-serif, system-ui;
@@ -52,6 +52,12 @@
   .border-billia-border-subtle { border-color: var(--color-billia-border-subtle); }
   .divide-billia-border-subtle > :not([hidden]) ~ :not([hidden]) { border-color: var(--color-billia-border-subtle); }
   .bg-billia-border-subtle { background-color: var(--color-billia-border-subtle); }
+  /* モバイル入力の固まり軽減（ダッシュボード main 用） */
+  .dashboard-main-touch {
+    touch-action: manipulation;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+  }
 }
 
 /* カード */
@@ -76,6 +82,50 @@
   border: 1px solid var(--color-billia-border);
   border-radius: 1rem;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+}
+
+/* セクション用フェードイン（画面外から入ってくる） */
+@keyframes billia-fade-in-up {
+  0% {
+    opacity: 0;
+    transform: translateY(140px) scale(0.88);
+  }
+  65% {
+    opacity: 1;
+    transform: translateY(-12px) scale(1.02);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* 着地後のドンデンドンデン */
+@keyframes billia-donden {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+  }
+  25% {
+    transform: translateY(-10px) scale(1.03);
+  }
+  50% {
+    transform: translateY(0) scale(0.98);
+  }
+  75% {
+    transform: translateY(-5px) scale(1.02);
+  }
+}
+
+.billia-fade-in-section {
+  opacity: 0;
+  transform: translateY(140px) scale(0.88);
+  transform-origin: center bottom;
+}
+
+.billia-fade-in-section.billia-fade-in-visible {
+  animation:
+    billia-fade-in-up 0.85s cubic-bezier(0.22, 1, 0.36, 1) 0s forwards,
+    billia-donden 0.5s ease-in-out 0.85s 4 forwards;
 }
 
 @layer base {
