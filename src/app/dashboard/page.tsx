@@ -1,5 +1,6 @@
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
+import { Suspense } from "react";
 import {
   getSalesCategories,
   getCategorySalesByMonth,
@@ -23,6 +24,14 @@ export default async function DashboardPage() {
   if (!userId) redirect("/");
   const scope = orgId ? { orgId } : { userId };
 
+  return (
+    <Suspense fallback={<DashboardSkeleton />}>
+      <DashboardDataFetcher scope={scope} orgId={orgId} />
+    </Suspense>
+  );
+}
+
+async function DashboardDataFetcher({ scope, orgId }: { scope: any; orgId: string | undefined | null }) {
   const now = new Date();
   const currentMonth = getCurrentMonth();
   const lastMonth = getLastMonth();
@@ -166,5 +175,32 @@ export default async function DashboardPage() {
       monthlyData={monthlyData}
       pendingApprovalCount={pendingApprovalCount}
     />
+  );
+}
+
+function DashboardSkeleton() {
+  return (
+    <div className="space-y-6 animate-pulse p-4 md:p-8">
+      {/* KPIカードのスケルトン */}
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {[1, 2, 3, 4].map((i) => (
+          <div key={i} className="h-32 bg-white border border-slate-200 rounded-xl"></div>
+        ))}
+      </div>
+      
+      {/* メイングラフとリストのスケルトン */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="lg:col-span-2 h-96 bg-white border border-slate-200 rounded-xl"></div>
+        <div className="h-96 bg-white border border-slate-200 rounded-xl space-y-4 p-6">
+          <div className="h-6 w-1/3 bg-slate-200 rounded"></div>
+          <div className="space-y-3 mt-6">
+            <div className="h-12 bg-slate-100 rounded-lg"></div>
+            <div className="h-12 bg-slate-100 rounded-lg"></div>
+            <div className="h-12 bg-slate-100 rounded-lg"></div>
+            <div className="h-12 bg-slate-100 rounded-lg"></div>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }

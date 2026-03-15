@@ -26,6 +26,7 @@ import {
   Home,
   Mic,
   Megaphone,
+  Rocket
 } from "lucide-react";
 
 /* ── coming soon badge ───────────────────────────────────── */
@@ -276,6 +277,7 @@ export default function LandingPage() {
               <a href="#ai" className="hover:text-slate-900 transition-colors">AI機能</a>
               <a href="#pricing" className="hover:text-slate-900 transition-colors">料金</a>
               <a href="#faq" className="hover:text-slate-900 transition-colors">FAQ</a>
+              <a href="#roadmap" className="hover:text-slate-900 transition-colors">今後の展開</a>
               <a href="#crowdfunding" className="inline-flex items-center gap-1.5 hover:text-slate-900 transition-colors">
                 <Megaphone className="w-3.5 h-3.5 text-orange-500" />
                 <span>クラウドファンディング</span>
@@ -863,6 +865,86 @@ export default function LandingPage() {
                   </li>
                 ))}
               </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      
+      {/* ── Roadmap ── */}
+      <section id="roadmap" className="py-20 md:py-28 bg-white border-t border-slate-100">
+        <div className="mx-auto max-w-5xl px-5 md:px-8">
+          <div className="text-center mb-12">
+            <p className="billia-label mb-2">今後の開発ロードマップ</p>
+            <h2 className="text-2xl md:text-4xl font-extrabold tracking-tight text-slate-900 mb-4">
+              Billiaは、もっと進化する。
+            </h2>
+            <p className="text-slate-500 max-w-2xl mx-auto leading-relaxed">
+              私たちは、単なる「ツール」で終わるつもりはありません。皆様のビジネス・事務作業の「当たり前」を根本から変えるための、今後の大型アップデート予定を公開します。
+            </p>
+          </div>
+          
+          <div className="relative">
+            {/* Timeline Line (Desktop) */}
+            <div className="hidden md:block absolute left-1/2 top-4 bottom-4 w-0.5 bg-gradient-to-b from-blue-100 via-purple-100 to-transparent -translate-x-1/2" />
+            
+            <div className="space-y-8 md:space-y-12">
+              {[
+                {
+                  phase: "Phase 1: LINE経理秘書（AIアシスタント）",
+                  features: [
+                    { t: "LINEで「話すだけ」請求書作成", d: "「山田商事にシステム保守費で50万請求」とLINEにメッセージや音声を送るだけで、請求書が完成します。" },
+                    { t: "LINEで領収書を撮影・即登録", d: "移動中やカフェのレシートをスマホで撮ってLINEに投げるだけ。AIが自動で経費として分類・登録します。" },
+                  ],
+                  color: "emerald", align: "right"
+                },
+                {
+                  phase: "Phase 2: 究極の放置化・共有",
+                  features: [
+                    { t: "Webスマート請求書（既読検知）", d: "PDFの手間をなくし、専用のWebリンクで請求。相手が開いた瞬間に「既読」がつくため、届いたかどうかの不安が消えます。" },
+                    { t: "定期請求の完全オートパイロット", d: "家賃や顧問料など、毎月の決まった請求を一度設定すれば、一生自動で作成・送信され続けます。" },
+                    { t: "Googleカレンダー連携", d: "月末にカレンダーの予定から『このMTGの請求書を作りますか？』とAIが先回りして提案します。" },
+                  ],
+                  color: "blue", align: "left"
+                },
+                {
+                  phase: "Phase 3: 金融と生態系（構想）",
+                  features: [
+                    { t: "取引先専用マイページ", d: "取引先が過去の請求書をいつでも見られる専用ポータルを提供。メッセージのやり取りも一元化します。" },
+                    { t: "Billia Pay（クレカ決済）", d: "請求書のWeb画面から、クレジットカード等のオンライン決済機能を利用できるようにします。" },
+                    { t: "税理士アクセス・会計連携強化", d: "税理士を無料招待し、スムーズなデータチェックと確定申告のための完全なエクスポートを提供します。" },
+                  ],
+                  color: "purple", align: "right"
+                }
+              ].map((group, i) => (
+                <div key={i} className={`relative flex flex-col md:flex-row gap-6 ${group.align === "left" ? "md:flex-row-reverse" : ""}`}>
+                  {/* Timeline Dot */}
+                  <div className="hidden md:flex absolute left-1/2 top-6 -translate-x-1/2 w-8 h-8 rounded-full bg-white border-4 border-white shadow-sm items-center justify-center z-10">
+                    <div className={`w-3 h-3 rounded-full bg-${group.color}-500`} />
+                  </div>
+                  
+                  {/* Content Box */}
+                  <div className="md:w-1/2 relative">
+                    <div className={`md:${group.align === "left" ? "ml-12" : "mr-12"} p-6 md:p-8 rounded-2xl border border-slate-200 bg-white shadow-sm hover:shadow-md transition-shadow`}>
+                      <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold mb-5 bg-${group.color}-50 text-${group.color}-600`}>
+                        <Rocket className="w-3.5 h-3.5" />
+                        {group.phase}
+                      </div>
+                      <ul className="space-y-5">
+                        {group.features.map((f, j) => (
+                          <li key={j}>
+                            <h4 className="font-bold text-slate-900 mb-1 text-sm">{f.t}</h4>
+                            <p className="text-slate-500 text-xs leading-relaxed">{f.d}</p>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                  
+                  {/* Spacer for other side */}
+                  <div className="hidden md:block md:w-1/2" />
+                </div>
+              ))}
             </div>
           </div>
         </div>
