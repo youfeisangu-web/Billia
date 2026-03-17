@@ -458,15 +458,17 @@ export default function QuoteEditor({ clients, taxRate = 10, taxRounding = "floo
       </section>
 
       {/* モバイル: 下部固定の保存ボタン（スクロールしても常に表示） */}
-      <div className="fixed bottom-20 left-0 right-0 z-40 md:hidden px-4 py-3 bg-white/95 border-t border-slate-200 shadow-[0_-4px_12px_rgba(0,0,0,0.06)]">
-        <button
-          type="submit"
-          disabled={isPending}
-          className="w-full rounded-xl bg-blue-600 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          {isPending ? "保存中..." : "保存する"}
-        </button>
-      </div>
+      {activeTab === "form" && (
+        <div className="fixed bottom-20 left-0 right-0 z-40 md:hidden px-4 py-3 bg-white/95 border-t border-slate-200 shadow-[0_-4px_12px_rgba(0,0,0,0.06)]">
+          <button
+            type="submit"
+            disabled={isPending}
+            className="w-full rounded-xl bg-blue-600 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {isPending ? "保存中..." : "保存する"}
+          </button>
+        </div>
+      )}
     </form>
   );
 }
