@@ -286,8 +286,8 @@ export default function LandingPage() {
         <div className="mx-auto max-w-7xl px-6 md:px-10">
           <div className="flex h-20 items-center justify-between">
             <div className="flex items-center gap-3 shrink-0 group cursor-pointer">
-              <Image src="/logo.png" alt="Billia" width={36} height={36} className="object-contain drop-shadow-[0_4px_12px_rgba(0,0,0,0.15)] group-hover:scale-105 transition-transform duration-300" />
-              <span className="font-extrabold text-[22px] tracking-tighter text-black">Billia</span>
+              <Image src="/logo.png" alt="Billia" width={48} height={48} className="object-contain drop-shadow-[0_4px_12px_rgba(0,0,0,0.15)] group-hover:scale-105 transition-transform duration-300" />
+              <span className="font-extrabold text-[28px] tracking-tight text-black font-[family-name:var(--font-outfit)]">Billia</span>
             </div>
             <nav className="hidden md:flex items-center gap-8 text-[13px] font-bold tracking-tight text-black/50">
               <a href="#features" className="hover:text-black transition-colors duration-300">機能</a>
@@ -366,8 +366,9 @@ export default function LandingPage() {
               </div>
               
               <div className="animate-in fade-in slide-in-from-bottom-8 duration-700 delay-300 ease-[cubic-bezier(0.2,0.8,0.2,1)] fill-mode-both relative z-20">
-                <p className="text-base md:text-lg text-black/60 font-medium leading-relaxed max-w-lg mb-10 backdrop-blur-xl bg-white/70 p-6 rounded-3xl border border-black/5 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.05)] ring-1 ring-black/5">
-                  面倒な入力作業はAIがスマートにアシスト。手入力に追われる日々は終わり、息を呑むほど美しいデザインであなたのビジネスを加速させます。
+                <p className="text-[17px] md:text-lg text-black/70 font-medium leading-[1.8] max-w-lg mb-10 backdrop-blur-xl bg-white/70 p-6 rounded-3xl border border-black/5 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.05)] ring-1 ring-black/5">
+                  手作業のデータ入力は、もう終わり。<br className="hidden md:block" />
+                  最先端のAIが請求処理を自動化し、息を呑むほど美しいデザインでビジネスを次の次元へ。
                 </p>
               </div>
               

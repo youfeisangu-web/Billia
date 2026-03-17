@@ -3,7 +3,11 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { jaJP } from "@clerk/localizations";
 import { ThemeProvider } from "@/components/theme-provider";
 import { GoogleAnalytics } from "@next/third-parties/google";
+import { Inter, Outfit } from "next/font/google";
 import "./globals.css";
+
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
+const outfit = Outfit({ subsets: ["latin"], variable: "--font-outfit" });
 
 export const metadata: Metadata = {
   title: "Billia | 次世代クラウド請求管理プラットフォーム",
@@ -77,9 +81,9 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider localization={jaJP}>
-      <html lang="ja" className="light" style={{ colorScheme: 'light' }} suppressHydrationWarning>
+      <html lang="ja" className={`light ${inter.variable} ${outfit.variable}`} style={{ colorScheme: 'light' }} suppressHydrationWarning>
         <body
-          className={`font-sans bg-billia-bg text-billia-text`}
+          className="font-sans antialiased bg-billia-bg text-billia-text"
         >
           <ThemeProvider attribute="class" forcedTheme="light" enableSystem={false}>
             {children}
