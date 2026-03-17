@@ -46,13 +46,13 @@ export default function DashboardHeader({ onMenuClick }: DashboardHeaderProps) {
             type="button"
             onClick={onMenuClick}
             aria-label="メニューを開く"
-            className="md:hidden p-2 rounded-lg text-billia-text-muted hover:bg-billia-bg hover:text-billia-text"
+            className="md:hidden p-2 rounded-lg text-black/40 hover:bg-black/5 hover:text-black transition-colors"
           >
             <Menu className="w-6 h-6" />
           </button>
-          <div className="relative hidden md:flex items-center gap-2 rounded-lg border border-billia-border-subtle bg-billia-bg px-3 md:px-4 py-2 md:py-2.5 text-sm text-billia-text min-w-0 md:min-w-[200px] max-w-[180px] md:max-w-none">
-            <span className="truncate text-stone-700">プロジェクト: {selectedName}</span>
-            <ChevronDown className="w-4 h-4 shrink-0 text-stone-400" />
+          <div className="relative hidden md:flex items-center gap-2 rounded-lg border border-black/5 bg-black/5 hover:bg-black/10 transition-colors px-3 md:px-4 py-2 md:py-2.5 text-sm cursor-pointer min-w-0 md:min-w-[200px] max-w-[180px] md:max-w-none">
+            <span className="truncate text-black font-semibold tracking-wide">プロジェクト: {selectedName}</span>
+            <ChevronDown className="w-4 h-4 shrink-0 text-black/40" />
             <select
               className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
               value={selectedGroupId ?? ""}
@@ -72,12 +72,12 @@ export default function DashboardHeader({ onMenuClick }: DashboardHeaderProps) {
               ))}
             </select>
           </div>
-          <div className="hidden sm:flex items-center gap-2.5 rounded-lg border border-billia-border-subtle bg-billia-bg px-4 py-2.5 text-stone-400 min-w-[200px]">
-            <Search className="w-4 h-4 shrink-0" />
+          <div className="hidden sm:flex items-center gap-2.5 rounded-lg border border-black/5 bg-white shadow-sm px-4 py-2.5 min-w-[200px] transition-all focus-within:border-black/20 focus-within:ring-4 focus-within:ring-black/5">
+            <Search className="w-4 h-4 shrink-0 text-black/40" />
             <input
               type="search"
               placeholder="検索"
-              className="w-full bg-transparent text-sm text-stone-700 placeholder-stone-400 outline-none"
+              className="w-full bg-transparent text-sm font-medium tracking-wide text-black placeholder-black/30 outline-none"
             />
           </div>
         </div>
@@ -89,17 +89,17 @@ export default function DashboardHeader({ onMenuClick }: DashboardHeaderProps) {
             appearance={{
               elements: {
                 rootBox: "flex items-center",
-                organizationSwitcherTrigger: "rounded-lg border border-billia-border-subtle bg-billia-bg px-3 py-2 text-sm text-stone-700 hover:bg-stone-50 transition-colors",
+                organizationSwitcherTrigger: "rounded-lg border border-black/5 bg-white shadow-sm px-3 py-2 text-sm font-semibold text-black hover:bg-black/5 transition-colors",
               },
             }}
           />
           <button
             type="button"
-            className="relative p-2.5 rounded-lg text-stone-500 hover:bg-billia-bg hover:text-stone-700 transition-colors"
+            className="relative p-2.5 rounded-lg text-black/40 hover:bg-black/5 hover:text-black transition-colors"
             aria-label="通知"
           >
             <Bell className="w-5 h-5" />
-            <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-amber-500 pointer-events-none" />
+            <span className="absolute top-2 right-2 w-2 h-2 rounded-full bg-blue-600 border-2 border-white pointer-events-none" />
           </button>
           <UserButton />
         </div>

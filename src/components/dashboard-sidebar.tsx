@@ -132,20 +132,20 @@ export default function DashboardSidebar({
                 <Link
                   href={href}
                   className={`
-                    flex items-center gap-3 px-3 py-3 rounded-xl text-[15px] transition-colors duration-150
+                    flex items-center gap-3 px-3 py-2.5 rounded-xl text-[14px] transition-all duration-300
                     ${
                       isActive
-                        ? "bg-billia-blue/10 text-billia-blue font-semibold"
-                        : "text-slate-700 hover:bg-black/[0.04] hover:text-billia-text font-medium"
+                        ? "bg-black text-white font-bold shadow-lg shadow-black/10 scale-[1.02]"
+                        : "text-black/60 hover:bg-black/5 hover:text-black font-medium"
                     }
                   `}
                 >
                   <Icon
-                    className={`w-5 h-5 shrink-0 ${
-                      isActive ? "text-billia-blue" : "text-slate-500"
+                    className={`w-4 h-4 shrink-0 transition-colors duration-300 ${
+                      isActive ? "text-white" : "text-black/40"
                     }`}
                   />
-                  <span>{label}</span>
+                  <span className="tracking-wide">{label}</span>
                 </Link>
               </li>
             );
@@ -153,42 +153,42 @@ export default function DashboardSidebar({
         </ul>
 
         <div className="mt-6 pt-4 border-t border-black/[0.06]">
-          <p className="billia-label px-3 mb-3 text-billia-text-muted">アカウント</p>
+          <p className="billia-label px-3 mb-3 text-black/40 tracking-wider">アカウント</p>
           <Link
             href="/dashboard/settings"
             className={`
-              flex items-center gap-3 px-3 py-3 rounded-xl text-[15px] transition-colors duration-150
+              flex items-center gap-3 px-3 py-2.5 rounded-xl text-[14px] transition-all duration-300 mb-1
               ${
                 pathname === "/dashboard/settings"
-                  ? "bg-billia-blue/10 text-billia-blue font-semibold"
-                  : "text-slate-700 hover:bg-black/[0.04] hover:text-billia-text font-medium"
+                  ? "bg-black text-white font-bold shadow-lg shadow-black/10 scale-[1.02]"
+                  : "text-black/60 hover:bg-black/5 hover:text-black font-medium"
               }
             `}
           >
             <Settings
-              className={`w-5 h-5 shrink-0 ${
-                pathname === "/dashboard/settings" ? "text-billia-blue" : "text-slate-500"
+              className={`w-4 h-4 shrink-0 transition-colors duration-300 ${
+                pathname === "/dashboard/settings" ? "text-white" : "text-black/40"
               }`}
             />
-            <span>設定</span>
+            <span className="tracking-wide">設定</span>
           </Link>
           <Link
             href="/dashboard/settings/members"
             className={`
-              flex items-center gap-3 px-3 py-3 rounded-xl text-[15px] transition-colors duration-150
+              flex items-center gap-3 px-3 py-2.5 rounded-xl text-[14px] transition-all duration-300
               ${
                 pathname?.startsWith("/dashboard/settings/members")
-                  ? "bg-billia-blue/10 text-billia-blue font-semibold"
-                  : "text-slate-700 hover:bg-black/[0.04] hover:text-billia-text font-medium"
+                  ? "bg-black text-white font-bold shadow-lg shadow-black/10 scale-[1.02]"
+                  : "text-black/60 hover:bg-black/5 hover:text-black font-medium"
               }
             `}
           >
             <Users
-              className={`w-5 h-5 shrink-0 ${
-                pathname?.startsWith("/dashboard/settings/members") ? "text-billia-blue" : "text-slate-500"
+              className={`w-4 h-4 shrink-0 transition-colors duration-300 ${
+                pathname?.startsWith("/dashboard/settings/members") ? "text-white" : "text-black/40"
               }`}
             />
-            <span>メンバー管理</span>
+            <span className="tracking-wide">メンバー管理</span>
           </Link>
         </div>
       </nav>

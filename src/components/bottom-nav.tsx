@@ -21,37 +21,39 @@ export default function BottomNav({ onMoreClick }: { onMoreClick: () => void }) 
   const pathname = usePathname();
 
   return (
-    <nav className="md:hidden fixed bottom-0 inset-x-0 z-30 bg-white border-t border-gray-200"
+    <nav 
+      className="md:hidden fixed bottom-5 inset-x-4 z-50 pointer-events-none"
       style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
     >
-      <div className="flex">
+      <div className="pointer-events-auto bg-white/80 backdrop-blur-xl border border-black/5 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)] rounded-full px-2 py-2 flex items-center justify-between">
         {tabs.map(({ href, label, icon: Icon, exact }) => {
           const isActive = exact ? pathname === href : pathname?.startsWith(href);
           return (
             <Link
               key={href}
               href={href}
-              className={`relative flex-1 flex flex-col items-center justify-center py-2.5 gap-1 transition-colors active:bg-slate-50 ${
-                isActive ? "text-billia-blue" : "text-slate-400"
-              }`}
+              className="relative flex-1 flex flex-col items-center justify-center py-1 gap-1 transition-all duration-300 group"
             >
-              <Icon className={`w-5 h-5 ${isActive ? "text-billia-blue" : "text-slate-400"}`} />
-              <span className={`text-[10px] font-semibold ${isActive ? "text-billia-blue" : "text-slate-400"}`}>
+              <div className={`relative p-2.5 rounded-2xl transition-all duration-300 ${isActive ? "bg-white shadow-sm ring-1 ring-black/5 scale-110" : "group-hover:bg-black/5"}`}>
+                <Icon className={`w-5 h-5 transition-colors duration-300 ${isActive ? "text-black drop-shadow-sm" : "text-black/40"}`} />
+              </div>
+              <span className={`text-[9px] font-extrabold tracking-wider transition-colors duration-300 ${isActive ? "text-black" : "text-black/40"}`}>
                 {label}
               </span>
-              {isActive && (
-                <span className="absolute top-0 left-1/2 -translate-x-1/2 w-6 h-0.5 rounded-full bg-billia-blue" />
-              )}
             </Link>
           );
         })}
         <button
           type="button"
           onClick={onMoreClick}
-          className="flex-1 flex flex-col items-center justify-center py-2.5 gap-1 text-slate-400 transition-colors active:bg-slate-50"
+          className="relative flex-1 flex flex-col items-center justify-center py-1 gap-1 transition-all duration-300 group"
         >
-          <Menu className="w-5 h-5" />
-          <span className="text-[10px] font-semibold">もっと</span>
+          <div className="relative p-2.5 rounded-2xl transition-all duration-300 group-hover:bg-black/5">
+            <Menu className="w-5 h-5 text-black/40 transition-colors duration-300 group-hover:text-black/70" />
+          </div>
+          <span className="text-[9px] font-extrabold tracking-wider text-black/40 transition-colors duration-300 group-hover:text-black/70">
+            もっと
+          </span>
         </button>
       </div>
     </nav>
