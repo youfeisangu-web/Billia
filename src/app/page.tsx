@@ -59,14 +59,14 @@ function DashboardMockup() {
       </div>
       <div className="grid grid-cols-3 gap-3 mb-5">
         {[
-          { label: "売上高", value: "¥1,240K" },
-          { label: "未回収", value: "¥320K" },
-          { label: "経費", value: "¥89.5K" },
+          { label: "売上高", value: "¥1,240,000" },
+          { label: "未回収", value: "¥320,000" },
+          { label: "経費", value: "¥89,500" },
         ].map((k, i) => (
-          <div key={k.label} className="rounded-2xl border border-black/5 bg-white/50 shadow-sm p-4 relative overflow-hidden group">
+          <div key={k.label} className="rounded-2xl border border-black/5 bg-white/50 shadow-sm p-3 sm:p-4 relative overflow-hidden group">
             <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/40 to-transparent translate-x-[-150%] group-hover:translate-x-[150%] transition-transform duration-1000 ease-out" />
             <p className="text-[8px] font-bold tracking-[0.2em] text-black/40 mb-1.5">{k.label}</p>
-            <p className={`font-mono text-[15px] font-extrabold tracking-tight tabular-nums ${i === 1 ? 'text-amber-600' : 'text-black'}`}>{k.value}</p>
+            <p className={`font-mono text-[11px] sm:text-[14px] font-extrabold tracking-tighter tabular-nums ${i === 1 ? 'text-amber-600' : 'text-black'}`}>{k.value}</p>
           </div>
         ))}
       </div>
@@ -183,8 +183,8 @@ function FinanceMockup() {
                  <div className="absolute inset-0 w-[200%] bg-gradient-to-r from-transparent via-white/30 to-transparent animate-[scroll_2s_linear_infinite] -translate-x-full" />
               </div>
             </div>
-            <span className="font-mono font-black text-black text-[11px] w-14 text-right tabular-nums">
-              ¥{(item.amount / 10000).toFixed(0)}K
+            <span className="font-mono font-black text-black text-[11px] w-16 md:w-20 text-right tabular-nums">
+              ¥{new Intl.NumberFormat('ja-JP').format(item.amount)}
             </span>
           </div>
         ))}
@@ -380,21 +380,23 @@ export default function LandingPage() {
             </div>
 
             {/* Right Mockups 3D Layering */}
-            <div className="w-full lg:w-1/2 relative h-[500px] lg:h-[700px] flex items-center justify-center lg:perspective-[2000px] mt-10 lg:mt-0">
-               {/* 3D layered glass mockups with strong shadow to separate them on mobile */}
-               {/* Dashboard mockup (Back) */}
-               <div className="absolute top-0 right-0 lg:-right-10 w-[95%] sm:w-[360px] transform lg:rotate-y-[-12deg] lg:rotate-x-[6deg] lg:translate-z-[-20px] transition-transform duration-1000 ease-out hover:rotate-0 hover:z-40 z-10 opacity-90 hover:opacity-100 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.2)] rounded-3xl">
-                 <DashboardMockup />
-               </div>
-               
-               {/* Invoice mockup (Middle overlapping) */}
-               <div className="absolute top-44 left-0 lg:-left-10 w-[90%] sm:w-[340px] transform lg:rotate-y-[8deg] lg:rotate-x-[4deg] lg:translate-z-[40px] transition-transform duration-1000 ease-out hover:rotate-0 hover:z-40 z-20 shadow-[0_40px_80px_-20px_rgba(0,0,0,0.25)] rounded-3xl">
-                 <InvoiceListMockup />
-               </div>
+            <div className="w-full lg:w-1/2 relative h-auto lg:h-[700px] flex items-center justify-center lg:perspective-[2000px] mt-10 lg:mt-0 pb-10 lg:pb-0">
+               {/* Mobile: stacked, Desktop: 3D layered glass mockups with strong shadow to separate them */}
+               <div className="relative w-full flex flex-col items-center gap-6 lg:block lg:w-full lg:h-full">
+                 {/* Dashboard mockup (Back) */}
+                 <div className="relative w-[95%] sm:w-[360px] lg:absolute lg:top-0 lg:-right-10 lg:w-[360px] transform lg:rotate-y-[-12deg] lg:rotate-x-[6deg] lg:translate-z-[-20px] transition-transform duration-1000 ease-out hover:rotate-0 hover:z-40 lg:z-10 opacity-100 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.2)] rounded-3xl">
+                   <DashboardMockup />
+                 </div>
+                 
+                 {/* Invoice mockup (Middle overlapping) */}
+                 <div className="relative w-[95%] sm:w-[360px] lg:absolute lg:top-44 lg:-left-10 lg:w-[340px] transform lg:rotate-y-[8deg] lg:rotate-x-[4deg] lg:translate-z-[40px] transition-transform duration-1000 ease-out hover:rotate-0 hover:z-40 lg:z-20 opacity-100 shadow-[0_40px_80px_-20px_rgba(0,0,0,0.25)] rounded-3xl">
+                   <InvoiceListMockup />
+                 </div>
 
-               {/* Analytics mockup (Front right bottom) */}
-               <div className="absolute bottom-[-20px] lg:bottom-10 right-10 w-[85%] sm:w-[320px] transform lg:rotate-y-[-18deg] lg:rotate-x-[-8deg] lg:translate-z-[80px] transition-transform duration-1000 ease-out hover:rotate-0 hover:z-40 z-30 shadow-[0_50px_100px_-20px_rgba(0,0,0,0.3)] rounded-3xl">
-                 <FinanceMockup />
+                 {/* Analytics mockup (Front right bottom) */}
+                 <div className="relative w-[95%] sm:w-[360px] lg:absolute lg:bottom-10 lg:right-10 lg:w-[320px] transform lg:rotate-y-[-18deg] lg:rotate-x-[-8deg] lg:translate-z-[80px] transition-transform duration-1000 ease-out hover:rotate-0 hover:z-40 lg:z-30 opacity-100 shadow-[0_50px_100px_-20px_rgba(0,0,0,0.3)] rounded-3xl">
+                   <FinanceMockup />
+                 </div>
                </div>
 
                {/* Ambient Glow */}
