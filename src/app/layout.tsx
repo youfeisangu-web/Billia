@@ -84,7 +84,7 @@ export default function RootLayout({
     <ClerkProvider localization={jaJP}>
       <html lang="ja" className={`light ${inter.variable} ${outfit.variable} ${notoSansJP.variable}`} style={{ colorScheme: 'light' }} suppressHydrationWarning>
         <body
-          className="font-[family-name:var(--font-noto-sans-jp)] antialiased bg-billia-bg text-billia-text"
+          className="font-[family-name:var(--font-inter),ui-sans-serif,system-ui,sans-serif] antialiased bg-billia-bg text-billia-text"
         >
           <ThemeProvider attribute="class" forcedTheme="light" enableSystem={false}>
             {children}

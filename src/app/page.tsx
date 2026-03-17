@@ -381,20 +381,23 @@ export default function LandingPage() {
 
             {/* Right Mockups 3D Layering */}
             <div className="w-full lg:w-1/2 relative h-auto lg:h-[700px] flex items-center justify-center lg:perspective-[2000px] mt-10 lg:mt-0 pb-10 lg:pb-0">
-               {/* Mobile: stacked deck effect, Desktop: 3D layered glass mockups */}
-               <div className="relative w-full h-[580px] sm:h-[650px] flex flex-col items-center lg:block lg:w-full lg:h-full mt-4 lg:mt-0">
+               {/* Mobile: scattered floating cards, Desktop: 3D layered glass mockups */}
+               <div className="relative w-full h-[650px] sm:h-[750px] lg:h-full lg:block mt-8 lg:mt-0 lg:perspective-[2000px]">
                  {/* Dashboard mockup (Back) */}
-                 <div className="absolute top-0 w-[85%] sm:w-[320px] lg:top-0 lg:-right-10 lg:w-[360px] transform lg:rotate-y-[-12deg] lg:rotate-x-[6deg] lg:translate-z-[-20px] transition-transform duration-1000 ease-out hover:rotate-0 hover:z-40 z-10 opacity-100 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.15)] rounded-3xl scale-[0.98] lg:scale-100">
-                   <DashboardMockup />
+                 <div className="absolute top-0 left-[5%] w-[80%] sm:w-[320px] lg:top-0 lg:left-auto lg:-right-10 lg:w-[360px] transform -rotate-6 lg:-rotate-y-12 lg:rotate-x-6 lg:rotate-0 lg:-translate-z-5 transition-transform duration-1000 ease-out hover:rotate-0 hover:z-40 z-10 opacity-90 lg:opacity-100 shadow-[0_20px_40px_-5px_rgba(0,0,0,0.1)] rounded-3xl">
+                   <div className="pointer-events-none absolute inset-0 bg-white/30 backdrop-blur-[1px] rounded-3xl lg:hidden rounded-t-[2.5rem]" />
+                   <div className="scale-95 origin-top-left w-[105%] lg:scale-100 lg:w-full">
+                     <DashboardMockup />
+                   </div>
                  </div>
                  
                  {/* Invoice mockup (Middle overlapping) */}
-                 <div className="absolute top-[32%] sm:top-[30%] lg:top-44 w-[92%] sm:w-[340px] lg:-left-10 lg:w-[340px] transform lg:rotate-y-[8deg] lg:rotate-x-[4deg] lg:translate-z-[40px] transition-transform duration-1000 ease-out hover:rotate-0 hover:z-40 z-20 opacity-100 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.2)] rounded-3xl scale-100">
+                 <div className="absolute top-[20%] right-[3%] w-[85%] sm:w-[340px] lg:top-44 lg:right-auto lg:-left-10 lg:w-[340px] transform rotate-3 lg:rotate-y-6 lg:rotate-x-3 lg:rotate-0 lg:translate-z-10 transition-transform duration-1000 ease-out hover:rotate-0 hover:z-40 z-20 opacity-100 shadow-[0_30px_60px_-10px_rgba(0,0,0,0.15)] rounded-3xl">
                    <InvoiceListMockup />
                  </div>
 
                  {/* Analytics mockup (Front right bottom) */}
-                 <div className="absolute top-[64%] sm:top-[60%] lg:bottom-10 lg:top-auto w-[100%] sm:w-[360px] lg:right-10 lg:w-[320px] transform lg:rotate-y-[-18deg] lg:rotate-x-[-8deg] lg:translate-z-[80px] transition-transform duration-1000 ease-out hover:rotate-0 hover:z-40 z-30 opacity-100 shadow-[0_40px_80px_-15px_rgba(0,0,0,0.25)] rounded-3xl scale-[1.02] lg:scale-100">
+                 <div className="absolute top-[48%] left-1/2 -translate-x-1/2 w-[92%] sm:w-[360px] lg:top-auto lg:bottom-10 lg:left-auto lg:right-10 lg:translate-x-0 lg:w-[320px] transform -rotate-2 lg:-rotate-y-12 lg:-rotate-x-6 lg:rotate-0 lg:translate-z-20 transition-transform duration-1000 ease-out hover:-rotate-1 hover:z-40 z-30 opacity-100 shadow-[0_40px_80px_-15px_rgba(0,0,0,0.25)] rounded-3xl">
                    <FinanceMockup />
                  </div>
                </div>
@@ -444,12 +447,12 @@ export default function LandingPage() {
                   クラウドファンディング予告
                 </div>
                 
-                <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight text-black mb-6 drop-shadow-sm">
-                  共に創る、<br className="md:hidden" />新しい経理のカタチ。
+                <h2 className="text-[28px] sm:text-3xl md:text-5xl font-extrabold tracking-tight text-black mb-6 drop-shadow-sm leading-snug">
+                  共に創る、<br className="md:hidden" />次世代の経理体験。
                 </h2>
-                <p className="text-black/50 text-base md:text-lg font-medium leading-relaxed max-w-xl mx-auto mb-8">
-                  まもなくクラウドファンディングを開始します。<br />
-                  初期支援者の皆様には、特別なプランをご用意しております。
+                <p className="text-black/50 text-sm sm:text-base md:text-lg font-medium leading-relaxed max-w-xl mx-auto mb-8">
+                  まもなくクラウドファンディングを開始。<br />
+                  初期支援者の皆さまには、特別なプランを<br className="sm:hidden" />ご用意しております。
                 </p>
                 <div className="flex flex-wrap items-center justify-center gap-4 mb-8">
                   <div className="inline-flex items-center gap-2 rounded-xl border border-black/5 bg-white px-5 py-2.5 shadow-sm group-hover:shadow-md transition-shadow duration-500">
